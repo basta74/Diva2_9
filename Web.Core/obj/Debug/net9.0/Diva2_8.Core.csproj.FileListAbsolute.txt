@@ -1,0 +1,13 @@
+C:\dev\DIva2_8\Web.Core\bin\Debug\net9.0\Diva2_8.Core.deps.json
+C:\dev\DIva2_8\Web.Core\bin\Debug\net9.0\Diva2_8.Core.dll
+C:\dev\DIva2_8\Web.Core\bin\Debug\net9.0\Diva2_8.Core.pdb
+C:\dev\DIva2_8\Web.Core\obj\Debug\net9.0\Diva2_8.Core.csproj.AssemblyReference.cache
+C:\dev\DIva2_8\Web.Core\obj\Debug\net9.0\Diva2_8.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\dev\DIva2_8\Web.Core\obj\Debug\net9.0\Diva2_8.Core.AssemblyInfoInputs.cache
+C:\dev\DIva2_8\Web.Core\obj\Debug\net9.0\Diva2_8.Core.AssemblyInfo.cs
+C:\dev\DIva2_8\Web.Core\obj\Debug\net9.0\Diva2_8.Core.csproj.CoreCompileInputs.cache
+C:\dev\DIva2_8\Web.Core\obj\Debug\net9.0\Diva2_8.Core.sourcelink.json
+C:\dev\DIva2_8\Web.Core\obj\Debug\net9.0\Diva2_8.Core.dll
+C:\dev\DIva2_8\Web.Core\obj\Debug\net9.0\refint\Diva2_8.Core.dll
+C:\dev\DIva2_8\Web.Core\obj\Debug\net9.0\Diva2_8.Core.pdb
+C:\dev\DIva2_8\Web.Core\obj\Debug\net9.0\ref\Diva2_8.Core.dll
