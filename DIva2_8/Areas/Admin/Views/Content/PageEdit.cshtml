@@ -1,0 +1,94 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2Web.Models.Content
+
+@model AdminPageModel
+
+
+@section Head{
+    <script src="~/ckeditor/ckeditor.js"></script>
+}
+
+
+<form id="form-page-edit">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="Id" value="@Model.Page.Id">
+    <div class="form-horizontal">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label class="control-label" for="UrlName">Název položky v menu</label>
+                    <input class="form-control" data-val="true" data-val-required="The Heslo field is required." id="UrlName" name="UrlName" value="@Model.Page.UrlName">
+                    <span class="text-danger field-validation-valid" data-valmsg-for="UrlName" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="@Model.Page.Active" id="Active" name="Active" /> @Html.DisplayNameFor(model => model.Page.Active)
+                    </label>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label class="control-label" for="Order">Pořadí</label>
+                    <input class="form-control" type="number" data-val="true" data-val-required="The Heslo field is required." id="Order" name="Order" value="@Model.Page.Order">
+                    <span class="text-danger field-validation-valid" data-valmsg-for="Order" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" for="Title">Title</label>
+            <input class="form-control" data-val="true" data-val-required="The Heslo field is required." id="Title" name="Title" value="@Model.Page.Title">
+            <span class="text-danger field-validation-valid" data-valmsg-for="Title" data-valmsg-replace="true"></span>
+        </div>
+
+        <textarea name="Content" id="Content" rows="10" cols="80">@Model.Page.Content</textarea>
+        <button type="submit" id="form-page-edit" class="btn btn-sm btn-success">Ulož</button>
+    </div>
+
+
+</form>
+
+@section Scripts{ 
+    <script>
+
+        CKEDITOR.replace('Content');
+
+        $(document).ready(function () {
+
+            $('#form-page-edit').bind('submit', function () {
+
+
+
+                for (instance in CKEDITOR.instances) {
+                    CKEDITOR.instances[instance].updateElement();
+                }
+
+                var that = $(this);
+                $.ajax({
+                    type: 'post',
+                    url: '/Admin/Content/PageEdit',
+                    data: $(this).serialize(),
+                    cache: false
+                }).done(function (data) {
+                    console.log(data);
+                    if (data.status == true) {
+                        window.location.href = '/Admin/Content/Pages';
+                    }
+
+                });
+                return false;
+            });
+        });
+
+    </script>
+}
+
+
+
+
+
+
+
+

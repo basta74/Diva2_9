@@ -1,0 +1,107 @@
+﻿@using Diva2Web.Models.Videos
+@using Diva2Web.Models.Admin
+
+@model AdminPageModel
+
+@{ UserVideoModel video = ViewBag.UserVideo as UserVideoModel; }
+
+@section Head{
+    <link href="https://vjs.zencdn.net/7.8.3/video-js.css" rel="stylesheet" />
+
+    <!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
+    <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
+}
+
+@section leftMenu{
+    <partial name="MenuLeftPublic" model="Model" />
+}
+
+<p id="mesages-video-modal"></p>
+
+<b>@video.Video.Name</b>
+
+<p>@video.Video.Desc</p>
+
+<br />
+<p>Cena : @video.Kredity kreditů</p>
+
+@if (!video.Zobrazeno)
+{
+    <p>Pokud chcete přehrát video, klikněte ná následující tlačítko. Poté budete mít 2 hodiny na jeho shlédnutí.</p>
+    <button id="js-active-video" class="btn btn-primary btn-sm" data-id="@video.Id">Přehrát - aktivovat</button>
+}
+else
+{
+    int max = 120;
+    DateTime prohlizetDo = video.ZobrazenoDt.AddMinutes(max);
+    double diff = prohlizetDo.Subtract(DateTime.Now).TotalMinutes;
+
+    if (diff > 0)
+    {
+        <div class="alert alert-success" role="alert">
+            Video je možno sledovat do @prohlizetDo.ToString("HH:mm dd.MM.yyyy")
+        </div>
+        <video id="my-video"
+               class="video-js"
+               controls
+               preload="auto"
+               width="640"
+               height="264"
+               poster="@video.Image"
+               data-setup="{}">
+            <source src="@video.Url" type="video/mp4" />
+            <p class="vjs-no-js">
+                To view this video please enable JavaScript, and consider upgrading to a
+                web browser that
+                <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+            </p>
+        </video>
+
+        <script src="https://vjs.zencdn.net/7.8.3/video.js"></script>
+    }
+    else
+    {
+        <div class="alert alert-danger" role="alert">
+            Video bylo možno sledovat do @prohlizetDo.ToString("HH:mm dd.MM.yyyy")
+        </div>
+    }
+
+
+
+}
+
+
+
+
+
+
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#js-active-video").on("click", function () {
+            var id = $(this).data('id');
+            $(this).val("Spojení...");
+            $.ajax({
+                type: "POST",
+                url: "/Video/Active/",
+                data: { id: id },
+                cache: false
+            }).done(function (data) {
+                if (data.status == true) {
+
+                    window.location.href = "/video/myvideoview/" + id;
+                }
+                else {
+                    $('#mesages-video-modal').html(writeMesssages(data.messages));
+                }
+            });
+        });
+
+
+    });
+
+
+
+</script>

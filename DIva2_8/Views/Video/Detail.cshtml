@@ -1,0 +1,97 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Lessons
+﻿@using Diva2Web.Models.Videos
+@model VideoModel
+@{
+    ViewData["Title"] = "Home Page";
+    if (Model.Image == null || Model.Image == "")
+    {
+        Model.Image = "/images/default-video-thumbnail.jpg";
+    }
+
+}
+
+<div class="modal modal-lesson" tabindex="-1" role="dialog">
+    <div class="modal-dialog " role="document" style="">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detail videa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+
+
+                <b>@Model.Name</b>
+
+                <p>@Model.Desc</p>
+                <img src="@Model.Image" style="width: 200px" />
+                <br />
+                <p>Cena : @Model.Kredity kreditů</p>
+
+                <p id="mesages-video-modal"></p>
+
+                <button id="btnShowObj" class="btn btn-primary btn-sm" onclick="showObj1()">Zakoupit</button>
+
+                <div id="objednavka" style="display: none">
+                    <div style="border: silver 1px solid">
+
+                        @if (Model.UserId > 0)
+                        {
+                            <button class="btn btn-success btn-sm" id="js-buy-video-force" style="margin: 5px" data-id="@Model.Id" data-user-id="@Model.UserId">Zaplatit</button>
+                            <button class="btn btn-secondary btn-sm" onclick="showObj1()" style="margin: 5px">Zavřít</button>
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning">Nejste přihlášen</div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#js-buy-video-force").on("click", function () {
+            var id = $(this).data('id');
+            var userId = $(this).data('user-id');
+
+            $('#objednavka').toggle('slow');
+            $(this).val("Spojení...");
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Api/VideoBuy/",
+                data: { videoId: id, userId: userId },
+                cache: false
+            }).done(function (data) {
+                if (data.status == true) {
+
+                    $('#mesages-video-modal').html(writeMesssages(data.messages));
+
+                }
+                else {
+                    $("#btnShowObj").toggle('slow');
+                    $('#mesages-video-modal').html(writeMesssages(data.messages));
+                }
+            });
+        });
+
+
+    });
+
+    function showObj1() {
+        $("#btnShowObj").toggle('slow');
+        $('#objednavka').toggle('slow');
+    }
+
+</script>

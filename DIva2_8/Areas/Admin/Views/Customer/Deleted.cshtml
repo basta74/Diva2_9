@@ -1,0 +1,77 @@
+﻿@using Diva2Web.Models.Admin
+@model AdminPageModel
+
+
+<h3>Smazaní zákazníci</h3>
+<p>Pokud neměl zákazník ni jednu lekci nebo přidaný kredit, vymazal se kompletně a v seznamu jej nenajdete. Najdete zde jen ty, kteří v systému byli</p>
+
+<div id="messages"></div>
+
+<table class="table table-hover">
+    <tr>
+        <th>Příjmení</th>
+        <th>Jméno</th>
+        <th>Nick</th>
+        <th>Email</th>
+        <th>Datum smazání</th>
+        <th>Kdo jej smazal</th>
+
+        <th>Edit</th>
+    </tr>
+    @foreach (var zak in Model.Users)
+    {
+        string dt = zak.DeletedDt.HasValue ? zak.DeletedDt.Value.ToString("dd.MM.yyyy HH:mm") : "...";
+        string delUser = zak.DeletedByUserId.HasValue ? zak.DeletedByUserId.ToString() : "...";
+        <tr>
+            <td>@zak.Prijmeni </td>
+            <td>@zak.Jmeno</td>
+            <td>@zak.UserName</td>
+            <td>@zak.Email</td>
+            <td>@dt</td>
+            <td>@delUser</td>
+            <td>
+                <input class="js-delete btn btn-sm btn-warning" type="button" value="Obnovit">
+                <button type="submit" class="js-delete-force btn btn-sm btn-danger" style="display: none;" data-id="@zak.Id">Opravdu obnovit</button>
+            </td>
+        </tr>
+    }
+</table>
+
+
+@section Scripts{
+    <script>
+
+        $(document).ready(function () {
+
+            $(".js-delete").on("click", function () {
+                $(this).hide(200);
+                $(this).next(".js-delete-force").show(400);
+            });
+
+            $(".js-delete-force").on("click", function () {
+                var id = $(this).data('id');
+                var that = $(this);
+                $(".js-delete-force").val("Maže se");
+                $.ajax({
+                    type: 'post',
+                    url: '/Admin/Customer/RestoreUser',
+                    data: { id: id },
+                    cache: false
+                }).done(function (data) {
+                    $('#messages').html(writeMesssages(data.messages));
+                    if (data.status == true) {
+                        setTimeout(function () {
+                            location.reload(true);
+                        }, 1000);
+                    }
+                    else {
+                        that.show();
+                    }
+                });
+                return false;
+            });
+
+        });
+
+    </script>
+}

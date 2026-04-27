@@ -1,0 +1,2592 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>ftp://188.246.103.7/diva2_core</_PublishTargetUrl>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA2sO/ZyPEhEKNpUgR8bUjFgAAAAACAAAAAAAQZgAAAAEAACAAAACluYiShvLxiD0yQ5zlTmWGQD+OOKyJdmN2FLxTH40DcgAAAAAOgAAAAAIAACAAAADju6HiWRvdJAVFWsYwmQAEIahWCCkXn7CUI6Xh+z6MWiAAAABEZRcrhqeUsqiCdIYvVtRpql+ZZatOHnJEfr/hVIyQUUAAAACemGxv6Mts9ZYd/iPYvJ9xh5DRx8tDGe1xdaeBXS6MGFsbWcvHyS2vlpRBhcw4uoTuXRkvPLcxMyagZI0oGLWN</EncryptedPassword>
+    <History>False|2022-08-11T20:32:32.2654730Z;False|2022-05-19T20:44:29.6590095+02:00;False|2021-05-07T13:43:41.6830174+02:00;</History>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="appsettings.Development.json">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="appsettings.json">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="appsubdomain.json">
+      <publishTime>10/04/2020 12:33:55</publishTime>
+    </File>
+    <File Include="cs/Microsoft.CodeAnalysis.CSharp.resources.dll">
+      <publishTime>09/12/2019 17:08:58</publishTime>
+    </File>
+    <File Include="cs/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:09:12</publishTime>
+    </File>
+    <File Include="cs/Microsoft.CodeAnalysis.resources.dll">
+      <publishTime>09/12/2019 17:07:46</publishTime>
+    </File>
+    <File Include="cs/Microsoft.CodeAnalysis.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:08:36</publishTime>
+    </File>
+    <File Include="de/Microsoft.CodeAnalysis.CSharp.resources.dll">
+      <publishTime>09/12/2019 17:08:58</publishTime>
+    </File>
+    <File Include="de/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:09:12</publishTime>
+    </File>
+    <File Include="de/Microsoft.CodeAnalysis.resources.dll">
+      <publishTime>09/12/2019 17:07:46</publishTime>
+    </File>
+    <File Include="de/Microsoft.CodeAnalysis.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:08:36</publishTime>
+    </File>
+    <File Include="Diva2.Core.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Diva2.Core.pdb">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Diva2.Data.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Diva2.Data.pdb">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Diva2.Services.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Diva2.Services.pdb">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Diva2Web.deps.json">
+      <publishTime>01/02/2021 21:50:48</publishTime>
+    </File>
+    <File Include="Diva2Web.dll">
+      <publishTime>01/02/2021 21:50:41</publishTime>
+    </File>
+    <File Include="Diva2Web.exe">
+      <publishTime>01/02/2021 21:50:41</publishTime>
+    </File>
+    <File Include="Diva2Web.pdb">
+      <publishTime>01/02/2021 21:50:41</publishTime>
+    </File>
+    <File Include="Diva2Web.runtimeconfig.json">
+      <publishTime>01/02/2021 21:50:48</publishTime>
+    </File>
+    <File Include="Diva2Web.Views.dll">
+      <publishTime>01/02/2021 21:50:47</publishTime>
+    </File>
+    <File Include="Diva2Web.Views.pdb">
+      <publishTime>01/02/2021 21:50:47</publishTime>
+    </File>
+    <File Include="dotnet-aspnet-codegenerator-design.dll">
+      <publishTime>03/08/2020 18:30:10</publishTime>
+    </File>
+    <File Include="es/Microsoft.CodeAnalysis.CSharp.resources.dll">
+      <publishTime>09/12/2019 17:09:00</publishTime>
+    </File>
+    <File Include="es/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:09:12</publishTime>
+    </File>
+    <File Include="es/Microsoft.CodeAnalysis.resources.dll">
+      <publishTime>09/12/2019 17:07:46</publishTime>
+    </File>
+    <File Include="es/Microsoft.CodeAnalysis.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:08:36</publishTime>
+    </File>
+    <File Include="fr/Microsoft.CodeAnalysis.CSharp.resources.dll">
+      <publishTime>09/12/2019 17:09:00</publishTime>
+    </File>
+    <File Include="fr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:09:12</publishTime>
+    </File>
+    <File Include="fr/Microsoft.CodeAnalysis.resources.dll">
+      <publishTime>09/12/2019 17:07:46</publishTime>
+    </File>
+    <File Include="fr/Microsoft.CodeAnalysis.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:08:36</publishTime>
+    </File>
+    <File Include="it/Microsoft.CodeAnalysis.CSharp.resources.dll">
+      <publishTime>09/12/2019 17:09:00</publishTime>
+    </File>
+    <File Include="it/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:09:12</publishTime>
+    </File>
+    <File Include="it/Microsoft.CodeAnalysis.resources.dll">
+      <publishTime>09/12/2019 17:07:46</publishTime>
+    </File>
+    <File Include="it/Microsoft.CodeAnalysis.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:08:36</publishTime>
+    </File>
+    <File Include="ja/Microsoft.CodeAnalysis.CSharp.resources.dll">
+      <publishTime>09/12/2019 17:09:00</publishTime>
+    </File>
+    <File Include="ja/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:09:12</publishTime>
+    </File>
+    <File Include="ja/Microsoft.CodeAnalysis.resources.dll">
+      <publishTime>09/12/2019 17:07:46</publishTime>
+    </File>
+    <File Include="ja/Microsoft.CodeAnalysis.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:08:36</publishTime>
+    </File>
+    <File Include="ko/Microsoft.CodeAnalysis.CSharp.resources.dll">
+      <publishTime>09/12/2019 17:09:00</publishTime>
+    </File>
+    <File Include="ko/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:09:12</publishTime>
+    </File>
+    <File Include="ko/Microsoft.CodeAnalysis.resources.dll">
+      <publishTime>09/12/2019 17:07:46</publishTime>
+    </File>
+    <File Include="ko/Microsoft.CodeAnalysis.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:08:36</publishTime>
+    </File>
+    <File Include="libman.json">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.Authentication.Facebook.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.Authentication.Google.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Microsoft.AspNetCore.Razor.Language.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Microsoft.Bcl.AsyncInterfaces.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Microsoft.Bcl.HashCode.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Microsoft.CodeAnalysis.CSharp.dll">
+      <publishTime>09/12/2019 17:08:58</publishTime>
+    </File>
+    <File Include="Microsoft.CodeAnalysis.CSharp.Workspaces.dll">
+      <publishTime>09/12/2019 17:09:12</publishTime>
+    </File>
+    <File Include="Microsoft.CodeAnalysis.dll">
+      <publishTime>09/12/2019 17:07:46</publishTime>
+    </File>
+    <File Include="Microsoft.CodeAnalysis.Razor.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Microsoft.CodeAnalysis.Workspaces.dll">
+      <publishTime>09/12/2019 17:08:34</publishTime>
+    </File>
+    <File Include="Microsoft.EntityFrameworkCore.Abstractions.dll">
+      <publishTime>01/01/1980 00:00:00</publishTime>
+    </File>
+    <File Include="Microsoft.EntityFrameworkCore.dll">
+      <publishTime>01/01/1980 00:00:00</publishTime>
+    </File>
+    <File Include="Microsoft.EntityFrameworkCore.Relational.dll">
+      <publishTime>01/01/1980 00:00:00</publishTime>
+    </File>
+    <File Include="Microsoft.VisualStudio.Web.CodeGeneration.Contracts.dll">
+      <publishTime>03/08/2020 18:29:50</publishTime>
+    </File>
+    <File Include="Microsoft.VisualStudio.Web.CodeGeneration.Core.dll">
+      <publishTime>03/08/2020 18:30:02</publishTime>
+    </File>
+    <File Include="Microsoft.VisualStudio.Web.CodeGeneration.dll">
+      <publishTime>03/08/2020 18:30:04</publishTime>
+    </File>
+    <File Include="Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore.dll">
+      <publishTime>03/08/2020 18:30:02</publishTime>
+    </File>
+    <File Include="Microsoft.VisualStudio.Web.CodeGeneration.Templating.dll">
+      <publishTime>03/08/2020 18:29:58</publishTime>
+    </File>
+    <File Include="Microsoft.VisualStudio.Web.CodeGeneration.Utils.dll">
+      <publishTime>03/08/2020 18:29:56</publishTime>
+    </File>
+    <File Include="Microsoft.VisualStudio.Web.CodeGenerators.Mvc.dll">
+      <publishTime>03/08/2020 18:30:06</publishTime>
+    </File>
+    <File Include="MySqlConnector.dll">
+      <publishTime>11/05/2019 12:58:26</publishTime>
+    </File>
+    <File Include="Newtonsoft.Json.dll">
+      <publishTime>11/09/2019 00:56:44</publishTime>
+    </File>
+    <File Include="NuGet.Frameworks.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="pl/Microsoft.CodeAnalysis.CSharp.resources.dll">
+      <publishTime>09/12/2019 17:09:00</publishTime>
+    </File>
+    <File Include="pl/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:09:12</publishTime>
+    </File>
+    <File Include="pl/Microsoft.CodeAnalysis.resources.dll">
+      <publishTime>09/12/2019 17:07:48</publishTime>
+    </File>
+    <File Include="pl/Microsoft.CodeAnalysis.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:08:36</publishTime>
+    </File>
+    <File Include="Pomelo.EntityFrameworkCore.MySql.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="Pomelo.JsonObject.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="pt-BR/Microsoft.CodeAnalysis.CSharp.resources.dll">
+      <publishTime>09/12/2019 17:09:00</publishTime>
+    </File>
+    <File Include="pt-BR/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:09:14</publishTime>
+    </File>
+    <File Include="pt-BR/Microsoft.CodeAnalysis.resources.dll">
+      <publishTime>09/12/2019 17:07:48</publishTime>
+    </File>
+    <File Include="pt-BR/Microsoft.CodeAnalysis.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:08:36</publishTime>
+    </File>
+    <File Include="ru/Microsoft.CodeAnalysis.CSharp.resources.dll">
+      <publishTime>09/12/2019 17:09:00</publishTime>
+    </File>
+    <File Include="ru/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:09:14</publishTime>
+    </File>
+    <File Include="ru/Microsoft.CodeAnalysis.resources.dll">
+      <publishTime>09/12/2019 17:07:48</publishTime>
+    </File>
+    <File Include="ru/Microsoft.CodeAnalysis.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:08:36</publishTime>
+    </File>
+    <File Include="System.Composition.AttributedModel.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="System.Composition.Convention.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="System.Composition.Hosting.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="System.Composition.Runtime.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="System.Composition.TypedParts.dll">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="tr/Microsoft.CodeAnalysis.CSharp.resources.dll">
+      <publishTime>09/12/2019 17:09:00</publishTime>
+    </File>
+    <File Include="tr/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:09:14</publishTime>
+    </File>
+    <File Include="tr/Microsoft.CodeAnalysis.resources.dll">
+      <publishTime>09/12/2019 17:07:48</publishTime>
+    </File>
+    <File Include="tr/Microsoft.CodeAnalysis.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:08:36</publishTime>
+    </File>
+    <File Include="web.config">
+      <publishTime>01/02/2021 21:50:52</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/adapters/jquery.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/build-config.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/CHANGES.md">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/ckeditor.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/config.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/contents.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/af.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/ar.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/az.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/bg.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/bn.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/bs.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/ca.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/cs.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/cy.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/da.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/de-ch.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/de.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/el.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/en-au.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/en-ca.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/en-gb.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/en.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/eo.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/es-mx.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/es.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/et.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/eu.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/fa.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/fi.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/fo.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/fr-ca.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/fr.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/gl.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/gu.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/he.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/hi.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/hr.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/hu.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/id.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/is.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/it.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/ja.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/ka.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/km.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/ko.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/ku.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/lt.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/lv.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/mk.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/mn.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/ms.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/nb.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/nl.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/no.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/oc.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/pl.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/pt-br.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/pt.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/ro.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/ru.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/si.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/sk.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/sl.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/sq.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/sr-latn.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/sr.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/sv.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/th.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/tr.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/tt.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/ug.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/uk.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/vi.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/zh-cn.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/lang/zh.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/LICENSE.md">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/a11yhelp.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/af.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/ar.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/az.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/bg.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/ca.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/cs.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/cy.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/da.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/de-ch.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/de.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/el.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/en-au.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/en-gb.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/en.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/eo.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/es-mx.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/es.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/et.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/eu.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/fa.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/fi.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/fo.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/fr-ca.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/fr.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/gl.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/gu.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/he.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/hi.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/hr.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/hu.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/id.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/it.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/ja.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/km.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/ko.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/ku.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/lt.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/lv.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/mk.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/mn.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/nb.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/nl.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/no.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/oc.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/pl.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/pt-br.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/pt.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/ro.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/ru.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/si.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/sk.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/sl.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/sq.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/sr-latn.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/sr.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/sv.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/th.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/tr.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/tt.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/ug.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/uk.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/vi.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/zh-cn.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/zh.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/a11yhelp/dialogs/lang/_translationstatus.txt">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/about/dialogs/about.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/about/dialogs/hidpi/logo_ckeditor.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/about/dialogs/logo_ckeditor.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/clipboard/dialogs/paste.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/dialog/dialogDefinition.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/dialog/styles/dialog.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/icons.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/icons_hidpi.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/image/dialogs/image.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/image/images/noimage.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/link/dialogs/anchor.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/link/dialogs/link.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/link/images/anchor.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/link/images/hidpi/anchor.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/magicline/images/hidpi/icon-rtl.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/magicline/images/hidpi/icon.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/magicline/images/icon-rtl.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/magicline/images/icon.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/pastefromgdocs/filter/default.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/pastefromword/filter/default.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/pastetools/filter/common.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/pastetools/filter/image.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/scayt/CHANGELOG.md">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/scayt/dialogs/dialog.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/scayt/dialogs/options.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/scayt/dialogs/toolbar.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/scayt/LICENSE.md">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/scayt/README.md">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/scayt/skins/moono-lisa/scayt.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/af.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/ar.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/az.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/bg.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/ca.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/cs.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/cy.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/da.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/de-ch.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/de.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/el.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/en-au.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/en-ca.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/en-gb.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/en.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/eo.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/es-mx.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/es.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/et.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/eu.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/fa.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/fi.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/fr-ca.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/fr.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/gl.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/he.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/hr.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/hu.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/id.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/it.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/ja.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/km.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/ko.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/ku.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/lt.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/lv.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/nb.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/nl.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/no.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/oc.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/pl.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/pt-br.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/pt.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/ro.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/ru.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/si.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/sk.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/sl.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/sq.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/sr-latn.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/sr.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/sv.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/th.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/tr.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/tt.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/ug.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/uk.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/vi.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/zh-cn.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/zh.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/lang/_translationstatus.txt">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/specialchar/dialogs/specialchar.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/table/dialogs/table.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/tableselection/styles/tableselection.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/tabletools/dialogs/tableCell.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/widget/images/handle.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/wsc/dialogs/ciframe.html">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/wsc/dialogs/tmpFrameset.html">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/wsc/dialogs/wsc.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/wsc/dialogs/wsc.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/wsc/dialogs/wsc_ie.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/wsc/LICENSE.md">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/wsc/README.md">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/plugins/wsc/skins/moono-lisa/wsc.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/README.md">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/skins/moono-lisa/dialog.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/skins/moono-lisa/dialog_ie.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/skins/moono-lisa/dialog_ie8.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/skins/moono-lisa/dialog_iequirks.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/skins/moono-lisa/editor.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/skins/moono-lisa/editor_gecko.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/skins/moono-lisa/editor_ie.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/skins/moono-lisa/editor_ie8.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/skins/moono-lisa/editor_iequirks.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/skins/moono-lisa/icons.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/skins/moono-lisa/icons_hidpi.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/skins/moono-lisa/images/arrow.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/skins/moono-lisa/images/close.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/skins/moono-lisa/images/hidpi/close.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/skins/moono-lisa/images/hidpi/lock-open.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/skins/moono-lisa/images/hidpi/lock.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/skins/moono-lisa/images/hidpi/refresh.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/skins/moono-lisa/images/lock-open.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/skins/moono-lisa/images/lock.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/skins/moono-lisa/images/refresh.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/skins/moono-lisa/images/spinner.gif">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/skins/moono-lisa/readme.md">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/styles.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/ckeditor/vendor/promise.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/css/boot/celurean.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/css/boot/cosmo.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/css/boot/default.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/css/boot/flatly.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/css/boot/journal.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/css/boot/lumen.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/css/boot/materia.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/css/boot/minty.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/css/boot/spacelab.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/css/boot/superHero.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/css/boot/united.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/css/boot/yeti.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/css/images/ui-icons_444444_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/css/images/ui-icons_555555_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/css/images/ui-icons_777620_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/css/images/ui-icons_777777_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/css/images/ui-icons_cc0000_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/css/images/ui-icons_ffffff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/css/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/css/rozvrh.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/css/rozvrh.css.orig">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/css/site.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/favicon.ico">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/images/default-video-thumbnail.jpg">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/images/DetailZakaznika.PNG">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/images/help/login.PNG">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/images/help/login2.PNG">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/images/help/noActive.PNG">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/images/help/register.PNG">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/images/help/rozvrh.PNG">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/images/help/sendPass.PNG">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/images/ui-icons_444444_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/js/jquery-ui.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/js/site.js">
+      <publishTime>10/09/2020 21:52:29</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css.map">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css.map">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css.map">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap.css.map">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/js/bootstrap.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/js/bootstrap.js.map">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/js/bootstrap.min.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/dist/js/bootstrap.min.js.map">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/bootstrap/LICENSE">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery-validation-unobtrusive/LICENSE.txt">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery-validation/dist/additional-methods.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery-validation/dist/additional-methods.min.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery-validation/dist/jquery.validate.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery-validation/dist/jquery.validate.min.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery-validation/LICENSE.md">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery/dist/jquery.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery/dist/jquery.min.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery/dist/jquery.min.map">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jquery/LICENSE.txt">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/images/ui-icons_444444_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/images/ui-icons_555555_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/images/ui-icons_777620_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/images/ui-icons_777777_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/images/ui-icons_cc0000_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/images/ui-icons_ffffff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/jquery-ui.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/jquery-ui.min.js">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/jquery-ui.structure.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/jquery-ui.structure.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/jquery-ui.theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/jquery-ui.theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/base/images/ui-icons_444444_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/base/images/ui-icons_555555_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/base/images/ui-icons_777620_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/base/images/ui-icons_777777_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/base/images/ui-icons_cc0000_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/base/images/ui-icons_ffffff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/base/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/base/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/base/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/base/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/black-tie/images/ui-bg_diagonals-thick_8_333333_40x40.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/black-tie/images/ui-bg_glass_40_111111_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/black-tie/images/ui-bg_glass_55_1c1c1c_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/black-tie/images/ui-bg_highlight-hard_100_f9f9f9_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/black-tie/images/ui-bg_highlight-hard_40_aaaaaa_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/black-tie/images/ui-bg_highlight-soft_50_aaaaaa_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/black-tie/images/ui-bg_inset-hard_45_cd0a0a_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/black-tie/images/ui-bg_inset-hard_55_ffeb80_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/black-tie/images/ui-icons_222222_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/black-tie/images/ui-icons_4ca300_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/black-tie/images/ui-icons_bbbbbb_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/black-tie/images/ui-icons_ededed_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/black-tie/images/ui-icons_ffcf29_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/black-tie/images/ui-icons_ffffff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/black-tie/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/black-tie/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/black-tie/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/black-tie/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/blitzer/images/ui-bg_diagonals-thick_75_f3d8d8_40x40.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/blitzer/images/ui-bg_dots-small_65_a6a6a6_2x2.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/blitzer/images/ui-bg_glass_55_fbf8ee_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/blitzer/images/ui-bg_highlight-hard_100_eeeeee_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/blitzer/images/ui-bg_highlight-hard_100_f6f6f6_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/blitzer/images/ui-bg_highlight-soft_15_cc0000_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/blitzer/images/ui-icons_004276_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/blitzer/images/ui-icons_cc0000_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/blitzer/images/ui-icons_ffffff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/blitzer/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/blitzer/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/blitzer/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/blitzer/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/cupertino/images/ui-bg_diagonals-thick_90_eeeeee_40x40.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/cupertino/images/ui-bg_glass_100_e4f1fb_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/cupertino/images/ui-bg_glass_50_3baae3_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/cupertino/images/ui-bg_glass_80_d7ebf9_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/cupertino/images/ui-bg_highlight-hard_100_f2f5f7_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/cupertino/images/ui-bg_highlight-hard_70_000000_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/cupertino/images/ui-bg_highlight-soft_100_deedf7_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/cupertino/images/ui-bg_highlight-soft_25_ffef8f_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/cupertino/images/ui-icons_2694e8_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/cupertino/images/ui-icons_2e83ff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/cupertino/images/ui-icons_3d80b3_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/cupertino/images/ui-icons_72a7cf_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/cupertino/images/ui-icons_ffffff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/cupertino/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/cupertino/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/cupertino/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/cupertino/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dark-hive/images/ui-bg_glass_40_ffc73d_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dark-hive/images/ui-bg_highlight-hard_20_0972a5_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dark-hive/images/ui-bg_highlight-soft_33_003147_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dark-hive/images/ui-bg_highlight-soft_35_222222_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dark-hive/images/ui-bg_highlight-soft_44_444444_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dark-hive/images/ui-bg_highlight-soft_80_eeeeee_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dark-hive/images/ui-bg_loop_25_000000_21x21.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dark-hive/images/ui-icons_222222_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dark-hive/images/ui-icons_4b8e0b_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dark-hive/images/ui-icons_a83300_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dark-hive/images/ui-icons_cccccc_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dark-hive/images/ui-icons_ffffff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dark-hive/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dark-hive/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dark-hive/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dark-hive/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dot-luv/images/ui-bg_diagonals-thick_15_0b3e6f_40x40.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dot-luv/images/ui-bg_dots-medium_30_0b58a2_4x4.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dot-luv/images/ui-bg_dots-small_20_333333_2x2.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dot-luv/images/ui-bg_dots-small_30_a32d00_2x2.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dot-luv/images/ui-bg_dots-small_40_00498f_2x2.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dot-luv/images/ui-bg_gloss-wave_20_111111_500x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dot-luv/images/ui-icons_00498f_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dot-luv/images/ui-icons_98d2fb_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dot-luv/images/ui-icons_9ccdfc_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dot-luv/images/ui-icons_ffffff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dot-luv/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dot-luv/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dot-luv/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/dot-luv/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/eggplant/images/ui-bg_gloss-wave_30_3d3644_500x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/eggplant/images/ui-bg_highlight-soft_100_dcd9de_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/eggplant/images/ui-bg_highlight-soft_100_eae6ea_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/eggplant/images/ui-bg_highlight-soft_25_30273a_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/eggplant/images/ui-bg_highlight-soft_45_5f5964_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/eggplant/images/ui-icons_454545_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/eggplant/images/ui-icons_734d99_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/eggplant/images/ui-icons_8d78a5_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/eggplant/images/ui-icons_a8a3ae_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/eggplant/images/ui-icons_ebccce_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/eggplant/images/ui-icons_ffffff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/eggplant/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/eggplant/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/eggplant/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/eggplant/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/excite-bike/images/ui-bg_diagonals-small_25_c5ddfc_40x40.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/excite-bike/images/ui-bg_diagonals-thick_20_e69700_40x40.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/excite-bike/images/ui-bg_diagonals-thick_22_1484e6_40x40.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/excite-bike/images/ui-bg_diagonals-thick_26_2293f7_40x40.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/excite-bike/images/ui-bg_highlight-soft_100_f9f9f9_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/excite-bike/images/ui-bg_inset-hard_100_eeeeee_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/excite-bike/images/ui-icons_0a82eb_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/excite-bike/images/ui-icons_0b54d5_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/excite-bike/images/ui-icons_5fa5e3_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/excite-bike/images/ui-icons_fcdd4a_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/excite-bike/images/ui-icons_ffffff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/excite-bike/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/excite-bike/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/excite-bike/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/excite-bike/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/flick/images/ui-bg_glass_65_ffffff_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/flick/images/ui-bg_highlight-soft_100_f6f6f6_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/flick/images/ui-bg_highlight-soft_25_0073ea_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/flick/images/ui-bg_highlight-soft_50_dddddd_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/flick/images/ui-icons_0073ea_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/flick/images/ui-icons_454545_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/flick/images/ui-icons_666666_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/flick/images/ui-icons_ff0084_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/flick/images/ui-icons_ffffff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/flick/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/flick/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/flick/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/flick/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/hot-sneaks/images/ui-bg_diagonals-small_40_db4865_40x40.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/hot-sneaks/images/ui-bg_diagonals-small_50_93c3cd_40x40.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/hot-sneaks/images/ui-bg_diagonals-small_50_ff3853_40x40.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/hot-sneaks/images/ui-bg_diagonals-small_75_ccd232_40x40.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/hot-sneaks/images/ui-bg_dots-medium_80_ffff38_4x4.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/hot-sneaks/images/ui-bg_dots-small_35_35414f_2x2.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/hot-sneaks/images/ui-bg_white-lines_85_f7f7ba_40x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/hot-sneaks/images/ui-icons_454545_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/hot-sneaks/images/ui-icons_88a206_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/hot-sneaks/images/ui-icons_c02669_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/hot-sneaks/images/ui-icons_e1e463_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/hot-sneaks/images/ui-icons_ffeb33_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/hot-sneaks/images/ui-icons_ffffff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/hot-sneaks/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/hot-sneaks/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/hot-sneaks/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/hot-sneaks/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/humanity/images/ui-bg_glass_100_f5f0e5_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/humanity/images/ui-bg_glass_25_cb842e_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/humanity/images/ui-bg_glass_70_ede4d4_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/humanity/images/ui-bg_highlight-hard_100_f4f0ec_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/humanity/images/ui-bg_highlight-hard_65_fee4bd_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/humanity/images/ui-bg_highlight-hard_75_f5f5b5_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/humanity/images/ui-bg_inset-soft_100_f4f0ec_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/humanity/images/ui-icons_c47a23_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/humanity/images/ui-icons_cb672b_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/humanity/images/ui-icons_f08000_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/humanity/images/ui-icons_f35f07_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/humanity/images/ui-icons_ff7519_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/humanity/images/ui-icons_ffffff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/humanity/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/humanity/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/humanity/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/humanity/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/le-frog/images/ui-bg_diagonals-small_0_aaaaaa_40x40.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/le-frog/images/ui-bg_diagonals-thick_15_444444_40x40.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/le-frog/images/ui-bg_diagonals-thick_95_ffdc2e_40x40.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/le-frog/images/ui-bg_glass_55_fbf5d0_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/le-frog/images/ui-bg_highlight-hard_30_285c00_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/le-frog/images/ui-bg_highlight-soft_33_3a8104_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/le-frog/images/ui-bg_highlight-soft_50_4eb305_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/le-frog/images/ui-bg_highlight-soft_60_4ca20b_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/le-frog/images/ui-bg_inset-soft_10_285c00_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/le-frog/images/ui-icons_4eb305_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/le-frog/images/ui-icons_72b42d_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/le-frog/images/ui-icons_cd0a0a_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/le-frog/images/ui-icons_ffffff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/le-frog/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/le-frog/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/le-frog/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/le-frog/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/mint-choc/images/ui-bg_glass_15_5f391b_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/mint-choc/images/ui-bg_gloss-wave_20_1c160d_500x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/mint-choc/images/ui-bg_gloss-wave_25_453326_500x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/mint-choc/images/ui-bg_gloss-wave_30_44372c_500x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/mint-choc/images/ui-bg_highlight-soft_20_201913_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/mint-choc/images/ui-bg_highlight-soft_20_619226_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/mint-choc/images/ui-bg_inset-soft_10_201913_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/mint-choc/images/ui-icons_222222_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/mint-choc/images/ui-icons_9bcc60_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/mint-choc/images/ui-icons_add978_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/mint-choc/images/ui-icons_e3ddc9_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/mint-choc/images/ui-icons_f1fd86_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/mint-choc/images/ui-icons_ffffff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/mint-choc/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/mint-choc/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/mint-choc/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/mint-choc/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/overcast/images/ui-bg_glass_100_f8f8f8_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/overcast/images/ui-bg_glass_35_dddddd_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/overcast/images/ui-bg_glass_60_eeeeee_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/overcast/images/ui-bg_inset-hard_75_999999_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/overcast/images/ui-bg_inset-soft_50_c9c9c9_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/overcast/images/ui-icons_3383bb_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/overcast/images/ui-icons_454545_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/overcast/images/ui-icons_70b2e1_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/overcast/images/ui-icons_999999_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/overcast/images/ui-icons_fbc856_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/overcast/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/overcast/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/overcast/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/overcast/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/pepper-grinder/images/ui-bg_diagonal-maze_20_6e4f1c_10x10.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/pepper-grinder/images/ui-bg_diagonal-maze_40_000000_10x10.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/pepper-grinder/images/ui-bg_fine-grain_10_eceadf_60x60.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/pepper-grinder/images/ui-bg_fine-grain_10_f8f7f6_60x60.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/pepper-grinder/images/ui-bg_fine-grain_15_eceadf_60x60.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/pepper-grinder/images/ui-bg_fine-grain_15_f7f3de_60x60.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/pepper-grinder/images/ui-bg_fine-grain_15_ffffff_60x60.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/pepper-grinder/images/ui-bg_fine-grain_65_654b24_60x60.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/pepper-grinder/images/ui-bg_fine-grain_68_b83400_60x60.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/pepper-grinder/images/ui-icons_222222_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/pepper-grinder/images/ui-icons_3572ac_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/pepper-grinder/images/ui-icons_8c291d_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/pepper-grinder/images/ui-icons_b83400_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/pepper-grinder/images/ui-icons_fbdb93_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/pepper-grinder/images/ui-icons_ffffff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/pepper-grinder/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/pepper-grinder/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/pepper-grinder/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/pepper-grinder/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/redmond/images/ui-bg_glass_75_d0e5f5_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/redmond/images/ui-bg_glass_85_dfeffc_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/redmond/images/ui-bg_glass_95_fef1ec_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/redmond/images/ui-bg_gloss-wave_55_5c9ccc_500x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/redmond/images/ui-bg_inset-hard_100_f5f8f9_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/redmond/images/ui-bg_inset-hard_100_fcfdfd_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/redmond/images/ui-icons_217bc0_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/redmond/images/ui-icons_2e83ff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/redmond/images/ui-icons_469bdd_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/redmond/images/ui-icons_6da8d5_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/redmond/images/ui-icons_cd0a0a_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/redmond/images/ui-icons_d8e7f3_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/redmond/images/ui-icons_f9bd01_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/redmond/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/redmond/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/redmond/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/redmond/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/smoothness/images/ui-bg_glass_55_fbf9ee_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/smoothness/images/ui-bg_glass_65_ffffff_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/smoothness/images/ui-bg_glass_75_dadada_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/smoothness/images/ui-bg_glass_75_e6e6e6_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/smoothness/images/ui-bg_glass_95_fef1ec_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/smoothness/images/ui-bg_highlight-soft_75_cccccc_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/smoothness/images/ui-icons_222222_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/smoothness/images/ui-icons_2e83ff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/smoothness/images/ui-icons_454545_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/smoothness/images/ui-icons_888888_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/smoothness/images/ui-icons_cd0a0a_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/smoothness/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/smoothness/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/smoothness/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/smoothness/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/south-street/images/ui-bg_glass_55_fcf0ba_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/south-street/images/ui-bg_gloss-wave_100_ece8da_500x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/south-street/images/ui-bg_highlight-hard_100_f5f3e5_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/south-street/images/ui-bg_highlight-hard_100_fafaf4_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/south-street/images/ui-bg_highlight-hard_15_459e00_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/south-street/images/ui-bg_highlight-hard_95_cccccc_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/south-street/images/ui-bg_highlight-soft_25_67b021_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/south-street/images/ui-bg_highlight-soft_95_ffedad_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/south-street/images/ui-bg_inset-soft_15_2b2922_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/south-street/images/ui-icons_808080_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/south-street/images/ui-icons_847e71_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/south-street/images/ui-icons_8DC262_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/south-street/images/ui-icons_cd0a0a_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/south-street/images/ui-icons_eeeeee_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/south-street/images/ui-icons_ffffff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/south-street/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/south-street/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/south-street/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/south-street/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/start/images/ui-bg_glass_45_0078ae_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/start/images/ui-bg_glass_55_f8da4e_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/start/images/ui-bg_glass_75_79c9ec_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/start/images/ui-bg_gloss-wave_45_e14f1c_500x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/start/images/ui-bg_gloss-wave_50_6eac2c_500x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/start/images/ui-bg_gloss-wave_75_2191c0_500x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/start/images/ui-bg_inset-hard_100_fcfdfd_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/start/images/ui-icons_0078ae_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/start/images/ui-icons_056b93_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/start/images/ui-icons_d8e7f3_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/start/images/ui-icons_e0fdff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/start/images/ui-icons_f5e175_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/start/images/ui-icons_f7a50d_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/start/images/ui-icons_fcd113_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/start/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/start/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/start/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/start/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/sunny/images/ui-bg_diagonals-medium_20_d34d17_40x40.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/sunny/images/ui-bg_gloss-wave_45_817865_500x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/sunny/images/ui-bg_gloss-wave_60_fece2f_500x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/sunny/images/ui-bg_gloss-wave_70_ffdd57_500x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/sunny/images/ui-bg_gloss-wave_90_fff9e5_500x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/sunny/images/ui-bg_highlight-soft_100_feeebd_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/sunny/images/ui-bg_inset-soft_30_ffffff_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/sunny/images/ui-icons_3d3d3d_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/sunny/images/ui-icons_bd7b00_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/sunny/images/ui-icons_d19405_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/sunny/images/ui-icons_eb990f_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/sunny/images/ui-icons_ed9f26_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/sunny/images/ui-icons_fadc7a_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/sunny/images/ui-icons_ffe180_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/sunny/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/sunny/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/sunny/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/sunny/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/swanky-purse/images/ui-bg_diamond_10_4f4221_10x8.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/swanky-purse/images/ui-bg_diamond_20_372806_10x8.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/swanky-purse/images/ui-bg_diamond_25_675423_10x8.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/swanky-purse/images/ui-bg_diamond_25_d5ac5d_10x8.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/swanky-purse/images/ui-bg_diamond_8_261803_10x8.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/swanky-purse/images/ui-bg_diamond_8_443113_10x8.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/swanky-purse/images/ui-bg_highlight-hard_65_fee4bd_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/swanky-purse/images/ui-icons_070603_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/swanky-purse/images/ui-icons_e8e2b5_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/swanky-purse/images/ui-icons_e9cd86_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/swanky-purse/images/ui-icons_efec9f_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/swanky-purse/images/ui-icons_f2ec64_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/swanky-purse/images/ui-icons_f9f2bd_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/swanky-purse/images/ui-icons_ff7519_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/swanky-purse/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/swanky-purse/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/swanky-purse/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/swanky-purse/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/trontastic/images/ui-bg_diagonals-small_50_262626_40x40.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/trontastic/images/ui-bg_glass_40_0a0a0a_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/trontastic/images/ui-bg_glass_55_f1fbe5_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/trontastic/images/ui-bg_glass_60_000000_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/trontastic/images/ui-bg_gloss-wave_55_000000_500x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/trontastic/images/ui-bg_gloss-wave_85_9fda58_500x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/trontastic/images/ui-bg_gloss-wave_95_f6ecd5_500x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/trontastic/images/ui-icons_000000_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/trontastic/images/ui-icons_1f1f1f_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/trontastic/images/ui-icons_9fda58_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/trontastic/images/ui-icons_b8ec79_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/trontastic/images/ui-icons_cd0a0a_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/trontastic/images/ui-icons_ffffff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/trontastic/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/trontastic/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/trontastic/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/trontastic/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-darkness/images/ui-bg_glass_20_555555_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-darkness/images/ui-bg_glass_40_0078a3_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-darkness/images/ui-bg_glass_40_ffc73d_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-darkness/images/ui-bg_gloss-wave_25_333333_500x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-darkness/images/ui-bg_highlight-soft_80_eeeeee_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-darkness/images/ui-bg_inset-soft_25_000000_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-darkness/images/ui-bg_inset-soft_30_f58400_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-darkness/images/ui-icons_222222_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-darkness/images/ui-icons_4b8e0b_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-darkness/images/ui-icons_a83300_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-darkness/images/ui-icons_cccccc_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-darkness/images/ui-icons_ffffff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-darkness/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-darkness/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-darkness/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-darkness/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-lightness/images/ui-bg_diagonals-thick_18_b81900_40x40.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-lightness/images/ui-bg_diagonals-thick_20_666666_40x40.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-lightness/images/ui-bg_glass_100_f6f6f6_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-lightness/images/ui-bg_glass_100_fdf5ce_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-lightness/images/ui-bg_glass_65_ffffff_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-lightness/images/ui-bg_gloss-wave_35_f6a828_500x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-lightness/images/ui-bg_highlight-soft_100_eeeeee_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-lightness/images/ui-bg_highlight-soft_75_ffe45c_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-lightness/images/ui-icons_222222_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-lightness/images/ui-icons_228ef1_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-lightness/images/ui-icons_ef8c08_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-lightness/images/ui-icons_ffd27a_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-lightness/images/ui-icons_ffffff_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-lightness/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-lightness/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-lightness/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/ui-lightness/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/vader/images/ui-bg_glass_95_fef1ec_1x400.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/vader/images/ui-bg_gloss-wave_16_121212_500x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/vader/images/ui-bg_highlight-hard_15_888888_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/vader/images/ui-bg_highlight-hard_55_555555_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/vader/images/ui-bg_highlight-soft_35_adadad_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/vader/images/ui-bg_highlight-soft_60_dddddd_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/vader/images/ui-bg_inset-soft_15_121212_1x100.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/vader/images/ui-icons_666666_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/vader/images/ui-icons_aaaaaa_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/vader/images/ui-icons_bbbbbb_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/vader/images/ui-icons_c98000_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/vader/images/ui-icons_cccccc_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/vader/images/ui-icons_cd0a0a_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/vader/images/ui-icons_f29a00_256x240.png">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/vader/jquery-ui.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/vader/jquery-ui.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/vader/theme.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="wwwroot/lib/jqueryui/themes/vader/theme.min.css">
+      <publishTime>01/01/0001 00:00:00</publishTime>
+    </File>
+    <File Include="zh-Hans/Microsoft.CodeAnalysis.CSharp.resources.dll">
+      <publishTime>09/12/2019 17:09:00</publishTime>
+    </File>
+    <File Include="zh-Hans/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:09:14</publishTime>
+    </File>
+    <File Include="zh-Hans/Microsoft.CodeAnalysis.resources.dll">
+      <publishTime>09/12/2019 17:07:48</publishTime>
+    </File>
+    <File Include="zh-Hans/Microsoft.CodeAnalysis.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:08:36</publishTime>
+    </File>
+    <File Include="zh-Hant/Microsoft.CodeAnalysis.CSharp.resources.dll">
+      <publishTime>09/12/2019 17:09:00</publishTime>
+    </File>
+    <File Include="zh-Hant/Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:09:14</publishTime>
+    </File>
+    <File Include="zh-Hant/Microsoft.CodeAnalysis.resources.dll">
+      <publishTime>09/12/2019 17:07:48</publishTime>
+    </File>
+    <File Include="zh-Hant/Microsoft.CodeAnalysis.Workspaces.resources.dll">
+      <publishTime>09/12/2019 17:08:36</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

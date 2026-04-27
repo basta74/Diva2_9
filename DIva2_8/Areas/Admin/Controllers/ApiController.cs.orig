@@ -1,0 +1,958 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+using Diva2.Core.Extensions;
+using Diva2.Core.Main.Comunications;
+using Diva2.Core.Main.Platby;
+using Diva2.Core.Main.Trans;
+using Diva2.Core.Main.Users;
+using Diva2.Data;
+using Diva2.Services;
+using Diva2.Services.Managers.Customers;
+using Diva2.Services.Managers.Emails;
+using Diva2.Services.Managers.Platby;
+using Diva2.Services.Managers.Pobocky;
+using Diva2.Services.Managers.Setting;
+using Diva2.Services.Managers.Users;
+using Diva2Web.Models.Admin;
+using Diva2Web.Models.Helpers;
+using Diva2Web.Models.Lekces;
+using Diva2Web.Models.Responses;
+using Diva2Web.Models.Trans;
+using Diva2Web.Models.Zakaznici;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
+
+namespace Diva2Web.Areas.Admin.Controllers
+{
+    [Area("Admin")]
+    [AuthorizeActionFilterAttribute]
+    public class ApiController : BaseAdminController
+    {
+        private ILekceTypService lekceTypServ;
+        private ILekceMustrService lekceMustrServ;
+        private ISkupinaZakaznikaService skupinaZakaznikaServ;
+        private ILektorService lektorServ;
+        private ILekceService lekceServ;
+        private IPlatbaService platbaServ;
+
+        private CultureInfo ci = CultureInfo.InvariantCulture;
+        private IComunicationService comServ;
+
+        public ApiController(ApplicationDbContext dbContext,
+           IMemoryCache memoryCache, ILogger<HomeController> logger,
+           IHttpContextAccessor httpContextAccessor,
+           ISkupinaZakaznikaService skupZakServ, IPobockaService pobSer, IUser8Service userSer,
+           ILekceTypService ltService, ILekceMustrService lmuService, ILekceService lekceService,
+            ILektorService lkService, IPlatbaService plService,
+            IObjednavkyService objSer, IComunicationService emailServ) : base(dbContext, httpContextAccessor, memoryCache, userSer, pobSer)
+        {
+            cache = new CacheHelper(memoryCache, dbContext.SubDomain);
+
+            lektorServ = lkService;
+            lekceMustrServ = lmuService;
+            lekceTypServ = ltService;
+            skupinaZakaznikaServ = skupZakServ;
+            lekceServ = lekceService;
+            platbaServ = plService;
+            objServ = objSer;
+            this.pobServ = pobSer;
+            this.comServ = emailServ;
+
+        }
+
+        /// <summary>
+        /// Vrati typy plateb
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public IActionResult GetPays(int id)
+        {
+            JsonPlatby resp = new JsonPlatby();
+            SetSessions();
+            if (id > 0)
+            {
+
+                if (id == 1 || id == 2)
+                {
+                    resp.Name = "Kreditní platby ";
+                    IEnumerable<PlatbaKredit> li = null;
+                    if (id == 1)
+                    {
+                        li = platbaServ.GetKreditAll(aa.Pobocka.PokladnaId).Where(d => d.Kategorie == 1 && d.Platnost == true).OrderBy(d => d.Platba);
+                    }
+                    else
+                    {
+                        resp.Name += " slev.";
+                        li = platbaServ.GetKreditAll(aa.Pobocka.PokladnaId).Where(d => d.Kategorie == 2 && d.Platnost == true).OrderBy(d => d.Platba);
+                    }
+                    if (li.Count() > 0)
+                    {
+                        foreach (var p in li)
+                        {
+                            resp.Items.Add(new Models.Platby.PlatbaBaseModel() { Id = p.Id, Name = p.Popis, Price = p.Platba });
+                        }
+                    }
+                    resp.Status = true;
+                }
+                else if (id == 3 || id == 4)
+                {
+                    resp.Name = "Kreditní časové platby ";
+                    IEnumerable<PlatbaKreditCas> li = null;
+                    if (id == 3)
+                    {
+                        li = platbaServ.GetKreditCasAll(aa.Pobocka.PokladnaId).Where(d => d.Kategorie == 1 && d.Platnost == true).OrderBy(d => d.Platba);
+                    }
+                    else
+                    {
+                        resp.Name += " slev.";
+                        li = platbaServ.GetKreditCasAll(aa.Pobocka.PokladnaId).Where(d => d.Kategorie == 2 && d.Platnost == true).OrderBy(d => d.Platba);
+                    }
+                    if (li.Count() > 0)
+                    {
+                        foreach (var p in li)
+                        {
+                            resp.Items.Add(new Models.Platby.PlatbaBaseModel() { Id = p.Id, Name = p.Popis, Price = p.Platba });
+                        }
+                    }
+                    resp.Status = true;
+                }
+                else if (id == 5 || id == 6)
+                {
+                    resp.Name = "Časový paušál ";
+                    IEnumerable<PlatbaCas> li = null;
+                    if (id == 5)
+                    {
+                        li = platbaServ.GetCasAll(aa.Pobocka.PokladnaId).Where(d => d.Kategorie == 1).OrderBy(d => d.Platba);
+                    }
+                    else
+                    {
+                        resp.Name += " slev.";
+                        li = platbaServ.GetCasAll(aa.Pobocka.PokladnaId).Where(d => d.Kategorie == 2).OrderBy(d => d.Platba);
+                    }
+                    if (li.Count() > 0)
+                    {
+                        foreach (var p in li)
+                        {
+                            resp.Items.Add(new Models.Platby.PlatbaBaseModel() { Id = p.Id, Name = p.Popis, Price = p.Platba });
+                        }
+
+                    }
+                    resp.Status = true;
+
+                }
+            }
+
+            resp.Name += $" {resp.Items.Count()} pol.";
+
+            return Json(resp);
+
+        }
+
+        public IActionResult LessonRemoveFrom(AddRemoveLessonModel m)
+        {
+            JsonAddRemoveUserLesson resp = new JsonAddRemoveUserLesson();
+
+            SetSessions();
+            TrySetUserFromSess(aa.User);
+
+            do
+            {
+                if (!aa.User.Id.HasValue)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není přihášen uživatel" });
+                    break;
+                }
+
+                /*
+                if (!(m.UserId > 0))
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není id uživatele" });
+                    break;
+                }
+                /**/
+                if (!(m.AktId > 0))
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není id hodiny" });
+                    break;
+                } /**/
+
+                if (!(m.Id > 0))
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není identifikátor" });
+                    break;
+                }
+
+
+
+                resp.LekceId = m.AktId;
+
+                var objs = objServ.GetByLekce(m.AktId, false);
+
+                var obj1 = objs.Where(d => d.Id == m.Id).FirstOrDefault();
+
+                if (obj1 == null)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "nelze odebrat" });
+                    break;
+                }
+
+                if (m.UserId == 0)
+                {
+                    m.UserId = obj1.UserId;
+                }
+
+                var lek = lekceServ.GetById(m.AktId);
+
+                if (lek == null)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "nelze odebrat" });
+                    break;
+                }
+
+                aa.User.PocetObjednavek = objServ.GetPocetObjednavekUzivatele(m.UserId);
+
+                resp.Lekce = lek;
+
+                User8 u = null;
+
+                SmsContent sms = null;
+
+                // je nejaky nahradnik
+                if (lek.PocetZakazniku > lek.PocetMist)
+                {
+                    // je platny
+                    if (obj1.Poradi <= lek.PocetMist)
+                    {
+
+                        var newZak = objs.Where(d => d.Poradi > obj1.Poradi).OrderBy(d => d.Poradi).FirstOrDefault();
+                        if (newZak.UserId != obj1.UserId)
+                        {
+                            if (aa.MainIni.SmsActive)
+                            {
+
+                                u = userServ.GetById(newZak.UserId);
+                                if (u.PhoneNumber != null && u.PhoneNumber != "")
+                                {
+
+                                    int.TryParse(u.PhoneNumber.Replace(" ", ""), out int ph);
+                                    if (ph > 100000000)
+                                    {
+
+                                        DateTime dt = lek.Datum.Add(lek.Cas);
+
+                                        sms = new SmsContent()
+                                        {
+                                            Name = aa.MainIni.SmsName,
+                                            Pass = aa.MainIni.SmsPass,
+                                            Number = ph,
+                                            Text = $"V terminu {dt.ToString("dd.MM. HH:mm")} se uvolnilo misto a Vy se posouvate mezi zakazniky. Na tuto zpravu prosím neodpovidejte {aa.SubDomain}.diva2.cz"
+                                        };
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (sms != null)
+                    {
+                        var respId = SendSms(sms);
+
+                        SmsLog smsL = new SmsLog()
+                        {
+                            UserId = aa.User.Id.Value,
+                            PobockaId = aa.Pobocka.Id,
+                            Cislo = sms.Number.ToString(),
+                            ZakaznikId = m.UserId,
+                            Email = u.Email,
+                            LekceId = lek.Id,
+                            Stav = respId,
+                            Text = sms.Text,
+                            CreateUnix = DateTimeExtensions.ToUnix(DateTime.Now)
+                        };
+
+                        if (respId == 0)
+                        {
+                            smsL.SendUnix = DateTimeExtensions.ToUnix(DateTime.Now);
+                            smsL.Vyrizeno = true;
+                        }
+
+                        comServ.Insert(smsL);
+                    }
+
+
+                }
+
+                var msg = objServ.GetUserTextByLessonNumber(obj1.UserId, obj1.LekceId, obj1.KontCislo);
+                if (msg != null)
+                {
+                    objServ.Delete(msg);
+                }
+                
+                if (m.Akce == "del")
+                {
+                    objs.Remove(obj1);
+                    objServ.Delete(obj1);
+                    var changePoradi = objs.Where(d => d.Poradi > obj1.Poradi);
+                    foreach (var obj in changePoradi)
+                    {
+                        obj.Poradi--;
+                    }
+                    objServ.Update(objs);
+                    objServ.Update(changePoradi);
+                    objServ.ClearObjednaneLekceUzivatele(m.UserId);
+                }
+                else if (m.Akce == "nab")
+                {
+                    obj1.Aktivni = false;
+                    objServ.Update(obj1);
+                    objServ.Delete(msg);
+                }
+
+
+
+                lek.PocetZakazniku = objs.Where(d => d.Aktivni == true).Count();
+                lekceServ.Update(lek);
+
+                resp.ZustaneVLekci = objs.Where(d => d.UserId == m.UserId).Count() > 0;
+
+                UserLekceChange ch = new UserLekceChange() { LekceId = lek.Id, UserId = m.UserId, ProvedlId = aa.User.Id.Value, Status = "-", Ts = DateTime.Now };
+                objServ.AddUserChange(ch);
+
+                resp.Status = true;
+
+            } while (false);
+
+            return Json(resp);
+        }
+
+        /// <summary>
+        /// Zauctovani hodiny
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult PostLesson(LekceZauctovatModel m)
+        {
+
+            JsonAddRemoveUserLesson resp = new JsonAddRemoveUserLesson();
+
+            TrySetUserFromSess(aa.User);
+            SetSessions();
+
+            do
+            {
+                if (!aa.User.Id.HasValue)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není přihášen uživatel", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                if (!aa.User.HasRule("spin_close"))
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Nemáte práva pro zaúčtování", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                if (m.KontCislo1 != m.KontCislo2)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Nesouhlasí kontrolní čísla", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                if (!(m.LekceId > 0))
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není lekce id", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                var lek = lekceServ.GetById(m.LekceId);
+
+                if (lek == null)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není lekce", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                if (lek.Zauctovano)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Lekce je již zaúčtovaná", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                var objs = objServ.GetByLekce(m.LekceId);
+                if (objs.Count == 0)
+                {
+                }
+                else
+                {
+
+                    int i = 0;
+                    foreach (LekceUser ou in objs)
+                    {
+
+                        UserTransakce tran = new UserTransakce();
+                        tran.UserId = ou.UserId;
+                        tran.PokladnaId = aa.Pobocka.PokladnaId;
+                        tran.ProvedlId = aa.User.Id.Value;
+                        tran.Status = "-";
+                        DateTime noe = DateTime.Now;
+
+                        tran.UnixTime = DateTimeExtensions.ToUnix(lek.Datum);
+                        tran.Kredit = lek.Kredit;
+                        tran.LekceId = lek.Id;
+                        tran.Datum = noe;
+
+                        objServ.RemoveKredit(tran, ou, ++i);
+                        objServ.ClearZbytekUzivatele(ou.UserId);
+                        objServ.ClearHistoriTransakci(ou.UserId);
+                        objServ.ClearHistorieRoky(ou.UserId);
+                        var zbytek = objServ.GetZbytekUzivatele(ou.UserId);
+                        zbytek.SetZbytekToActualLekceUser(ou, lek);
+                        objServ.ClearZbytekVObjednavkachUzivatele(ou.UserId);
+                    }
+                    /**/
+                }
+
+                lek.Zauctovano = true;
+                lek.ZauctovanoUserId = aa.User.Id.Value;
+                lek.ZauctovanoDate = DateTime.Now;
+
+                lekceServ.Update(lek);
+                /**/
+                resp.Status = true;
+                resp.Messages.Add(new JsonMessage() { Text = "Lekce se zaúčtovala", Type = JsonMessageType.Success });
+                break;
+            } while (false);
+
+            return Json(resp);
+        }
+
+        public IActionResult AddMoney(AddMoneyModel m)
+        {
+
+            JsonAddMoney resp = new JsonAddMoney();
+
+            TrySetUserFromSess(aa.User);
+            SetSessions();
+
+            do
+            {
+                if (!aa.User.Id.HasValue)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není přihášen uživatel", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                if (!(m.UserId > 0))
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není id uživatele", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                if (!(m.TypPlatbyId > 0))
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není kategorie plateb", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                if (!(m.PlatbaId > 0))
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není platba", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                if (m.KontCislo1 != m.KontCislo2)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Nesouhlasí kontrolní čísla", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                bool isOk = false;
+
+                var tran = new UserTransakce();
+                tran.UserId = m.UserId;
+                tran.PokladnaId = pobocka.PokladnaId;
+                tran.ProvedlId = aa.User.Id.Value;
+                tran.Datum = DateTime.Now;
+                tran.UnixTime = DateTimeExtensions.ToUnix(DateTime.Now);
+                tran.PlatnostOdUnix = null;
+                tran.PlatnostDoUnix = null;
+                tran.PlatnostOd = null;
+                tran.PlatnostDo = null;
+                tran.DoPokladny = m.DoPokladny;
+                tran.Status = "+";
+
+                string text = "";
+
+                if (m.TypPlatbyId == 1 || m.TypPlatbyId == 2)
+                {
+                    var platba = platbaServ.GetKreditById(m.PlatbaId);
+                    if (platba == null)
+                    {
+                        resp.Messages.Add(new JsonMessage() { Text = "Nenačetla se platba", Type = JsonMessageType.Danger });
+                        break;
+                    }
+
+                    tran.Typ = "k";
+                    tran.PlatbaId = m.PlatbaId;
+                    tran.Kredit = platba.Kredity;
+                    tran.Castka = platba.Platba;
+
+                    objServ.AddKredit(tran);
+                    text = $"Připsáno <b>{tran.Kredit}</b> kreditů za <b>{platba.Platba}</b> Kč";
+                    isOk = true;
+                }
+                else if (m.TypPlatbyId == 3 || m.TypPlatbyId == 4)
+                {
+                    if (!AdminPageModel.GetIniPobBool("kreditCasovy"))
+                    {
+                        resp.Messages.Add(new JsonMessage() { Text = "Není povolen časový kredit", Type = JsonMessageType.Danger });
+                        break;
+                    }
+
+                    var platba = platbaServ.GetKreditCasById(m.PlatbaId);
+                    if (platba == null)
+                    {
+                        resp.Messages.Add(new JsonMessage() { Text = "Nenačetla se platba", Type = JsonMessageType.Danger });
+                        break;
+                    }
+
+                    tran.Typ = "kc";
+                    tran.PlatbaTime = platba;
+                    tran.PlatbaId = platba.Id;
+                    tran.Kredit = platba.Kredity;
+                    tran.Castka = platba.Platba;
+                    tran.Zbytek = platba.Kredity;
+                    objServ.AddKreditTime(tran);
+                    text = $"Připsáno <b>{tran.Kredit}</b> časových kreditů za <b>{platba.Platba}</b> Kč na <b>{platba.PocetMesicu}</b> měsíců";
+                    isOk = true;
+
+                }
+                else if (m.TypPlatbyId == 5 || m.TypPlatbyId == 6)
+                {
+                    var platba = platbaServ.GetCasById(m.PlatbaId);
+                    tran.Typ = "c";
+                    tran.PlatbaPausal = platba;
+                    tran.PlatbaId = platba.Id;
+                    tran.Castka = platba.Platba;
+                }
+
+                if (isOk)
+                {
+                    UpdateZbytek(m.UserId, aa.Pobocka.PokladnaId, text, resp);
+                }
+
+            } while (false);
+            return Json(resp);
+
+
+        }
+
+        private void UpdateZbytek(int userId, int pokId, string text, JsonAddMoney resp) {
+
+            objServ.ClearZbytekUzivatele(userId);
+            objServ.ClearHistoriTransakci(userId);
+            objServ.ClearHistorieRoky(userId);
+            objServ.ClearZbytekVObjednavkachUzivatele(userId);
+
+            resp.Messages.Add(new JsonMessage() { Text = text, Type = JsonMessageType.Success });
+
+            var Zbytek = objServ.GetZbytekUzivatele(userId);
+            resp.Kredity = Zbytek.KredityItem(pokId);
+            var zb = Zbytek.KredityTimeItem(pokId, DateTime.Now);
+            if (zb != null)
+            {
+                resp.KredityCasove = $"{zb.Kredit} / {zb.ZbyvaDni}";
+            }
+
+            resp.Status = true;
+
+
+        }
+
+        public IActionResult AddCredit0(AddCredit0Model m)
+        {
+
+            JsonAddMoney resp = new JsonAddMoney();
+
+            TrySetUserFromSess(aa.User);
+            SetSessions();
+
+            do
+            {
+                if (!aa.User.Id.HasValue)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není přihášen uživatel", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                if (!(m.UserId > 0))
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není id uživatele", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                if (m.KontCislo1 != m.KontCislo2)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Nesouhlasí kontrolní čísla", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                bool isOk = false;
+
+                var tran = new UserTransakce();
+                tran.UserId = m.UserId;
+                tran.PokladnaId = pobocka.PokladnaId;
+                tran.ProvedlId = aa.User.Id.Value;
+                tran.Datum = DateTime.Now;
+                tran.UnixTime = DateTimeExtensions.ToUnix(DateTime.Now);
+                tran.PlatnostOdUnix = null;
+                tran.PlatnostDoUnix = null;
+                tran.PlatnostOd = null;
+                tran.PlatnostDo = null;
+                tran.DoPokladny = 0;
+                tran.Status = "+";
+
+                string text = "";
+
+                tran.Typ = "k";
+                tran.Kredit = m.Kredit;
+                tran.Castka = 0;
+
+                objServ.AddKredit(tran);
+                text = $"Připsáno <b>{tran.Kredit}</b> kreditů";
+                isOk = true;
+
+
+
+                if (isOk)
+                {
+                    UpdateZbytek(m.UserId, aa.Pobocka.PokladnaId, text, resp);
+                }
+
+            } while (false);
+            return Json(resp);
+
+
+        }
+
+        public IActionResult ExtendValidity(ExtendValidityModel m)
+        {
+
+            JsonAddMoney resp = new JsonAddMoney();
+
+            TrySetUserFromSess(aa.User);
+            SetSessions();
+
+            do
+            {
+                if (!aa.User.Id.HasValue)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není přihášen uživatel", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                if (!(m.Count > 0))
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není doba pro prodloužení", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                if (!(m.Id > 0))
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není platba pro prodloužení", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                UserZbytekKreditCas pla = objServ.GetUserCreditsTimeById(m.Id);
+
+                if (pla == null)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Nenacetla se platba pro prodloužení", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                int from = pla.PlatnostDoUnix;
+                int to = pla.PlatnostDoUnix + (m.Count * 24 * 60 * 60);
+                pla.PlatnostDoUnix = to;
+                pla.Prodlouzeno = true;
+                objServ.Update(pla);
+
+                UserZbytekKreditCasLog log = new UserZbytekKreditCasLog();
+                log.PlatbaId = pla.Id;
+                log.UnixFrom = from;
+                log.UnixTo = to;
+                log.Days = m.Count;
+                log.UserId = aa.User.Id.Value;
+                log.Ts = DateTime.Now;
+                objServ.Insert(log);
+
+                string text = $"Zbytek prodloužen o <b>{m.Count}</b> dní do <b>{DateTimeExtensions.FromUnix(to)}</b>";
+
+                UpdateZbytek(pla.UserId, aa.Pobocka.PokladnaId, text, resp);
+
+                resp.Status = true;
+
+            } while (false);
+
+            return Json(resp);
+        }
+
+        [HttpPost]
+        public IActionResult SetOk(AddRemoveLessonModel m)
+        {
+
+            JsonAddRemoveUserLesson resp = new JsonAddRemoveUserLesson();
+
+            TrySetUserFromSess(aa.User);
+            SetSessions();
+
+            do
+            {
+                if (!aa.User.Id.HasValue)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není přihášen uživatel" });
+                    break;
+                }
+
+                if (!(m.Id > 0))
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není id" });
+                    break;
+                }
+
+                var obj = objServ.GetById(m.Id, false);
+
+                if (obj == null)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Nenačetla se data" });
+                    break;
+                }
+
+                var lek = lekceServ.GetById(obj.LekceId);
+
+                if (lek == null)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není lekce", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                if (lek.Zauctovano)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Lekce je již zaúčtovaná", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                obj.BylTam = !obj.BylTam;
+
+                objServ.Update(obj);
+
+                resp.Status = true;
+
+            } while (false);
+
+            return Json(resp);
+        }
+
+        public IActionResult SetPas(AddRemoveLessonModel m)
+        {
+
+            JsonAddRemoveUserLesson resp = new JsonAddRemoveUserLesson();
+
+            TrySetUserFromSess(aa.User);
+            SetSessions();
+
+            do
+            {
+                if (!aa.User.Id.HasValue)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není přihášen uživatel" });
+                    break;
+                }
+
+                if (!(m.Id > 0))
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není id" });
+                    break;
+                }
+
+                var obj = objServ.GetById(m.Id, false);
+
+                if (obj == null)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Nenačetla se data" });
+                    break;
+                }
+
+                var lek = lekceServ.GetById(obj.LekceId);
+
+                if (lek == null)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není lekce", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                if (lek.Zauctovano)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Lekce je již zaúčtovaná", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                obj.Aktivni = !obj.Aktivni;
+
+                objServ.Update(obj);
+
+                resp.Status = true;
+
+            } while (false);
+
+            return Json(resp);
+        }
+        [HttpPost]
+        public IActionResult LessonAdd(AddRemoveLessonModel m)
+        {
+
+            JsonAddRemoveUserLesson resp = new JsonAddRemoveUserLesson();
+
+            TrySetUserFromSess(aa.User);
+            SetSessions();
+
+            do
+            {
+                if (!aa.User.Id.HasValue)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není přihášen uživatel" });
+                    break;
+                }
+
+                if (!(m.UserId > 0))
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není id uživatele" });
+                    break;
+                }
+                if (!(m.AktId > 0))
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Není id hodiny" });
+                    break;
+                }
+
+                resp.LekceId = m.AktId;
+
+                var objs = objServ.GetByLekce(m.AktId, false);
+                var lek = lekceServ.GetById(m.AktId);
+
+                if (lek == null)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Nenačetla se lekce", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                if (lek.Zauctovano)
+                {
+                    resp.Messages.Add(new JsonMessage() { Text = "Lekce je již zaúčtovaná", Type = JsonMessageType.Danger });
+                    break;
+                }
+
+                resp.Lekce = lek;
+
+                LekceUser lu = new LekceUser();
+                lu.UserId = m.UserId;
+                lu.LekceId = m.AktId;
+                lu.PobockaId = aa.Pobocka.Id;
+                lu.PokladnaId = aa.Pobocka.PokladnaId;
+                lu.Poradi = objs.Count() + 1;
+
+                lu.KontCislo = objServ.GetRandom(objs);
+                lu.Nahradnik = objs.Count() >= lek.PocetMist;
+
+                lu.Premiera = objServ.GetPocetObjednavekUzivatele(m.UserId) == 0;
+
+                lu.Aktivni = true;
+                lu.DoMzdy = true;
+                objServ.ClearZbytekUzivatele(m.UserId);
+
+                UserZbytek zb = objServ.GetZbytekUzivatele(m.UserId);
+
+                zb.SetZbytekToActualLekceUser(lu, lek);
+
+                resp.Nahradnik = lu.Nahradnik;
+
+                if (!m.Administrace && AdminPageModel.GetIniPobBool("lekceOdhlasNabidniVolne") == true)
+                {
+                    var pasivni = objs.Where(d => d.Aktivni == false).OrderBy(d => d.Poradi).FirstOrDefault();
+                    if (pasivni != null)
+                    {
+                        objs.Remove(pasivni);
+                        objServ.Delete(pasivni);
+                    }
+                }
+
+                objs.Add(lu);
+                objServ.Insert(lu);
+                objServ.ClearObjednaneLekceUzivatele(m.UserId);
+
+                lek.PocetZakazniku = objs.Where(d => d.Aktivni == true).Count();
+                lekceServ.Update(lek);
+
+                UserLekceChange ch = new UserLekceChange() { LekceId = lek.Id, UserId = m.UserId, ProvedlId = aa.User.Id.Value, Status = "+", Ts = DateTime.Now };
+                objServ.AddUserChange(ch);
+
+                if (m.Text != "" && m.Text != null)
+                {
+
+                    objServ.Insert(new UserText() { LekceId = lek.Id, KontrolniCislo = lu.KontCislo, UserId = lu.UserId, Text = m.Text });
+                }
+
+                resp.Status = true;
+
+            } while (false);
+            return Json(resp);
+
+
+        }
+
+        public int SendSms(SmsContent sms)
+        {
+
+            string num = sms.Number.ToString().Substring(7, 2);
+
+            Random rnd = new Random();
+            var ko = rnd.Next(1, 9);
+            var za = rnd.Next(100, 99999);
+
+            var kod = $"{za}{num}{ko}";
+
+            string url = $"https://{"sms.diva2.cz/index.php"}?c={kod}&u={sms.Name}&h={sms.Pass}&m={sms.Number}&t={sms.Text}";
+
+
+
+            WebRequest request = WebRequest.Create(url);
+            var response = request.GetResponse();
+
+            Stream receiveStream = response.GetResponseStream();
+            StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8);
+
+            var result = readStream.ReadToEnd();
+
+            var xml = System.Xml.Linq.XElement.Parse(result);
+            var res = xml.Element("err").Value;
+
+            int.TryParse(res, out int id);
+
+
+
+            return id;
+
+        }
+
+    }
+}

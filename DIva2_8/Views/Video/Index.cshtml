@@ -1,0 +1,43 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Lessons
+@model AdminPageModel
+@{
+    ViewData["Title"] = "Home Page";
+
+}
+
+
+@section leftMenu{
+    <partial name="MenuLeftPublic" model="Model" />
+}
+
+<h4>@Model.Page.Title</h4>
+<div>@Html.Raw(@Model.Page.Content)</div>
+
+<table class="table table-bordered table-hover js-td-odkaz-m" data-url="/video/detail">
+
+    <tr>
+        <th>Video</th>
+        <th></th>
+        <th>Popis</th>
+        <th>Cena v kreditech</th>
+    </tr>
+
+    @foreach (var vi in Model.Videos)
+    {
+        if(vi.Image == null || vi.Image == ""){
+            vi.Image = "/images/default-video-thumbnail.jpg";
+        }
+
+        <tr class="jsVideo" data-id="@vi.Id">
+            <td>@vi.Name</td>
+            <td><img src="@vi.Image" style="width: 200px" /></td>
+            <td>@vi.Desc</td>
+            <td>@vi.Kredity</td>
+        </tr>
+    }
+</table>
+
+<div id="modal-placeholder"></div>
+
+

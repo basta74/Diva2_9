@@ -1,0 +1,23 @@
+﻿@using Diva2Web.Models.Admin
+@model AdminPageModel
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutAdminBase.cshtml";
+}
+
+<partial name="NavbarAdmin" />
+
+
+
+@RenderBody()
+
+
+@section Scripts{
+    @RenderSection("Scripts", false)
+}
+@section ScriptsMenu{
+    @RenderSection("ScriptsMenu", false)
+}
+
+

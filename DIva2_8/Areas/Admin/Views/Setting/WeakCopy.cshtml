@@ -1,0 +1,494 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Lessons
+@using System.Globalization;
+@using Diva2.Core.Extensions
+
+@model AdminPageModel
+
+@{
+
+    CultureInfo ci = CultureInfo.InvariantCulture;
+
+    var leks = Model.Lektori.ToLookup(d => d.Id);
+    var typs = Model.TypyLekci.ToLookup(d => d.Id);
+    int countSab = (Model.LekceMustrTypy != null && Model.LekceMustrTypy.Count > 0) ? Model.LekceMustrTypy.Count : 0;
+    var minutyIni = Model.IniMinutes.Where(d => d.PobockaId == Model.Pobocka.Id && d.Visible == true);
+
+    var LekceMustry = ViewBag.LekceMustr as IEnumerable<LekceMustr>;
+
+}
+
+<!-- Modal placeholder -->
+<div id="modal-placeholder"></div>
+
+<div id="messages"> </div>
+
+@if (Model.LekceTyden.Count() == 0)
+{
+    bool showBtn = false;
+    if (Model.GetIniPobBool("pobocka_vazba_na_datum"))
+    {
+        showBtn = true;
+    }
+    else
+    {
+        var monday = DateTimeExtensions.StartOfWeek(Model.CurrentDate, DayOfWeek.Monday);
+        if (Model.Weaks.Contains(monday))
+        {
+            showBtn = true;
+        }
+    }
+    if (showBtn)
+    {
+        <button type="button" id="js-create-weak" class="btn btn-success">Vygenerovat týden</button>
+    }
+}
+else
+{
+    <a href="/Admin/Help/Rozvrh" class="badge badge-info">Nápověda</a>
+    <table id="jsModalMain" class="table table-hover table-bordered jsRozvrh" data-count-sab="@countSab">
+
+        <tr>
+            <th></th>
+            @foreach (var cas in minutyIni)
+            {
+                <th class="align-middle">@cas.Time.ToString(@"hh\:mm")</th>
+            }
+        </tr>
+
+        @{
+
+            var minutyNo = Model.LekceTyden.Where(d => !minutyIni.Select(d => d.Minute).Contains(d.MinutaKey)).Select(d => d.MinutaKey).Distinct().OrderBy(d => d);
+            if (minutyNo.Count() > 0)
+            {
+                <tr>
+                    <td></td>
+                    <td colspan="@minutyIni.Count()">
+                        <div class="alert alert-danger" role="alert">
+                            Ve vybraném týdnu máte aktivní a nezobrazené lekce s následujícími časy.
+
+                            @foreach (var min in minutyNo)
+                            {
+                                TimeSpan ts = new TimeSpan(0, min, 0);
+                                <span style="color: white; background-color: red">&nbsp; @ts.ToString(@"hh\:mm") &nbsp;</span>
+                            }
+
+                            Pro zobrazení nastavte vybrané hlavní časy jako aktivní. <a href="/Admin/Setting/Mustr">Nastavení časů v hlavní šablona</a>
+
+                        </div>
+                    </td>
+                </tr>
+            }
+
+        }
+
+        @{
+            var aktD = Model.Monday;
+            int denInt = 1;
+
+            var lekceLookup = Model.LekceTyden.ToLookup(d => d.Den);
+
+            do
+            {
+
+
+                string tdBg = "#ECE9D8";
+
+                var lekceDne = lekceLookup[denInt];
+
+                if (lekceDne.Count() > 0)
+                {
+                    DateTime denDt = lekceDne.First().Datum;
+                    <tr>
+                        <td class="align-middle">
+                            @denDt.ToString("dddd")<br />
+                            @denDt.ToString("dd.MM.")
+                        </td>
+                        @if (lekceDne.Count() == 1 && lekceDne.First().CelyDen == true)
+                        {
+                            var le = lekceDne.First();
+
+                            <td class="jsFormModal" style="background-color: white; cursor: pointer;"
+                data-toggle="ajax-modal" data-target="#weak-copy-edit" colspan="@minutyIni.Count()" data-url="@Url.Action("WeakCopyEdit")" data-id="@($"{@le.Id}")">
+
+                                <span class="motiv-kontra"> @le.Nazev</span>
+                                <br />
+
+                                @{
+                                    string a = $"obs:{@le.PocetMist}+{@le.PocetNahradniku}";
+                                }
+
+                                @if (Model.Pobocka.PocetMist != le.PocetMist)
+                                {
+                                    a = $"obs:<b>{@le.PocetMist}</b>+{@le.PocetNahradniku}";
+                                }
+                                <span>@Html.Raw(a)</span><br>
+                            </td>
+
+                        }
+                        else
+                        {
+                            @foreach (var cas in minutyIni)
+                            {
+
+
+                                Lekce le = lekceDne.FirstOrDefault(d => d.MinutaKey == cas.Minute);
+                                string dd = $"{denInt}-{cas.Minute}";
+                                tdBg = "#ECE9D8";
+
+                                if (le != null)
+                                {
+
+                                    tdBg = "white";
+                                    <td class="jsFormModal" style="background-color:@tdBg; cursor: pointer;" data-toggle="ajax-modal" data-target="#weak-copy-edit" data-url="@Url.Action("WeakCopyEdit")" data-id="@($"{@le.Id}")">
+                                        <div class="content">
+                                            @{
+                                                string a = $"obs:{@le.PocetMist}+{@le.PocetNahradniku}";
+                                            }
+
+                                            @if (Model.Pobocka.PocetMist != le.PocetMist)
+                                            {
+                                                a = $"obs:<b>{@le.PocetMist}</b>+{@le.PocetNahradniku}";
+                                            }
+                                            <span>@Html.Raw(a)</span><br>
+
+                                            <span>
+                                                min:
+                                                @if (Model.Pobocka.Minuty != le.Minuty)
+                                                {
+                                                    <b>@le.Minuty</b>
+                                                }
+                                                else
+                                                {
+                                                    @le.Minuty
+                                                }
+                                                / kr:
+                                                @if (Model.Pobocka.Kredity != le.Kredit)
+                                                {
+                                                    <b>@le.Kredit</b>
+                                                }
+                                                else
+                                                {
+                                                    @le.Kredit
+                                                }
+
+
+
+                                            </span>
+                                            @if (le.MinutaKey != le.Cas.TotalMinutes)
+                                            {
+                                                <br />
+
+                                                <b style="color: orangered">
+                                                    @le.Cas.ToString(@"hh\:mm")
+                                                </b>
+                                            }
+                                            else
+                                            {
+                                                <br />
+                                            }
+
+                                            <br />
+
+                                            @if (le.Lektor1 > 0)
+                                            {
+                                                <br />
+
+                                                <span class="motiv-hlavni"><b>@leks[le.Lektor1].FirstOrDefault().Nick</b></span>
+
+                                                <br />
+                                            }
+
+                                            <span class="motiv-kontra"> @le.Nazev</span>
+
+
+                                            @if (le.TypHodiny > 0)
+                                            {
+                                                <p><b>@typs[le.TypHodiny].FirstOrDefault().NazevAdmin</b></p>
+                                            }
+
+                                        </div>
+
+                                    </td>
+                                }
+
+                                else
+                                {
+                                    var mustr = LekceMustry.FirstOrDefault(x => x.Den == denInt && x.MinutaKey == cas.Minute);
+                                    @if (mustr != null)
+                                    {
+                                        <td style="background-color:@tdBg; cursor: pointer;">
+                                            <button type="button" class="btn btn-sm btn-light js-create-lesson" data-mustr="@mustr.Id" data-id="@dd">+</button>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td style="background-color: silver; cursor: pointer;">
+                                            <p>Není mustr</p>
+                                            @if (countSab > 0)
+                                            {
+                                                <button type="button" class="btn btn-sm btn-light js-create-lesson" data-mustr="0" data-id="@dd">+</button>
+                                            }
+                                            else
+                                            {
+                                                <p> ani šablony</p>
+                                            }
+                                        </td>
+                                    }
+
+
+                                }
+                            }
+                        }
+                    </tr>
+                }
+                else
+                {
+
+                    <tr>
+                        <td class="align-middle">
+                            @aktD.ToString("dddd")<br />
+                            @aktD.ToString("dd.MM.")
+                        </td>
+
+                        @foreach (var cas in minutyIni)
+                        {
+                            string dd = $"{denInt}-{cas.Minute}";
+
+                            var mustr = LekceMustry.FirstOrDefault(x => x.Den == denInt && x.MinutaKey == cas.Minute);
+                            @if (mustr != null)
+                            {
+                                <td style="background-color:@tdBg; cursor: pointer;">
+                                    <button type="button" class="btn btn-sm btn-light js-create-lesson" data-mustr="@mustr.Id" data-id="@dd">+</button>
+                                </td>
+                            }
+                            else
+                            {
+
+                                <td style="background-color: silver; cursor: pointer;">
+                                    <p>Není mustr</p>
+                                    @if (countSab > 0)
+                                    {
+                                        <button type="button" class="btn btn-sm btn-light js-create-lesson" data-mustr="0" data-id="@dd">+</button>
+                                    }
+                                    else
+                                    {
+                                        <p> ani šablony</p>
+                                    }
+                                </td>
+                            }
+                        }
+                    </tr>
+
+
+
+                }
+
+                aktD = aktD.AddDays(1);
+                denInt++;
+            } while (denInt <= 7);
+
+        }
+
+    </table>
+
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal2" data-id="" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Kopírování lekce</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <button type="button" id="js-create-lesson" class="btn btn-primary btn-lg btn-block" style="margin: 5px">Zkopíruj lekci z hlavní šablony</button>
+                    </div>
+                    <div class="row">
+                        <div class="card" style="margin: 5px; width: 100%">
+                            <div class="card-header">
+                                Zkopíruj lekci z šablon typů hodiny
+                            </div>
+                            <div class="card-body">
+                                <div class="list-group">
+                                    @if (Model.LekceMustrTypy != null && Model.LekceMustrTypy.Count > 0)
+                                    {
+                                        @foreach (var t in Model.LekceMustrTypy)
+                                        {
+                                            <a href="#" class="list-group-item list-group-item-action js-create-lesson-sab" data-id="@t.Id">@t.NazevTyp</a>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-info" role="alert">
+                                            Nemáte vytvořeny šablony. viz <a href="MusterTypes">Šablony</a>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+@section Scripts{
+<script>
+    $(document).ready(function () {
+
+        var placeholderElement = $('#modal-placeholder');
+        var countSab = $("#jsModalMain").data("count-sab");
+        var url = "/Admin/Setting/WeakCopyEdit/";
+
+
+        var page = "/Admin/Home/SetDate";
+        var parsedDate = new Date('@Model.CurrentDate.ToString("yyyy-MM-dd")');
+
+        $(function () {
+            $("#datepickerIn").datepicker({
+                width: '12em',
+                dateFormat: "yy-mm-dd",
+                firstDay: 1,
+                dayNamesMin: ["Ne", "Po", "Út", "St", "Čt", "Pá", "So"],
+                monthNames: ["Leden", "Únor", "Březen", "Duben", "Květen", "Červen", "Červenec", "Srpen", "Září", "Říjen", "Listopad", "Prosinec"],
+                onSelect: function (dateText, inst) {
+                    window.location.href = page + '?dat=' + dateText;
+                }
+            }).datepicker("setDate", parsedDate);
+        }); /**/
+
+        // ---- editace ---
+        $("td.jsFormModal").on('click', function (event) {
+            var hodId = $(this).data('id');
+
+            showEditForm(hodId);
+        });
+
+
+        // ---- generovani tydne ---
+        $("#js-create-weak").on("click", function () {
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Setting/WeakCreate/" + '@Model.CurrentDate.ToString("yyyy-MM-dd")',
+                cache: false
+            }).done(function (data) {
+                if (data.status == true) {
+                    location.reload();
+                }
+                else {
+                    $('#messages').html(writeMesssages(data.messages));
+                }
+            });
+        });
+
+        // ---- tlačítko + pro generovani TD  ---
+        $(".js-create-lesson").on("click", function () {
+
+            var hodId = $(this).data('id');
+            var mustrId = $(this).data('mustr');
+
+            console.log(hodId);
+            console.log(mustrId);
+            console.log(countSab);
+
+                // primo vytvori
+            if (countSab == 0) {
+                if (mustrId > 0) {
+
+                    createLesson(hodId);
+                }
+                else {
+                    $('#messages').html('<div class="alert alert-warning" role="alert">Neexistuje mustr ani šablona.</div >');
+                }
+
+            }
+            // jsou sablony jde z sablon
+            else {
+
+                $("#js-create-lesson").data("id", hodId);
+
+                if (mustrId > 0) {
+                    $("#js-create-lesson").show();
+                }
+                else {
+                    $("#js-create-lesson").hide();
+                }
+
+
+                $("#modal2").modal('toggle');
+            }
+
+        });
+
+        // ----- klik na tlacitko vytvor rovnou
+        $("#js-create-lesson").on("click", function () {
+            var hodId = $(this).data('id');
+            createLesson(hodId);
+        });
+
+        // ----- klik na vybranou sablonu
+        $(".js-create-lesson-sab").on("click", function () {
+            var hodId = $("#js-create-lesson").data("id");
+            var typId = $(this).data('id');
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Setting/CreateLessonFromSab/",
+                data: { id: hodId , sabId: typId},
+                cache: false
+            }).done(function (data) {
+                if (data.status == true) {
+                    location.reload();
+                }
+                else {
+                    $('#messages').html(writeMesssages(data.messages));
+                }
+            });
+        });
+
+        function createLesson(hodId) {
+
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Setting/CreateLesson/",
+                data: { id: hodId },
+                cache: false
+            }).done(function (data) {
+                if (data.status == true) {
+                    location.reload();
+                }
+                else {
+                    $('#messages').html(writeMesssages(data.messages));
+                }
+            });
+
+        }
+
+
+        function showEditForm(hodId) {
+
+
+
+            $.ajax({
+                method: "GET",
+                url: url,
+                data: { id: hodId }
+            })
+            .done(function (data) {
+                placeholderElement.html(data);
+                placeholderElement.find('.modal').modal('show');
+            });
+        }
+    });
+</script>
+}

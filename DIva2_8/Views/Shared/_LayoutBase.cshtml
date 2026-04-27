@@ -1,0 +1,58 @@
+﻿@using Diva2Web.Models.Admin
+@model AdminPageModel
+
+@{ 
+    string style = Model.MainIniCover.MainStyleObj.File + ".css";
+    string dt = @DateTime.Now.ToString("yymmdd");
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>diva2.cz - @Model.Title</title>
+
+    <link rel="stylesheet" href="~/css/boot/@style" />
+    <link rel="stylesheet" href="~/css/site.css?v=@dt" />
+    <link rel="stylesheet" href="~/css/rozvrh.css?v=@dt" />
+    <link rel="stylesheet" href="~/css/jquery-ui.css" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+
+    @RenderSection("Head", required: false)
+
+    <partial name="Style" />
+
+</head>
+
+@{ 
+    string styleBody = "";
+    if (Model.MainIniCover.MainStyleObj.BackgroundPage != "") {
+        styleBody = $"background-color: {Model.MainIniCover.MainStyleObj.BackgroundPage}";
+    }
+}
+
+<body style="@styleBody">
+
+    <div>
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+
+   
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/jquery-ui.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @RenderSection("Scripts", required: false)
+    @RenderSection("ScriptsMenu", required: false)
+
+</body>
+</html>

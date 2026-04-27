@@ -1,0 +1,133 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Lessons
+@model AdminPageModel
+@{
+    int typeId = 1;
+    int.TryParse(ViewData["typeId"].ToString(), out typeId);
+
+    ViewData["Title"] = "Platby";
+}
+
+<span>
+
+</span>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card">
+            <h6 class="card-header">Kreditní</h6>
+            <div class="card-body" style="padding: 0.7rem;">
+                <p class="card-text">Kredity s neomezenou dobou čerpání.</p>
+                <div class="row">
+                    <div class="col-lg-6"><a href="/Admin/Setting/Payments/1" class="btn btn-@(typeId == 1 ? "primary" : "light")  btn-sm">Standardní</a></div>
+                    <div class="col-lg-6"><a href="/Admin/Setting/Payments/2" class="btn btn-@(typeId == 2 ? "primary" : "light")  btn-sm">Slevněné</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        @if (Model.GetIniPobBool("kreditCasovy"))
+        {
+            <div class="card">
+                <h6 class="card-header">Kreditní časové</h6>
+                <div class="card-body" style="padding: 0.7rem;">
+                    <p class="card-text">Kredity s časově omezenou platností. Propadají</p>
+                    <div class="row">
+                        <div class="col-lg-6"><a href="/Admin/Setting/Payments/3" class="btn btn-@(typeId == 3 ? "primary" : "light")  btn-sm">Standardní</a></div>
+                        <div class="col-lg-6"><a href="/Admin/Setting/Payments/4" class="btn btn-@(typeId == 4 ? "primary" : "light")  btn-sm">Slevněné</a></div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-lg-4"></div>
+</div>
+
+
+
+<!-- Modal placeholder -->
+<div id="modal-placeholder"></div>
+
+<!-- Button trigger modal -->
+
+
+@if (typeId == 1 || typeId == 2)
+{
+    <button type="button" class="btn btn-success btn-sm" style="margin: 5px;"  data-toggle="ajax-modal" data-target="#paymentcredit-create" data-url="@Url.Action("PaymentCreditCreate")/@typeId">
+        Přidat platby@(typeId == 2 ? " slevněné":"")
+    </button>
+
+    <table class="table table-sm">
+        <thead>
+            <tr>
+
+                <th scope="col">Pořadí</th>
+                <th scope="col">Název</th>
+                <th scope="col">Pokladna</th>
+                <th scope="col">Kredity</th>
+                <th scope="col">Částka</th>
+                <th scope="col">Použít v systému</th>
+                <th scope="col">Zobrazit na webu</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var le in Model.PlatbyKredit.OrderBy(d => d.Poradi))
+            {
+                string styleTr = @le.Platnost ? "" : "table-active";
+                <tr class="@styleTr">
+                    <td>@le.Poradi</td>
+                    <th scope="row">@le.Popis</th>
+                    <td>@le.PokladnaId</td>
+                    <td>@le.Kredity</td>
+                    <td>@le.Castka Kč</td>
+                    <td>@Html.Raw(@le.Platnost ? "<span style='color: green'>ano</span>" : "<span style='color: red'>ne</span>")</td>
+                    <td>@Html.Raw(@le.Visible ? "<span style='color: green'>ano</span>" : "<span style='color: red'>ne</span>")</td>
+                    <td><button type="button" class="btn btn-outline-primary btn-sm" data-toggle="ajax-modal" data-target="#paymentcredit-edit" data-url="@Url.Action("PaymentCreditEdit")/@le.Id">Edit</button></td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else if (typeId == 3 || typeId == 4)
+{
+    <button type="button" class="btn btn-success btn-sm" style="margin: 5px" data-toggle="ajax-modal" data-target="#paymentcredittime-create" data-url="@Url.Action("PaymentCreditTimeCreate")/@typeId">
+        Přidat omezené platby @(typeId == 4 ? "slevněné" : "")
+    </button>
+
+    <table class="table  table-sm">
+        <thead>
+            <tr>
+                <th scope="col">Pořadí</th>
+                <th scope="col">Název</th>
+                <th scope="col">Pokladna</th>
+                <th scope="col">Kredity</th>
+                <th scope="col">Měsíců</th>
+                <th scope="col"  style="text-align: right">Se zákazníkem</th>
+                <th scope="col">Částka</th>
+                <th scope="col">Použít v systému</th>
+                <th scope="col">Zobrazit na webu</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var le in Model.PlatbyKreditCas.OrderBy(d => d.Poradi))
+            {
+                int zakPlus = (@le.PocetLidi - 1);
+                string styleTr = @le.Platnost ? "" : "table-active";
+            <tr class="@styleTr">
+                <td>@le.Poradi</td>
+                <th scope="row">@le.Popis</th>
+                <td>@le.PokladnaId</td>
+                <td>@le.Kredity</td>
+                <td style="text-align: right">@le.PocetMesicu</td>
+                <td style="text-align: right">zák + @zakPlus</td>
+                <td style="text-align: right">@le.Castka Kč</td>
+                <td>@Html.Raw(@le.Platnost ? "<span style='color: green'>ano</span>" : "<span style='color: red'>ne</span>")</td>
+                <td>@Html.Raw(@le.Visible ? "<span style='color: green'>ano</span>" : "<span style='color: red'>ne</span>")</td>
+                <td><button type="button" class="btn btn-outline-primary  btn-sm" data-toggle="ajax-modal" data-target="#paymentcredittime-edit" data-url="@Url.Action("PaymentCreditTimeEdit")/@le.Id">Edit</button></td>
+
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+

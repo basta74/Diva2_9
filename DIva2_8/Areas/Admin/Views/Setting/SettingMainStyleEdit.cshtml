@@ -1,0 +1,124 @@
+﻿@using Diva2.Core.Main.Main
+
+@model MainIniStyle
+
+
+
+<div class="modal fade" id="main-edit-style" tabindex="-1" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContactLabel">Editace hlavního stylu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form asp-action="SettingMainStyleEdit">
+                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+
+                        </div>
+                        <div class="col-lg-6">
+                            <label asp-for="File" class="control-label"></label>
+                            @Html.DropDownList("File", new SelectList(MainIniCover.StyleFiles, "Key", "Value"), new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+
+                        </div>
+                        <div class="col-lg-6">
+                            <label asp-for="NavbarThemeFore" class="control-label"></label>
+                            @Html.DropDownList("NavbarThemeFore", new SelectList(MainIniCover.NavbarThemeFore, "Key", "Value"), new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+
+                        </div>
+                        <div class="col-lg-6">
+                            <label asp-for="NavbarThemeBg" class="control-label"></label>
+                            @Html.DropDownList("NavbarThemeBg", new SelectList(MainIniCover.NavbarThemeBg, "Key", "Value"), new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label asp-for="BackgroundContainer" class="control-label"></label>
+                                <input asp-for="BackgroundContainer" class="form-control"/>
+                                <span asp-validation-for="BackgroundContainer" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label asp-for="BackgroundPage" class="control-label"></label>
+                                <input asp-for="BackgroundPage" class="form-control"/>
+                                <span asp-validation-for="BackgroundPage" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label asp-for="NavbarBotomTop" class="control-label"></label>
+                                <input asp-for="NavbarBotomTop" class="form-control" />
+                                <span asp-validation-for="NavbarBotomTop" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label asp-for="NavbarBackgroundColor" class="control-label"></label>
+                                <input asp-for="NavbarBackgroundColor" class="form-control" />
+                                <span asp-validation-for="NavbarBackgroundColor" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label asp-for="NavbarBorderColor" class="control-label"></label>
+                                <input asp-for="NavbarBorderColor" class="form-control" />
+                                <span asp-validation-for="NavbarBorderColor" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label asp-for="ShowLectorPage" class="control-label"></label>
+                                <input asp-for="ShowLectorPage" class="form-control" />
+                                <span asp-validation-for="ShowLectorPage" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                           
+                        </div>
+                        <div class="col-lg-4">
+                            
+                        </div>
+                    </div>
+
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-primary" data-save="modal">Save</button>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

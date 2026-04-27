@@ -1,0 +1,319 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Lessons
+@model AdminPageModel
+@{
+
+    ViewData["Title"] = "Home Page";
+
+    var minutyIni = Model.IniMinutes.Where(d => d.PobockaId == Model.Pobocka.Id && d.Visible == true);
+    int mezera = minutyIni.Count() + 1;
+    int zacatkyPocet = minutyIni.Count();
+
+
+    var objednaneLekce = Model.User.ObjednaneLekce?.Where(d => d.PobockaId == Model.Pobocka.Id).ToList();
+
+    bool gdprYes = true;
+
+    string gdprView = "none";
+    if (Model.User.Id.HasValue == true && Model.User.GdprBase != true)
+    {
+        gdprYes = false;
+        gdprView = "block";
+    }
+}
+
+
+@section leftMenu{
+    <partial name="MenuLeftPublic" model="Model" />
+}
+
+
+
+
+<div class="alert alert-info" id="gdprNewsAlert" role="alert" style="display: @gdprView">
+    Pro aktivní práci s rozvrhem je potřeba aby jste soulasil(a) se zpracováním údajů.
+    <a href="gdpr">Podmínky zde</a>
+</div>
+
+<!-- <button id="noti-enable">Notify me!</button>-->
+
+<table class="table table-hover table-bordered jsRozvrh" id="main-rozvrh" data-gdpr="@gdprYes">
+
+    @foreach (var tyd in Model.Rozvrhy2Obj.Tydny)
+    {
+        DateTime dayAkt = tyd.Value.Monday;
+        <tr>
+            <th style="width: 8%"></th>
+            @for (int d = 1; d < 8; d++)
+            {
+                if (d > 1)
+                {
+                    dayAkt = dayAkt.AddDays(1);
+                }
+                <th style="width: 13%">
+                    @dayAkt.ToString("dd.MM.")<br />
+                    @dayAkt.ToString("dddd")
+                </th>
+            }
+        </tr>
+
+        @foreach (var casKey in minutyIni)
+        {
+
+            <tr>
+                <td style="background-color: silver">@casKey.Time.ToString(@"hh\:mm")</td>
+
+                @for (int d = 1; d < 8; d++)
+                {
+                    Lekce le = null;
+
+                    var lekDlePoradi = new LekceVose();
+                    if (tyd.Value.Hodiny.TryGetValue(casKey.Minute, out lekDlePoradi))
+                    {
+                        if (lekDlePoradi.Dny.TryGetValue(d, out le))
+                        {
+                        }
+                    }
+
+                    if (le != null)
+                    {
+                        string leCas = le.Cas.ToString(@"hh\:mm");
+                        var lek = @Model.Lektori.Where(d => d.Id == le.Lektor1).FirstOrDefault();
+                        string lek1 = "";
+                        if (lek != null)
+                        {
+                            lek1 = lek.Nick;
+                        }
+
+                        string lek2 = "";
+                        if (le.Lektor2 > 0)
+                        {
+                            var lek02 = @Model.Lektori.Where(d => d.Id == le.Lektor2).FirstOrDefault();
+
+                            if (lek02 != null)
+                            {
+                                lek2 = lek02.Nick;
+                            }
+
+                        }
+                        string typ = "";
+                        if (le.TypHodiny > 0)
+                        {
+                            typ = "";
+                            var typObj = @Model.TypyLekci.Where(d => d.Id == le.TypHodiny).FirstOrDefault();
+                            if (typObj != null)
+                            {
+                                typ = typObj.Nazev;
+                            }
+                        }
+
+                        int zb = le.PocetMist - le.PocetZakazniku;
+                        int zbN = (le.PocetMist + le.PocetNahradniku) - le.PocetZakazniku;
+
+                        string zbText = "";
+                        string tabContent = "";
+
+
+                        string classReserveed = "";
+
+                        if (objednaneLekce != null)
+                        {
+
+                            var objAktIs = objednaneLekce.Where(d => d.LekceId == le.Id).FirstOrDefault();
+
+                            if (objAktIs != null)
+                            {
+                                if (objAktIs.Nahradnik)
+                                {
+                                    classReserveed = "reserved-nahradnik";
+                                }
+                                else
+                                {
+                                    classReserveed = "reserved";
+                                }
+                            }
+
+
+                        }
+
+                        if(le.PocetZakazniku > 0){
+                            classReserveed = "lekce-obsazena";
+                        }
+
+                        if (DateTime.Now > le.DatumHodina)
+                        {
+                            classReserveed = "lekce-byla";
+                        }
+
+                        <td class="jsFormModal @classReserveed" data-id="@($"{@le.Id}")" style="cursor: pointer;">
+                            <div data-row-id="@le.Lektor1">
+                                @if (zb > 0)
+                                {
+                                    int ukazOd = Model.GetIniPobInt("lekceUkazLimitOd");
+
+                                    if (ukazOd > 0)
+                                    {
+                                        zbText = zb.ToString();
+                                    }
+                                    else
+                                    {
+                                        if (zb > ukazOd)
+                                        {
+                                            zbText = zb.ToString();
+                                        }
+                                        else
+                                        {
+                                            zbText = $"{ukazOd} a více";
+                                        }
+                                    }
+                                    tabContent = "Volné: " + zbText;
+
+
+                                    if (Model.GetIniPobInt("public_rozvrh_ukaz_kapacitu") == 1)
+                                    {
+                                        if (le.PocetMist > 0)
+                                        {
+                                            tabContent += " z " + le.PocetMist;
+                                        }
+                                    }
+
+                                }
+                                else
+                                {
+                                    if (Math.Abs(zbN) > 0)
+                                    {
+                                        tabContent = $"jako {le.PocetNahradniku - zbN + 1}. náhr.";
+                                    }
+                                    else
+                                    {
+                                        tabContent = "Obsazeno";
+                                    }
+                                }
+
+
+
+                                @if (Model.GetIniPobInt("public_rozvrh_ukaz_lektora") == 1)
+                                {
+                                    <b class="motiv-kontra">@lek1</b><br />
+                                    @if (Model.GetIniPobInt("lektor2") == 1 && lek2.Length > 0)
+                                    {
+                                        <p>@lek2</p><br />
+                                    }
+
+                                }
+
+                                @if (le.Nazev != "")
+                                {
+                                    <b class="motiv-hlavni">@le.Nazev</b><br />
+                                }
+
+                                @if (Model.GetIniPobInt("rozvrhUkazTyp") == 1 && le.TypHodiny > 0)
+                                {
+                                    <b class="motiv-hlavni">@typ</b><br />
+                                }
+
+                                <span>@tabContent</span>
+
+                                @if (le.Cas != casKey.Time)
+                                {
+                                    <br />
+                                    <br />
+                                    <b>od @le.Cas.ToString(@"hh\:mm")</b>
+                                }
+
+                            </div>
+                        </td>
+
+                    }
+                    else
+                    {
+                        <td>
+                        </td>
+                    }
+
+
+
+                }
+
+            </tr>
+
+        }
+        <tr>
+            <td style="background-color: white!important;  border-right-color: white;    border-left-color: white; column-span:@tyd.Value.PouziteDny.Count"></td>
+        </tr>
+    }
+
+</table>
+
+
+<!-- Modal placeholder -->
+<div id="hodina"></div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            var gdprYes = $('#main-rozvrh').data("gdpr");
+            var placeholderElement = $('#hodina');
+
+            $(document).on('click', 'td.jsFormModal', function (event) {
+
+                if (gdprYes == 'False') {
+                    $("#gdprNewsAlert").show();
+                    gdprNewsAlert
+                }
+                else {
+                    var hodId = $(this).data('id');
+                    var url = "/home/lessonView/";
+
+                    $.ajax({
+                        method: "GET",
+                        url: "/home/lessonView",
+                        data: { id: hodId }
+                    })
+                        .done(function (data) {
+
+                            placeholderElement.html(data);
+                            placeholderElement.find('.modal-lesson').modal('show');
+                        });
+                }
+            });
+
+            $(document).on('click', '#js-reload', function (event) {
+
+                location.reload();
+            });
+
+
+            $(".js-figure-check").on("click", this, function () {
+
+                var favorite = [];
+                var all = [];
+
+
+                $.each($("input[name='figures2']:checked"), function () {
+                    favorite.push($(this).data("id"));
+                });
+                $.each($("input[name='figures2']"), function () {
+                    all.push($(this).data("id"));
+                });
+
+                all.forEach(function (element) {
+                    if (favorite.includes(element)) {
+                        var aa = $('*[data-row-id="' + element + '"]');
+                        aa.show();
+                    }
+                    else {
+                        var aa = $('*[data-row-id="' + element + '"]');
+                        aa.hide();
+                    }
+                });
+
+            });
+        });
+    </script>
+}
+
+
+
+

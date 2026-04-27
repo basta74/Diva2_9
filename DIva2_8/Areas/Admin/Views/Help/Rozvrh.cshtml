@@ -1,0 +1,80 @@
+﻿@using Diva2Web.Models.Admin
+@model AdminPageModel
+
+
+<h2>Rozvrh</h2>
+
+V systému diva2 se pracuje s týdenními rozvrhy, které se generují z hlavní šablony a nebo nově i z šablon.
+<br />
+<br />
+
+<h4>Hlavní šablona</h4>
+Hlavní šablona je jakoby forma, ze které se generují týdenní kopie. Pokud například začínáte a máte 1 lekci ve středu v 17:00 a 1 ve čtvrtek v 18:00, tak si v hlavní šabloně nastavíte aktivní tyto dvě lekce.
+<br />
+<br />
+Ve veřejném rozvrhu se žádné změny na hlavní šabloně neprojevují. Proto aby se změny projevily je potřeba aby jste v sekci <a href="/Admin/Setting/WeakCopy">Týdenní kopie</a> vygenerovali rozvrh pro ten týden, který vás aktuálně zajímá.
+<br />
+<br />
+Pokud přidáte mimořádně lekci na úterý, tak ji nepřidávejte do hlavní šablony, protože by se vám generovala na každý další Vámi zvolený týden. Je lepší aby jste si ji přidali jen do týdenní kopie.
+Pokud naopak přidáváte lekci, která se bude opakovat je vhodné ji zadat rovnou do šablony.
+Pokud si vygenerujete rozvrh na několik týdnů dopředu a chcete přidat určitou lekci opakovaně, je potřeba v každém týdnu přidat danou lekci.
+Změny v hlavní šabloně se projevují v rozvrhu až pokud kliknete na tlačítko "Vygenerovat týden" a jen v tom týdnu pro, který souštíte generování.
+<br />
+<br />
+<table class="table">
+    <tr>
+        <td>Název</td>
+        <td></td>
+        <td>Název lekce. Tento text by se měl pou6ívat když chcete v rozvrhu lekci nějak "vypíchnout" oproti ostatním lekcím stejného typu.</td>
+    </tr>
+
+    <tr>
+        <td>Typ lekce</td>
+        <td></td>
+        <td>Zde přiřadíte lekci z číselníku tyou lekcí. </td>
+    </tr>
+    <tr>
+        <td>Začátek</td>
+        <td></td>
+        <td>Difinice času. Pokud zadáte jiný čas než je v záhlaví šablony, tak se vám automaticky zobrazí v rozvrhu. Není tedy nutné časy psát do názvu lekce.</td>
+    </tr>
+    <tr>
+        <td>Počet kreditů</td>
+        <td></td>
+        <td>Počet kreditů, které se odečtou zákazníkovi který lekci navštíví.</td>
+    </tr>
+    <tr>
+        <td>Počet minut</td>
+        <td></td>
+        <td>Orientační počet minut délky lekce.</td>
+    </tr>
+    <tr>
+        <td>Počet míst</td>
+        <td></td>
+        <td>Počet standardních míst které nabízíte na lekci.</td>
+    </tr>
+    <tr>
+        <td>Počet náhradníků</td>
+        <td></td>
+        <td>Počet zájemců, kteří mohou být mezi náhradníky.</td>
+    </tr>
+    <tr>
+        <td>Lektor</td>
+        <td></td>
+        <td>Lektor který danou lekci moderuje.</td>
+    </tr>
+</table>
+
+
+<br />
+<h4>Týdenní kopie</h4>
+Seznam lekcí, který se zobrazuje v rozvrhu pro zákazníky. Veškeré změny, které provádíte zde se přímo zobrazí všem zákazníkům.
+
+<br />
+<br />
+<h4>Šablony lekcí</h4>
+Nově můžete zadávat typy lekcí do šablon a vkládat je nezávisle na času z hlavní šablony.
+<br />
+Pokud chcete vkládat lekce dynamicky, vytvořte si seznam šablon a lekci vložte pro kterýkoliv termín chcete.
+Pokud v sekci <b>Hlavní šablona</b> kliknete na detail lekce nebo v <b>Týdenní kopie</b> kliknete na tlačítko + a máte přiřazené šablony, tak se nově zobrazí okno, kde si můžete vybrat jestli chcete přidat lekci standardním způsobem t.j. <button type="button" class="btn btn-primary btn-sm">Zkopíruj lekci z hlavní šablony</button> nebo ze seznamu předgenerovaných typu lekcí.
+

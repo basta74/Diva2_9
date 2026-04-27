@@ -1,0 +1,174 @@
+﻿@using Diva2Web.Models.Lekces
+@model LekceModel
+
+@{
+
+    DateTime zac = Model.GetZacatek();
+    DateTime now = DateTime.Now;
+
+}
+
+
+<div class="modal fade" id="weak-copy-edit" tabindex="-1" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContactLabel">Editace existující hodiny</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form asp-action="WeakCopyEdit">
+                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" name="Id" id="Id" value="@Model.Id" />
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label asp-for="Nazev" class="control-label"></label>
+                                <input asp-for="Nazev" class="form-control" />
+                                <span asp-validation-for="Nazev" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="TypHodiny" class="control-label"></label>
+                                @Html.DropDownList("TypHodiny", new SelectList(@Model.Typy.OrderBy(d => d.Text), "Id", "Text"), new { @class = "form-control" })
+
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="Cas" class="control-label"></label>
+                                <input asp-for="Cas" class="form-control" />
+                                <span asp-validation-for="Cas" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="Kredit" class="control-label"></label>
+                                <input asp-for="Kredit" class="form-control" />
+                                <span asp-validation-for="Kredit" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="Minuty" class="control-label"></label>
+                                <input asp-for="Minuty" class="form-control" />
+                                <span asp-validation-for="Minuty" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="PocetMist" class="control-label"></label>
+                                <input asp-for="PocetMist" class="form-control" />
+                                <span asp-validation-for="PocetMist" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="PocetNahradniku" class="control-label"></label>
+                                <input asp-for="PocetNahradniku" class="form-control" />
+                                <span asp-validation-for="PocetNahradniku" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <label asp-for="Lektori" class="control-label"></label>
+                            @Html.DropDownList("Lektor1", new SelectList(@Model.Lektori.OrderBy(d => d.Text), "Id", "Text"), new { @class = "form-control" })
+
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group form-check">
+
+             
+                                <input class="form-check-input" asp-for="CelyDen" /> @Html.DisplayNameFor(model => model.CelyDen)
+                                <span asp-validation-for="CelyDen" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="display: block">
+                <div class="row">
+                    <div class="col-12" id="js-response-msg">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8">
+                        @if (Model.PocetPrihlasenych > 0)
+                        {<div class="alert alert-warning" role="alert" style="margin: 0">
+                                <a href="#" class="alert-link">Hodinu nelze smazat má @Model.PocetPrihlasenych zákazníky(ů). </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <input id="js-delete" type="button" value="Smazat" class="btn btn-sm btn-warning">
+                            <input id="js-delete-force" type="button" value="Opravdu smazat" data-id="@Model.Id" class="btn btn-sm btn-danger" style="display: none;">
+                        }
+                    </div>
+                    <div class="col-lg-2">
+                        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                    <div class="col-lg-2">
+                        <button type="button" class="btn btn-sm btn-primary" data-save="modal">Uložit</button>
+                        @if (zac < now)
+                        {
+                            <p><b>Pozor, hodina proběhla !!</b></p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+
+
+        $("#js-delete-force").hide();
+
+        $("#js-delete").on("click", function () {
+            $("#js-delete").hide(200);
+            $("#js-delete-force").show(400);
+        });
+
+        $("#js-delete-force").on("click", function () {
+            var id = $(this).data('id');
+
+            $("#js-delete-force").val("Maže se");
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Setting/DeleteLesson/" + id,
+                cache: false
+            }).done(function (data) {
+                console.log(data)
+                console.log(data.status)
+                if (data.status == true) {
+                    location.reload();
+                }
+                else {
+                    alert()
+                }
+            });
+        });
+
+    });
+</script>
+

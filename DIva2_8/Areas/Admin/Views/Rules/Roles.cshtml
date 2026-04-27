@@ -1,0 +1,125 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Users
+@model AdminPageModel
+
+@{
+
+    List<Role8> listRole1 = ViewBag.Roles as List<Role8>;
+
+    IEnumerable<Role8> listRole = Model.User.HasRule("all_able") ? listRole1 : listRole1.Where(d => d.PublicAble == true);
+    List<Rule8> list = ViewBag.Rules as List<Rule8>;
+    List<int> listRR = ViewBag.RulesRole as List<int>;
+
+
+}
+
+    <p>role_view, role_change</p>
+
+<nav aria-label="">
+    <ul class="pagination">
+        @foreach (var le in listRole)
+        {
+            string act = le.Id == Model.Id ? "active" : "";
+
+            <li class="page-item @act"><a class="page-link" href="/Admin/Rules/Roles/@le.Id">@le.Name</a></li>
+        }
+    </ul>
+</nav>
+
+@if (!Model.Id.HasValue)
+{
+    <div>Vyberte roli pro zobrazení práv</div>
+}
+else
+{
+
+    if (Model.Id == 6)
+    {
+        <div>Zákazník by neměl mít definovaná žádná práva v administraci</div>
+    }
+
+    <table id="main-table" data-pob="@Model.Pobocka.Id" data-role="@Model.Id">
+        <thead>
+            <tr>
+
+                <th scope="col">Název</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                string subP = "";
+            }
+
+
+            @foreach (var le in list)
+            {
+                string sub = le.Name.Substring(0, le.Name.IndexOf("_"));
+                string bg = "";
+                string che = "";
+                if (listRR.Contains(le.Id))
+                {
+                    bg = "background-color: #08C552";
+                    che = "checked";
+                }
+
+                if (subP != "" & subP != sub)
+                {
+                    <tr>
+                        <td colspan="2" style="height: 5px">&nbsp;</td>
+                    </tr>
+                }
+                subP = sub;
+
+
+                <tr>
+                    <td>@le.Name</td>
+                    <td style="@bg">@le.Description</td>
+                    <td>
+                        @if (Model.User.HasRule("role_change") || Model.User.HasRule("all_able") )
+                        {
+                        <div class="custom-control custom-switch js-switch" style="min-height: 0.5rem">
+                            <input type="checkbox" class="custom-control-input" data-che="@che" data-name="@le.Name" id="@le.Name" data-ruid="@le.Id" @che>
+                            <label class="custom-control-label" for="@le.Name"></label>
+                        </div>
+                        }
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+}
+
+
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+
+            pobocka = $("#main-table").data("pob");
+            roleId = $("#main-table").data("role");
+
+            $(".js-switch").on('click', 'input', function () {
+                switchSwitch(this);
+            });
+
+
+            function switchSwitch(item) {
+                var that = $(item);
+                var ruleId = that.data("ruid");
+                var val = that.data("che") == "checked" ? 0 : 1;
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Admin/Rules/SetRolesRule',
+                    data: { pob: pobocka, roleId: roleId, ruleId: ruleId, value: val },
+                    cache: false
+                }).done(function (data) {
+                    location.reload();
+                });
+            }
+        });
+
+    </script>
+}
+

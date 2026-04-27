@@ -1,0 +1,35 @@
+﻿@using Diva2Web.Models.Admin
+@model AdminPageModel
+
+<div id="modal-placeholder"></div>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-success" style="margin: 5px;" data-toggle="ajax-modal" data-target="#video-create" data-url="@Url.Action("VideoCreate")">
+    Přidat video
+</button>
+
+
+<table class="table table-hover">
+
+    <tr>
+        <th>Id</th>
+        <th>Jméno</th>
+        <th>Url</th>
+        <th>Zobrazit</th>
+        <th>Od</th>
+        <th>Do</th>
+    </tr>
+
+    @foreach (var vi in Model.Videos)
+    {
+        <tr>
+            <td>@vi.Id</td>
+            <td>@vi.Name</td>
+            <td>@vi.Url</td>
+            <td>@vi.Visible</td>
+            <td>@vi.DateFrom</td>
+            <td>@vi.DateTo</td>
+            <td><button type="button" class="btn btn-primary btn-sm" data-toggle="ajax-modal" data-target="#video-edit" data-url="@Url.Action("VideoEdit")/@vi.Id">Edit</button></td>
+        </tr>
+    }
+</table>

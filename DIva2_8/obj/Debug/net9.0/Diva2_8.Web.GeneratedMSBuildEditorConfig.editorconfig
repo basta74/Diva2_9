@@ -22,24 +22,600 @@ build_property._RazorSourceGeneratorDebug =
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Board/Excel.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQm9hcmRcRXhjZWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Board/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQm9hcmRcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Board/LessonTextEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQm9hcmRcTGVzc29uVGV4dEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Board/LessonUsers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQm9hcmRcTGVzc29uVXNlcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Board/LessonVideoEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQm9hcmRcTGVzc29uVmlkZW9FZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Board/ShowUserDay.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQm9hcmRcU2hvd1VzZXJEYXkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Content/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ29udGVudFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Content/PageEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ29udGVudFxQYWdlRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Content/Pages.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ29udGVudFxQYWdlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Customer/Deleted.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ3VzdG9tZXJcRGVsZXRlZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Customer/DetailM.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ3VzdG9tZXJcRGV0YWlsTS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Customer/Excel.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ3VzdG9tZXJcRXhjZWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Customer/Extend.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ3VzdG9tZXJcRXh0ZW5kLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Customer/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ3VzdG9tZXJcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Customer/Receipt.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ3VzdG9tZXJcUmVjZWlwdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Help/GenerovaniRozvrhu.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcSGVscFxHZW5lcm92YW5pUm96dnJodS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Help/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcSGVscFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Help/Pages.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcSGVscFxQYWdlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Help/Platby.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcSGVscFxQbGF0YnkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Help/Rozvrh.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcSGVscFxSb3p2cmguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Help/Video.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcSGVscFxWaWRlby5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Help/Zakaznik.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcSGVscFxaYWthem5pay5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Home/NoRule.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcSG9tZVxOb1J1bGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Rules/AccountEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUnVsZXNcQWNjb3VudEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Rules/Accounts.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUnVsZXNcQWNjb3VudHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Rules/AdminThings.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUnVsZXNcQWRtaW5UaGluZ3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Rules/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUnVsZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Rules/Roles.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUnVsZXNcUm9sZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/CustomerGroupCreate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xDdXN0b21lckdyb3VwQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/CustomerGroupEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xDdXN0b21lckdyb3VwRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/CustomersGroup.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xDdXN0b21lcnNHcm91cC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/LectorCreate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xMZWN0b3JDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/LectorEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xMZWN0b3JFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/Lectors.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xMZWN0b3JzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/LessonsType.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xMZXNzb25zVHlwZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/LessonTypeCreate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xMZXNzb25UeXBlQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/LessonTypeEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xMZXNzb25UeXBlRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/MusterTypeCreate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xNdXN0ZXJUeXBlQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/MusterTypeEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xNdXN0ZXJUeXBlRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/MusterTypes.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xNdXN0ZXJUeXBlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/Mustr.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xNdXN0ci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/MustrCreate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xNdXN0ckNyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/Mustredit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xNdXN0cmVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/NoClosedLessons.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xOb0Nsb3NlZExlc3NvbnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/PaymentCreditCreate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xQYXltZW50Q3JlZGl0Q3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/PaymentCreditEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xQYXltZW50Q3JlZGl0RWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/PaymentCreditTimeCreate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xQYXltZW50Q3JlZGl0VGltZUNyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/PaymentCreditTimeEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xQYXltZW50Q3JlZGl0VGltZUVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/PaymentQr.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xQYXltZW50UXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/Payments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xQYXltZW50cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/Sales.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xTYWxlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/SettingMain.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xTZXR0aW5nTWFpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/SettingMainBankAccount.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xTZXR0aW5nTWFpbkJhbmtBY2NvdW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/SettingMainBankAccountEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xTZXR0aW5nTWFpbkJhbmtBY2NvdW50RWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/SettingMainEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xTZXR0aW5nTWFpbkVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/SettingMainPayGatePaysEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xTZXR0aW5nTWFpblBheUdhdGVQYXlzRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/SettingMainPayGates.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xTZXR0aW5nTWFpblBheUdhdGVzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/SettingMainStyleEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xTZXR0aW5nTWFpblN0eWxlRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/SettingPob.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xTZXR0aW5nUG9iLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/Times.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xUaW1lcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/WageEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xXYWdlRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/Wages.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xXYWdlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/WeakCopy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xXZWFrQ29weS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Setting/WeakCopyEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2V0dGluZ1xXZWFrQ29weUVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Sms/Detail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU21zXERldGFpbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Sms/Errors.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU21zXEVycm9ycy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Sms/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU21zXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Sms/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU21zXExvZ2luLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Sms/Logout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU21zXExvZ291dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Video/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVmlkZW9cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Video/Sold.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVmlkZW9cU29sZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Video/VideoCreate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVmlkZW9cVmlkZW9DcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/Video/VideoEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVmlkZW9cVmlkZW9FZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/View.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVmlldy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Areas/Admin/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/AccountClaim/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudENsYWltXEFjY2Vzc0RlbmllZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/AccountClaim/ConfirmEmail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudENsYWltXENvbmZpcm1FbWFpbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/AccountClaim/Detail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudENsYWltXERldGFpbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/AccountClaim/ExternalLogin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudENsYWltXEV4dGVybmFsTG9naW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/AccountClaim/ForgotPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudENsYWltXEZvcmdvdFBhc3N3b3JkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/AccountClaim/Lockout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudENsYWltXExvY2tvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/AccountClaim/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudENsYWltXExvZ2luLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/AccountClaim/LoginWith2fa.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudENsYWltXExvZ2luV2l0aDJmYS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/AccountClaim/LoginWithRecoveryCode.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudENsYWltXExvZ2luV2l0aFJlY292ZXJ5Q29kZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/AccountClaim/Logout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudENsYWltXExvZ291dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/AccountClaim/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudENsYWltXFJlZ2lzdGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/AccountClaim/ResetPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudENsYWltXFJlc2V0UGFzc3dvcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/AccountClaim/ResetPasswordConfirmation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudENsYWltXFJlc2V0UGFzc3dvcmRDb25maXJtYXRpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Account/Active.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxBY3RpdmUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Account/ActiveNo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxBY3RpdmVOby5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Account/ConfirmEmail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxDb25maXJtRW1haWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Account/ConfirmEmailNo.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxDb25maXJtRW1haWxOby5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Account/Detail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxEZXRhaWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Account/DetailEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxEZXRhaWxFZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/dev/DIva2_8/DIva2_8/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Account/LoginModal.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbk1vZGFsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Account/Logout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Account/PasswordEdit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxQYXNzd29yZEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Account/RegisterOk.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlck9rLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Account/ResetPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZXNldFBhc3N3b3JkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Account/ResetPasswordError.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZXNldFBhc3N3b3JkRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Account/ResetPasswordSuccess.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZXNldFBhc3N3b3JkU3VjY2Vzcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Account/UpdatePassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxVcGRhdGVQYXNzd29yZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Account/UpdatePasswordOk.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxVcGRhdGVQYXNzd29yZE9rLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Home/About.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxBYm91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Home/Calendar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDYWxlbmRhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Home/CalendarForCreate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDYWxlbmRhckZvckNyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Home/CalendarView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDYWxlbmRhclZpZXcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Home/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxFcnJvci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Home/Gdpr.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxHZHByLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Home/Help.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxIZWxwLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/dev/DIva2_8/DIva2_8/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/dev/DIva2_8/DIva2_8/Views/Home/Info.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmZvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Home/Lectors.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxMZWN0b3JzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Home/LessonView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxMZXNzb25WaWV3LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Home/LessonViewTable.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxMZXNzb25WaWV3VGFibGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Home/MyData.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxNeURhdGEuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Home/PaymentErr.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQYXltZW50RXJyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Home/PaymentOk.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQYXltZW50T2suY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Home/Prices.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcmljZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/dev/DIva2_8/DIva2_8/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/dev/DIva2_8/DIva2_8/Views/Shared/Error.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
+[C:/dev/DIva2_8/DIva2_8/Views/Home/Rozvrh.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxSb3p2cmguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Home/Rozvrh2.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxSb3p2cmgyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Home/Rozvrh2Krouzek.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxSb3p2cmgyS3JvdXplay5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Home/RozvrhTd.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxSb3p2cmhUZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Shared/Account/_Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEFjY291bnRcX0xvZ2luLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Shared/Breadcrumb.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEJyZWFkY3J1bWIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Shared/Main/Pagination.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXE1haW5cUGFnaW5hdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Shared/MenuLeftAdmin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXE1lbnVMZWZ0QWRtaW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Shared/MenuLeftPublic.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXE1lbnVMZWZ0UHVibGljLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Shared/Navbar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXE5hdmJhci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Shared/NavbarAdmin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXE5hdmJhckFkbWluLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Shared/Style.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFN0eWxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Shared/VazbaNaDatumNe.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFZhemJhTmFEYXR1bU5lLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Shared/_LayoutAccount.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRBY2NvdW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Shared/_LayoutAdmin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRBZG1pbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Shared/_LayoutAdminBase.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRBZG1pbkJhc2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Shared/_LayoutAdminClear.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRBZG1pbkNsZWFyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Shared/_LayoutBase.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRCYXNlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Shared/_LoginPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Mb2dpblBhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/dev/DIva2_8/DIva2_8/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Video/Detail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmlkZW9cRGV0YWlsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Video/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmlkZW9cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Video/MyVideos.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmlkZW9cTXlWaWRlb3MuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/dev/DIva2_8/DIva2_8/Views/Video/MyVideoView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVmlkZW9cTXlWaWRlb1ZpZXcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/dev/DIva2_8/DIva2_8/Views/_ViewImports.cshtml]

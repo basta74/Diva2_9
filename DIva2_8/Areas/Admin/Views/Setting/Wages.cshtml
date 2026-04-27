@@ -1,0 +1,259 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Pobocky
+@using Diva2.Core.Main.Lessons
+@using Diva2.Core.Main.Lektori;
+@model AdminPageModel
+
+@{
+
+    Lektor lektor = ViewBag.Lektor;
+    Mzda mzda = ViewBag.Mzda;
+    int? pobId = ViewBag.PobockaId;
+    bool future = ViewBag.Future;
+    var pobocky = Model.Pobocky.Where(d => d.Visible == true);
+    var futureStr1 = future ? "active" : "";
+    var futureStr2 = future ? "" : "active";
+
+    int[] myNum = { 0, mzda.Zak01, mzda.Zak02, mzda.Zak03, mzda.Zak04, mzda.Zak05, mzda.Zak06, mzda.Zak07, mzda.Zak08, mzda.Zak09, mzda.Zak10, mzda.Zak11, mzda.Zak12, mzda.Zak13, mzda.Zak14, mzda.Zak15, mzda.Zak16, mzda.Zak17, mzda.Zak18, mzda.Zak19, mzda.Zak20 };
+
+}
+
+<!-- Modal placeholder -->
+<div id="modal-placeholder"></div>
+
+<h6>Vyberte lektora pro zobrazení mzdy z měsíc @Model.CurrentDate.ToString("MM.yyyy")</h6>
+<div class="row">
+    <div class="col-md-2">
+
+        <ul class="list-group">
+            @{
+                string act = 0 == @Model.Id.Value ? "active" : "";
+
+            }
+            <a href="/Admin/Setting/Wages?id=0&p=@pobId&f=@future" class="list-group-item list-group-item-action  @act">Všichni</a>
+            @foreach (var le in Model.Lektori)
+            {
+                act = @le.Id == Model.Id.Value ? "active" : "";
+                <a href="/Admin/Setting/Wages/@le.Id" class="list-group-item list-group-item-action  @act">@le.Jmeno</a>
+            }
+        </ul>
+        <h6 style="margin-top: 15px">Lekce</h6>
+        <div class="btn-group">
+            <a href="/Admin/Setting/Wages?id=@Model.Id&p=@pobId&f=1" class="btn btn-outline-info btn-sm  @futureStr1">i budoucí</a>
+            <a href="/Admin/Setting/Wages?id=@Model.Id&p=@pobId&f=0" class="btn btn-outline-info btn-sm  @futureStr2">jen zaúčtované</a>
+        </div>
+
+        @if (pobocky.Count() > 1)
+        {
+
+            <h6 style="margin-top: 15px">Pobočky</h6>
+            <ul class="list-group">
+                @{
+                    string actP = (pobId == 0) ? "active" : "";
+
+                }
+                <a href="/Admin/Setting/Wages?id=@Model.Id&p=0&f=@future" class="list-group-item list-group-item-action  @actP">Nerozlišovat pobočku</a>
+                @foreach (var po in pobocky)
+                {
+                    actP = po.Id == pobId ? "active" : "";
+                    <a href="/Admin/Setting/Wages/?id=@Model.Id&p=@po.Id&f=@future" class="list-group-item list-group-item-action  @actP">@po.Name</a>
+                }
+            </ul>
+
+        }
+    </div>
+    <div class="col-md-5">
+        @{
+            int lekci = 0;
+            int zakazniku = 0;
+            int zakaznikuDoMzdy = 0;
+            int mzda100Sum = 0;
+            int dlePoctuZakSum = 0;
+
+        }
+        <table class="table-bordered" width="100%">
+            <tr>
+                <th>Datum</th>
+                <th>Lekt.</th>
+                <th>Hodiny</th>
+                <th>Zákazníci</th>
+                <th>Dle Počtu</th>
+                <th>Plná hodina</th>
+            </tr>
+            @foreach (Lekce le in ViewBag.Lekce)
+            {
+                lekci++;
+                zakazniku += le.PocetZakazniku;
+                int dlePoctuZak = Mzda.GetByPocet(myNum, le.PocetZakazniku);
+                dlePoctuZakSum += dlePoctuZak;
+                int mzda100 = 0;
+                @if (mzda.Pro100 > 0 && (le.PocetZakazniku + le.PocetNahradniku) >= le.PocetMist)
+                {
+                    mzda100 = mzda.Pro100;
+                    mzda100Sum += mzda.Pro100;
+                }
+                <tr>
+                    <td style="padding: 3px;">
+                        @le.Datum.ToString("dd.MM")
+                    </td>
+                    <td style="padding: 3px;">
+                        @le.Lektor1
+                    </td>
+                    <td style="padding: 3px; text-align: right">
+                        @lekci
+                    </td>
+                    <td style="padding: 3px; text-align: right;">
+                        @le.PocetZakazniku
+                    </td>
+                    <td style="padding: 3px; text-align: right;">
+                        @if (dlePoctuZak > 0)
+                        {
+                            <span>@dlePoctuZak</span>
+                        }
+                    </td>
+                    <td style="padding: 3px; text-align: right;">
+                        @if (mzda100 > 0)
+                        {
+                            <span>@mzda100</span>
+                        }
+                    </td>
+                </tr>
+            }
+
+            @{
+                int lekciC = (lekci * mzda.Hodina);
+                int zakaznikuC = (zakazniku * mzda.Zakaznik);
+                int zakaznikuDoMzdyC = (zakaznikuDoMzdy * mzda.Zakaznik);
+            }
+            <tr style="text-align: right">
+                <td><b>Celkem</b></td>
+                <td></td>
+                <td>@lekci</td>
+                <td>@zakazniku</td>
+                <td></td>
+            </tr>
+            <tr style="text-align: right">
+                <td><b>Celkem X sumy </b></td>
+                <td></td>
+                <td>@lekciC</td>
+                <td>@zakaznikuC</td>
+                <td>@dlePoctuZakSum</td>
+                <td>@mzda100Sum</td>
+            </tr>
+            @if (lektor != null && lektor.Koeficient > 0)
+            {
+                int le = lekciC * @lektor.Koeficient;
+                int za = zakaznikuC * lektor.Koeficient;
+                int po = dlePoctuZakSum * lektor.Koeficient;
+                int za100 = mzda100Sum * lektor.Koeficient;
+                int all = le + za + po + za100;
+                <tr style="text-align: right">
+                    <td><b>Celkem s koef. @lektor.Koeficient</b></td>
+                    <td></td>
+                    <td><b>@Html.Raw(le)</b></td>
+                    <td>@Html.Raw(za)</td>
+                    <td>@Html.Raw(po)</td>
+                    <td>@Html.Raw(za100)</td>
+                </tr>
+                <tr style="text-align: right">
+                    <th>Celkem</th>
+                    <th></th>
+                    <td></td>
+                    <th>@Html.Raw(all)</th>
+                    <td></td>
+                    <td></td>
+                </tr>
+            }
+            else
+            {
+                <tr style="text-align: right">
+                    <th>Celkem</th>
+                    <th></th>
+                    <td></td>
+                    <th>@Html.Raw(lekciC + zakaznikuC + dlePoctuZakSum + mzda100Sum)</th>
+                    <td></td>
+                    <td></td>
+                </tr>
+            }
+        </table>
+
+
+
+
+    </div>
+    <div class="col-md-4">
+        <table class="">
+            <tr>
+                <td><h6>Mzdy pro pokladnu @mzda.PokladnaId</h6></td>
+                <td><button type="button" class="btn btn-primary btn-sm" style="margin: 5px;" data-toggle="ajax-modal" data-target="#wage-edit" data-url="@Url.Action("WageEdit")/@Model.Pobocka.PokladnaId">Edit</button></td>
+            </tr>
+
+            <tr><td>za měsíc</td><td style="text-align: right">@mzda.Mesic</td></tr>
+            <tr><td>za den</td><td style="text-align: right">@mzda.Den</td></tr>
+            <tr><td>za hodinu</td><td style="text-align: right">@mzda.Hodina</td></tr>
+            <tr><td>za zákazníka</td><td style="text-align: right">@mzda.Zakaznik</td></tr>
+            <tr><td>za plnou hodinu</td><td style="text-align: right">@mzda.Pro100</td></tr>
+            <tr><td>za  1. zák.</td><td style="text-align: right">@mzda.Zak01</td></tr>
+            <tr><td>za  2. zák.</td><td style="text-align: right">@mzda.Zak02</td></tr>
+            <tr><td>za  3. zák.</td><td style="text-align: right">@mzda.Zak03</td></tr>
+            <tr><td>za  4. zák.</td><td style="text-align: right">@mzda.Zak04</td></tr>
+            <tr><td>za  5. zák.</td><td style="text-align: right">@mzda.Zak05</td></tr>
+            <tr><td>za  6. zák.</td><td style="text-align: right">@mzda.Zak06</td></tr>
+            <tr><td>za  7. zák.</td><td style="text-align: right">@mzda.Zak07</td></tr>
+            <tr><td>za  8. zák.</td><td style="text-align: right">@mzda.Zak08</td></tr>
+            <tr><td>za  9. zák.</td><td style="text-align: right">@mzda.Zak09</td></tr>
+            <tr><td>za 10. zák.</td><td style="text-align: right">@mzda.Zak10</td></tr>
+            <tr><td>za 11. zák.</td><td style="text-align: right">@mzda.Zak11</td></tr>
+            <tr><td>za 12. zák.</td><td style="text-align: right">@mzda.Zak12</td></tr>
+            <tr><td>za 13. zák.</td><td style="text-align: right">@mzda.Zak13</td></tr>
+            <tr><td>za 14. zák.</td><td style="text-align: right">@mzda.Zak14</td></tr>
+            <tr><td>za 15. zák.</td><td style="text-align: right">@mzda.Zak15</td></tr>
+            <tr><td>za 16. zák.</td><td style="text-align: right">@mzda.Zak16</td></tr>
+            <tr><td>za 17. zák.</td><td style="text-align: right">@mzda.Zak17</td></tr>
+            <tr><td>za 18. zák.</td><td style="text-align: right">@mzda.Zak18</td></tr>
+            <tr><td>za 19. zák.</td><td style="text-align: right">@mzda.Zak19</td></tr>
+            <tr><td>za 20. zák.</td><td style="text-align: right">@mzda.Zak20</td></tr>
+        </table>
+
+        Odměna za počet zákazníků se počítá z nejvyšího počtu zákazníků na lekci.
+        <br />Tj. pokud budou odměny za 5 zákazníků: 50,- a za 10 zákazníků: 90,-
+        <br />Bude odměna na lekci při 11 zákaznících: 90,-  při 7 zákaznících : 50,- a při 4 zákaznících : 0,-.
+        <br /> <b>Tedy odměny se nesčítají, ale bere se nejvyší možná dosažená</b>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+
+
+            var page = "/Admin/Home/SetDate";
+            var parsedDate = new Date('@Model.CurrentDate.ToString("yyyy-MM-dd")');
+
+            $(function () {
+                $("#datepickerIn").datepicker({
+                    width: '12em',
+                    dateFormat: "yy-mm-dd",
+                    firstDay: 1,
+                    dayNamesMin: ["Ne", "Po", "Út", "St", "Čt", "Pá", "So"],
+                    monthNames: ["Leden", "Únor", "Březen", "Duben", "Květen", "Červen", "Červenec", "Srpen", "Září", "Říjen", "Listopad", "Prosinec"],
+                    onSelect: function (dateText, inst) {
+                        window.location.href = page + '?dat=' + dateText;
+                    }
+                }).datepicker("setDate", parsedDate);
+            }); /**/
+
+
+        });
+    </script>
+}
+
+

@@ -2,7 +2,7 @@
   "Domains": [
     {
       "name": "localhost",
-      "db": "diva2_akt",
+      "db": "diva2_yoga",
       "user": "diva2",
       "pass": "root"
     },

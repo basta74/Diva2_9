@@ -1,0 +1,48 @@
+﻿@using Diva2Web.Models.Admin
+@model AdminPageModel
+<!-- Modal placeholder -->
+<div id="modal-placeholder"></div>
+
+
+@section Head{
+    <script src="~/ckeditor/ckeditor.js"></script>
+}
+
+
+<h4>Vlastní stránky</h4><a href="/Admin/Help/Pages" class="badge badge-info">Nápověda</a>
+
+
+<table class="table">
+
+    <tr>
+        <th>Typ</th>
+        <th>Název v menu</th>
+        <th>Pořadí</th>
+        <th>Viditelné na stránkách</th>
+        <th>Titulek</th>
+        <th></th>
+    </tr>
+
+    @foreach (var p in Model.Pages)
+    {
+        bool show = true;
+        if (p.Type == Diva2.Core.Main.Content.PageType.video)
+        {
+            show = Model.MainIniCover.HasRule(Diva2.Core.Main.Main.MainIniRuleItem.UseVideo);
+        }
+        if (show)
+        {
+            <tr>
+                <td>@p.Type.ToString()</td>
+                <td><b>@p.UrlName</b></td>
+                <td>@p.Order</td>
+                <td>@Html.Raw(p.Active ? "<span style='color: green'>ano</span>" : "<span style='color: red'>ne</span>")</td>
+                <td>@p.Title</td>
+                <td><a href="pageedit/@p.Id" class="btn btn-primary btn-sm">Edit</a></td>
+            </tr>
+        }
+    }
+</table>
+
+
+

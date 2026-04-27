@@ -1,0 +1,81 @@
+﻿@using Diva2Web.Models.Videos
+@using Diva2.Core.Main.Videa
+
+@model VideoModel
+
+
+<div class="modal fade" id="video-edit" tabindex="-1" role="dialog" aria-labelledby="addTypeLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addTypeLabel">Editace videa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form asp-action="VideoEdit">
+                    <input type="hidden" name="Id" id="Id" value="@Model.Id" />
+                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Url" class="control-label"></label>
+                        <input asp-for="Url" class="form-control" />
+                        <span asp-validation-for="Url" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Image" class="control-label"></label>
+                        <input asp-for="Image" class="form-control" />
+                        <span asp-validation-for="Image" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Desc" class="control-label"></label>
+                        <textarea asp-for="Desc" class="form-control"></textarea>
+                        <span asp-validation-for="Desc" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-group form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="Visible" id="Visible" name="Visible" /> @Html.DisplayNameFor(model => model.Visible)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label asp-for="Kredity" class="control-label"></label>
+                                <input asp-for="Kredity" class="form-control" />
+                                <span asp-validation-for="Kredity" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-4">
+
+                        </div>
+                        <div class="col-4"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-primary" data-save="modal">Save</button>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+

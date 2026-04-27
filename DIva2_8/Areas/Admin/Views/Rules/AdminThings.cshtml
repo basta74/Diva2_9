@@ -1,0 +1,55 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Users
+@model AdminPageModel
+<!-- Modal placeholder -->
+<div id="modal-placeholder"></div>
+
+@{
+
+    Dictionary<string, string> caches = ViewBag.CaheItems as Dictionary<string, string>;
+}
+
+<p>all_able</p>
+
+<div id="cache_status"></div>
+
+    <table class="table-hover" id="main-table"  style="cursor: pointer">
+        <tr>
+            <th width="10">Titul</th>
+            <th width="100">Jméno</th>
+            
+            @foreach (var c in caches)
+            {
+
+            <tr >
+                <td>@c.Key</td>
+                <td><button type="button" class="btn btn-outline-primary btn-sm jsCaches" data-id="@c.Key">Clear cache</button></td>
+                
+
+            </tr>
+        }
+
+        </table>
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+                    $(document).on('click', 'button.jsCaches', function (event) {
+
+                var key = $(this).data('id');
+                $.ajax({
+                    method: "POST",
+                    url: "/Admin/Rules/ClearCache",
+                    data: { id: key }
+                }).done(function (data) {
+
+                    $("$cache_status").html(key + " - " + data.status);
+
+                });
+            });
+
+        });
+    </script>
+}

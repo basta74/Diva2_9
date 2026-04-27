@@ -1,0 +1,71 @@
+﻿@using Diva2.Core.Main.Trans;
+@using Diva2Web.Models.Admin
+@model AdminPageModel
+
+@{
+
+    UserTransakce lu = ViewBag.UserTransakce;
+
+}
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title></title>
+</head>
+<body>
+    <table border="0" cellspacing="0.1" cellpadding="5" style="border: 1px solid #CCC; ">
+        <tr>
+            <td colspan="2" rowspan="3" style="width: 50%">
+                <br />
+                Přijal:<br />
+                <b>@Model.MainIniCover.MainIniObj.MasterName</b><br />
+                @Model.MainIniCover.MainIniObj.MasterJmenoMajitele<br />
+                @Model.MainIniCover.MainIniObj.MasterStreet<br />
+                @Model.MainIniCover.MainIniObj.MasterZip @Model.MainIniCover.MainIniObj.MasterPost<br />
+                @if (Model.MainIniCover.MainIniObj.ICO != null && Model.MainIniCover.MainIniObj.ICO.Length > 0)
+                {
+                    <span>IČO:</span> @Model.MainIniCover.MainIniObj.ICO
+                }
+            </td>
+            <td>
+                <h3>Příjmový pokladní doklad @lu.Doklad</h3>
+                <h3> ze dne @lu.Datum.ToString("dd.MM.yyy")</h3>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td style="width: 15%; text-align: right; color: silver">Přijato od :</td>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <td style=" text-align: right; color: silver">Jméno : </td>
+            <td colspan="2">@lu.User.Prijmeni @lu.User.Jmeno</td>
+        </tr>
+        <tr>
+            <td style=" text-align: right; color: silver">Adresa : </td>
+            <td colspan="2">@lu.User.Ulice @lu.User.Psc @lu.User.Posta</td>
+        </tr>
+        <tr>
+            <td style="text-align: right; color: silver">Účel platby : </td>
+            <td colspan="2">
+                @Model.MainIniCover.MainIniObj.TextNaPrijmovyDoklad
+            </td>
+        </tr>
+        <tr>
+            <td style=" text-align: right; color: silver">Cena : </td>
+            <td colspan="2">@lu.Castka Kč</td>
+        </tr>
+        <tr>
+            <td colspan="2" style="height: 80px">Přijal : </td>
+            <td>Vydal : </td>
+        </tr>
+    </table>
+</body>
+</html>

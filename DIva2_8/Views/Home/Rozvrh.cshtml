@@ -1,0 +1,306 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Lessons
+@model AdminPageModel
+@{
+
+
+    int POCET = 6; // idealni pocet sloupcu
+    ViewData["Title"] = "Home Page";
+
+    var minutyIni = Model.IniMinutes.Where(d => d.PobockaId == Model.Pobocka.Id && d.Visible == true);
+
+    int mezera = minutyIni.Count() + 1;
+    int rozdilMeziIdealem = 0;
+    bool dopocitavatSloup = false;
+    bool mazatSloupce = false;
+    int doplnit = 0;
+    int dop = 0;
+    int mazat = 0;
+    int maz = 0;
+    int pocetSloupcu = 0;
+    int zacatkyPocet = minutyIni.Count();
+
+    // - pokud je vetsi pocet casu nez Idealni pocet pocet
+    if (minutyIni.Count() > POCET)
+    {
+        if (POCET > Model.RozvrhyObj.PouzitePoradi.Count)
+        {
+            dopocitavatSloup = true;
+            rozdilMeziIdealem = POCET - Model.RozvrhyObj.PouzitePoradi.Count;
+            doplnit = (rozdilMeziIdealem > 0) ? rozdilMeziIdealem : 0;
+            dop = doplnit;
+            pocetSloupcu = POCET;
+
+        }
+        else if (POCET < Model.RozvrhyObj.PouzitePoradi.Count)
+        {
+            dopocitavatSloup = true;
+            rozdilMeziIdealem = Model.RozvrhyObj.PouzitePoradi.Count - POCET;
+            mazat = (rozdilMeziIdealem > 0) ? rozdilMeziIdealem : 0;
+            maz = mazat;
+            pocetSloupcu = POCET + rozdilMeziIdealem;
+        }
+        else if (POCET < minutyIni.Count())
+        {
+            dopocitavatSloup = true;
+            maz = mazat;
+            pocetSloupcu = POCET + rozdilMeziIdealem;
+        }
+
+    }
+    else
+    {
+        pocetSloupcu = zacatkyPocet;
+    }
+
+    var objednaneLekce = Model.User.ObjednaneLekce?.Where(d => d.PobockaId == Model.Pobocka.Id).ToList();
+
+    bool gdprYes = true;
+
+    double procSloupcu = 18;
+
+    if (pocetSloupcu > 0)
+    {
+        procSloupcu = 100 / pocetSloupcu;
+    }
+
+    string gdprView = "none";
+    if (Model.User.Id.HasValue == true && Model.User.GdprBase != true)
+    {
+        gdprYes = false;
+        gdprView = "block";
+    }
+}
+
+@section leftMenu{
+    <partial name="MenuLeftPublic" model="Model" />
+}
+
+
+<!--<a href="/Board/FixUsers">Fix</a>-->
+
+
+
+
+
+<div class="alert alert-info" id="gdprNewsAlert" role="alert" style="display: @gdprView">
+    Pro aktivní práci s rozvrhem je potřeba aby jste soulasil(a) se zpracováním údajů.
+    <a href="gdpr">Podmínky zde</a>
+</div>
+
+<!-- <button id="noti-enable">Notify me!</button>-->
+
+<table class="table table-hover table-bordered jsRozvrh" id="main-rozvrh" data-gdpr="@gdprYes">
+
+    @foreach (var tyd in Model.RozvrhyObj.Tydny)
+    {
+        dop = doplnit;
+        <tr>
+            @if(Model.GetIniPobBool("public_rozvrh_ukaz_casy")){
+                <th></th>
+            }
+            @foreach (var cas in minutyIni)
+            {
+                bool ukaz = true;
+
+                if (mazatSloupce)
+                {
+
+                    if (!Model.RozvrhyObj.PouzitePoradi.Contains(cas.Minute))
+                    {
+                        if (maz > 0)
+                        {
+                            maz--;
+                            continue;
+                        }
+                    }
+                }
+
+
+                if (dopocitavatSloup)
+                {
+                    if (!Model.RozvrhyObj.PouzitePoradi.Contains(cas.Minute))
+                    {
+                        ukaz = false;
+                        if (dop > 0)
+                        {
+                            if (dop > 0)
+                            {
+                                ukaz = true;
+                            }
+                            dop--;
+                        }
+                    }
+                }
+                if (ukaz)
+                {
+                    if (Model.GetIniPobBool("public_rozvrh_ukaz_casy"))
+                    {
+                        <th class="align-middle" style="width: @procSloupcu%">@cas.Time.ToString(@"hh\:mm")</th>
+                    }
+                }
+            }
+        </tr>
+
+        int i = 1;
+
+        @foreach (var den in tyd.Value.Dny)
+        {
+            i++;
+            dop = doplnit;
+            DateTime denDt = den.Value.Lekces.First().Value.Datum;
+
+            Diva2Web.Models.Rozvrh.RozvrhTd ro = new Diva2Web.Models.Rozvrh.RozvrhTd();
+            ro.Lektori = Model.Lektori;
+
+            ro.UkazOd = Model.GetIniPobInt("lekceUkazLimitOd");
+            ro.UkazKapacitu = Model.GetIniPobInt("public_rozvrh_ukaz_kapacitu");
+            ro.UkazLektora = Model.GetIniPobInt("public_rozvrh_ukaz_lektora");
+            ro.Lektor2 = Model.GetIniPobInt("lektor2");
+            ro.UkazTyp = Model.GetIniPobInt("rozvrhUkazTyp");
+            ro.TypyLekci = Model.TypyLekci;
+            ro.ObjednaneLekce = objednaneLekce;
+
+            <tr>
+                <td class="align-middle" style="width: 87px">
+                    @denDt.ToString("dddd")<br />
+                    @denDt.ToString("dd.MM.")
+                </td>
+
+                @if (den.Value.Lekces.Count() == 1 && den.Value.Lekces.First().Value.CelyDen == true)
+                {
+                    ro.Lekce = den.Value.Lekces.First().Value;
+                    ro.ColSpan = minutyIni.Count();
+
+                    <partial name="RozvrhTd" model="@ro" />
+                }
+                else
+                {
+                    @foreach (var cas in minutyIni)
+                    {
+                        bool ukaz = true;
+                        if (dopocitavatSloup)
+                        {
+
+                            if (!Model.RozvrhyObj.PouzitePoradi.Contains(cas.Minute))
+                            {
+                                ukaz = false;
+                                if (dop >= 0)
+                                {
+                                    dop--;
+
+                                }
+
+                                if (dop >= 0)
+                                {
+                                    ukaz = true;
+                                }
+
+                            }
+                        }
+                        if (!ukaz)
+                        {
+                            continue;
+                        }
+
+                        Lekce le = new Lekce();
+                        if (den.Value.Lekces.TryGetValue(cas.Minute, out le))
+                        {
+                            ro.Lekce = le;
+                            ro.Cas = cas;
+                            ro.ColSpan = 1;
+
+                            <partial name="RozvrhTd" model="@ro" />
+                        }
+
+                        else
+                        {
+                            <td>&nbsp;</td>
+                        }
+                    }
+                }
+
+            </tr>
+
+        }
+
+        <tr>
+            <td style="background-color: white!important;  border-right-color: white;    border-left-color: white; column-span:@mezera"></td>
+        </tr>
+
+    }
+
+</table>
+
+
+<!-- Modal placeholder -->
+<div id="hodina"></div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            var gdprYes = $('#main-rozvrh').data("gdpr");
+            var placeholderElement = $('#hodina');
+
+            $(document).on('click', 'td.jsFormModal', function (event) {
+
+                if (gdprYes == 'False') {
+                    $("#gdprNewsAlert").show();
+                    gdprNewsAlert
+                }
+                else {
+                    var hodId = $(this).data('id');
+                    var url = "/home/lessonView/";
+
+                    $.ajax({
+                        method: "GET",
+                        url: "/home/lessonView",
+                        data: { id: hodId }
+                    })
+                        .done(function (data) {
+
+                            placeholderElement.html(data);
+                            placeholderElement.find('.modal-lesson').modal('show');
+                        });
+                }
+            });
+
+            $(document).on('click', '#js-reload', function (event) {
+
+                location.reload();
+            });
+
+
+            $(".js-figure-check").on("click", this, function () {
+
+                var favorite = [];
+                var all = [];
+
+
+                $.each($("input[name='figures2']:checked"), function () {
+                    favorite.push($(this).data("id"));
+                });
+                $.each($("input[name='figures2']"), function () {
+                    all.push($(this).data("id"));
+                });
+
+                all.forEach(function (element) {
+                    if (favorite.includes(element)) {
+                        var aa = $('*[data-row-id="' + element + '"]');
+                        aa.show();
+                    }
+                    else {
+                        var aa = $('*[data-row-id="' + element + '"]');
+                        aa.hide();
+                    }
+                });
+
+            });
+        });
+    </script>
+}
+
+
+
+

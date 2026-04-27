@@ -1,0 +1,90 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Pobocky
+@using Diva2.Core.Main
+
+@model AdminPageModel
+
+@{
+    CalendarSetting sett = Model.Pobocka.CalendarSettingObj;
+    int minutes = sett.HourEnd * 60;
+
+    var zacatky = Model.IniMinutes.Where(d => d.PobockaId == Model.Pobocka.Id).ToLookup(d => d.Minute);
+
+}
+
+
+
+@{
+    int m = (sett.HourStart * 60); }
+<div id="messages-modal-times"> </div>
+<ol class=" draha" data-pob="@Model.Pobocka.Id" style="list-style-type: none; padding: 1px; width: 150px">
+
+    @do
+    {
+
+        TimeSpan ts = new TimeSpan(0, m, 0);
+
+        var cas = zacatky[m];
+        var css = "";
+        var active = 0;
+        if (cas.Count() > 0)
+        {
+            css = "hour-setting-active";
+            active = 1;
+        }
+        <li class="js-hour ui-widget-content select-able @css" data-m="@m" data-active="@active"> @ts.ToString(@"hh\:mm") </li>
+
+
+
+
+        m = m + sett.Minutes;
+
+    } while (m < minutes);
+
+</ol>
+
+    Zobrazit rozvrh
+<table>
+    <tr>
+        <td>od:</td>
+        <td><b>@sett.HourStart:00</b></td>
+        <td>do:</td>
+        <td><b>@sett.HourEnd:00  + (@sett.Minutes minut)</b></td>
+    </tr>
+</table>
+
+
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            $(".js-hour").on("click", function () {
+
+                var min = $(this).data("m");
+                var active = $(this).data("active");
+                var pobID = $(this).clone("ol").data("pob");
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/Setting/TimeActive/",
+                    data: { pob: pobID, min: min },
+                    cache: false
+                }).done(function (data) {
+                    if (data.status == true) {
+                        
+                    }
+                    else {
+                        $('#messages-modal-times').html(writeMesssages(data.messages));
+                    }
+                });
+
+            });
+
+
+
+        });
+    </script>
+}
+

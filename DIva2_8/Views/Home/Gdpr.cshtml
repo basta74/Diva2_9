@@ -1,0 +1,348 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Lessons
+@model AdminPageModel
+@{
+    ViewData["Title"] = "Home Page";
+    int userId = Model.User.Id.HasValue ? Model.User.Id.Value : 0;
+}
+
+
+@section leftMenu{
+    <partial name="MenuLeftPublic" model="Model" />
+}
+
+<h1>Prohlášení o ochraně osobních údajů</h1>
+<p class="bigger">Striktně respektujeme zákon č. 101/2000 Sb. o ochraně osobních údajů ("ZOOÚ") a nařízení Evropského parlamentu a Rady 2016/679 ze dne 27.04.2016 v podobě jeho aktuálního znění, které ZOOÚ od 25.05.2018 nahrazuje.</p>
+
+<p>Veškerá data uchováváme pouze po dobu nutnou k jejich zpracování, a to pouze pokud je zpracování potřeba. Přístup k těmto datům má pouze v nezbytně nutném rozsahu jen omezený počet prověřených osob zavázaných mlčenlivostí, ať už naši zaměstnanci nebo zaměstnanci certifikační autority.</p>
+
+<p class="bigger strong">Vaše data přísně chráníme před zneužitím třetí osobou.</p>
+<p>Vaše osobní údaje neprodáváme, nepronajímáme ani jinak nesdílíme se třetími osobami a žádné osobní údaje nemohou být použity k marketingovým účelům.</p>
+
+<p>Pravidelně kontrolujeme a udržujeme naše systémy tak, aby bylo zamezeno jakémukoliv úniku informací. V souvislosti s tím si vyhrazujeme právo zahájit vyšetřování v případě sebemenšího podezření na jakoukoliv podezřelou aktivitu. Vyhrazujeme si také právo tyto údaje poskytnout orgánům činným v soudním či jiném trestním řízení či šetření orgány státní moci.</p>
+
+<p class="h3">Statistické informace</p>
+<p>Při návštěvě webových stránek mohou být sbírány některé informace pro statistické účely. Tyto informace mají neosobní povahu a nejsou žádným způsobem zpracovávány k identifikaci konkrétního zákazníka. Jedná se mj. o název prohlížeče, operačního systému, rozlišení obrazovky apod. Tyto informace jsou statisticky analyzovány například za účelem zlepšení použitelnosti webových stránek nebo k zajištění jejich rychlejšího načítání.</p>
+
+<p class="h3">Soubory cookies</p>
+<p>
+    Tyto webové stránky používají soubory cookies pro personalizaci, statistické a marketingové účely.
+    Používáním těchto webových stránek souhlasíte s používáním souborů cookies.
+    Pokud s používáním souborů cookies nesouhlasíte, opusťte tyto stránky nebo vypněte soubory cookies prostřednictvím nastavení či doplňků webového prohlížeče. Upozorňujeme, že takové nastavení může mít negativní vliv na správnou funkčnost těchto webových stránek.
+</p>
+
+<p class="h3">Právo na informace</p>
+<p>Uživatel má právo bezplatně vyžádat informace o něm shromážděné. Může tak učinit písemně na kontaktní adresu společnosti diva2.cz, popřípadě e-mailem se zaručeným elektronickým podpisem identifikujícím odesílatele.</p>
+
+<p class="h3">Právo na opravu</p>
+<p>V případě, že údaje u vašeho účtu nejsou aktuální nebo jsou nekompletní, máte právo tyto údaje aktualizovat nebo doplnit. Můžete tak učinit po přihlášení ke svému účtu v sekci Nastavení účtu. Upozorňujeme, že údaje na vystavených fakturách z předchozích měsíců aktulizovat nelze.</p>
+
+<p class="h3">Právo na vymazání</p>
+<p>Právo na vymazání neznamená absolutní "právo na zapomenutí". Například nelze vymazat data na fakturách a daňových dokladech, která musíme uchovávat po dobu vyžadovanou zákonem. Mohou být vymazána pouze data, u kterých nemáme zákonnou povinnost je uchovávat či archivovat.</p>
+
+<p class="h3">Právo na přenosnost</p>
+<p>Máte právo přesunout či zkopírovat osobní data bezpečným způsobem. Za tímto účelem bude umožněno stažení dat ve formátu CSV.</p>
+
+<p class="h3">Bezpečnostní procedury</p>
+<p>Informace získané prostřednictvím webových stránek mají speciální zacházení s nejvyšší prioritou na bezpečnost. V souvislosti s tím jsou zavedena opatření, která zamezují jejich úniku a ztrátě. Pro minimalizaci rizika je přenost informací chráněn protokolem SSL/TLS. Upozoroňujeme, že i přes veškerá opatření může existovat jistá míra rizika, například v důsledku neodborného, bezohledného či laického chování klienta, mj. absence firewallu či antivirového programu na klientském počítači, používáním některých doplňků webového prohlížeče apod.</p>
+<p>Upozorňujeme, že v rámci zvýšení bezpečnosti mohou být ukládány některé informace do tzv. "protokolárních souborů" (dále jen jako "Protokoly"). Tyto protokoly mohou, ale nemusí, obsahovat:</p>
+
+<ul style="margin: 0 0 12px 28px;">
+    <li>IP adresu klientského počítače</li>
+    <li>informace o prohlížeči a jeho verzi</li>
+    <li>informace o operačním systému a jeho verzi</li>
+    <li>časovou známku akce</li>
+    <li>údaje o prováděné akci</li>
+</ul>
+<p class="h3">Osobní data, které evidujeme</p>
+<table class="table table-bordered gdpr" style="margin:10px">
+    <tbody>
+        <tr>
+            <td>Typ</td>
+            <td>Povinné</td>
+            <td>Důvod</td>
+            <td style="width: 150px"></td>
+        </tr>
+        <tr>
+            <td>Jméno</td>
+            <td>*</td>
+            <td>Pro identifikaci vaší osoby na lekcích</td>
+            <td rowspan="3">
+                @if (Model.User.GdprBase == true && Model.User.GdprBaseDT.HasValue)
+                {
+                    <div class="alert alert-success" role="alert">
+                        S pravidly jste souhlasil(a) @Model.User.GdprBaseDT.Value.ToString("dd.MM.yyyy HH:mm")
+                    </div>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-primary btn-sm" onclick="showGdpr()">Zadat souhlas</button>
+                }
+
+            </td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>*</td>
+            <td>Pro základní kontakt mezi rezervačním systémem. Zaslání zapomenutého hesla, zprávy o zrušení lekce, o volném místě na lekci atd.</td>
+
+        </tr>
+        <tr>
+            <td>Mobilní číslo</td>
+            <td></td>
+            <td>
+                Používá se pro rychlejší a operativnější komunikaci se zákazníkem. Oznámení o uvolnění místa na lekci, popřípadě její zrušení.
+                <i>Mobilní číslo lze v osobních datech vymazat.</i>
+            </td>
+
+        </tr>
+        <tr>
+            <td>Souhlas se zasíláním hromadných informací emailem uvnitř firmy.</td>
+            <td></td>
+            <td>Souhlasem akceptujete, že chcete dostávat informace o akcích a novinkách firmy @Model.MainIniCover.MainIniObj.MasterName</td>
+            <td>
+                @{
+                    string typeMsgNews = "info";
+                    string msgNews = " K zasílání hromadných emailů jste se dosud nevyjádřil(a).";
+                }
+                @if (Model.User.GdprNews.HasValue)
+                {
+                    if (Model.User.GdprNews.Value == true)
+                    {
+                        if (Model.User.GdprNewsDT.HasValue)
+                        {
+
+                            typeMsgNews = "success";
+                            msgNews = $"S pravidly jste souhlasil(a) {@Model.User.GdprNewsDT.Value.ToString("dd.MM.yyyy HH:mm")}";
+                        }
+                        else {
+                            typeMsgNews = "warning";
+                            msgNews = $"Neexistuje datum souhlasu";
+                        }
+                    }
+                    else
+                    {
+                        typeMsgNews = "warning";
+                        if (Model.User.GdprNewsDT.HasValue)
+                        {
+                            msgNews = $"S pravidly jste nesouhlasil(a) {@Model.User.GdprNewsDT.Value.ToString("dd.MM.yyyy HH:mm")}";
+                        }
+                        else
+                        {
+                            msgNews = $"K pravidlům jste se dosud nevyjádřil(a)";
+                        }
+                    }
+                }
+
+                <div class="alert alert-@typeMsgNews" id="gdprNewsAlert" role="alert">
+                    @msgNews
+                </div>
+
+
+                <button type="button" class="btn btn-primary btn-sm" onclick="showNews()">Zadat (ne) souhlas</button>
+
+
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="modal" tabindex="-1" role="dialog" id="frmGdpr" data-id="@userId">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Souhlas se zpracováním</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                @if (userId > 0)
+                {
+                    <div class="row">
+                        <div class="col-8">   Souhlasím se zpracováním osobních údajů dle nařízení Evropského parlamentu a Rady (EU) č. 2016/679 ze dne 27. dubna 2016.</div>
+                        <div class="col-4">
+                            @if (Model.User.GdprBase != true)
+                            {
+                                <button type="button" id="sendYes" class="btn btn-success btn-sm" onclick="sendYes()">Souhlasím</button>
+                            }
+                            else
+                            {
+                                <div class="alert alert-succes" id="modalGdprAlert" role="alert">
+                                    Zatím jste s nesouhlasil(a) se zpracováním osobních údajů.
+                                </div>
+                            }
+                        </div>
+
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger" role="alert">
+                        Nejste přihlášen
+                    </div>
+                }
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" tabindex="-1" role="dialog" id="frmNews" data-id="@userId">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Hromadné zasíláním emailů</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                @if (userId > 0)
+                {
+                    <div class="row">
+                        <div class="col-7">Souhlasím s hromadným zasíláním emailů, týkajících se akcí a všeobecných informacích o dění týkající se výhradně @Model.MainIniCover.MainIniObj.MasterName.</div>
+                        <div class="col-5">
+
+                            <div class="row">
+                                <div class="col-6">
+                                    @if (Model.User.GdprNews == false)
+                                    {
+                                        <button type="button" id="sendNews_1" class="btn btn-success btn-sm" onclick="sendNews(1)">Souhlasím</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" id="sendNews_0" class="btn btn-warning btn-sm" onclick="sendNews(0)">Nesouhlasím</button>
+                                    }
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                @{
+                                    typeMsgNews = "info";
+                                    msgNews = " K zasílání hromadných emailů jste se dosud nevyjádřil(a).";
+                                }
+                                @if (Model.User.GdprNews.HasValue)
+                                {
+                                    if (Model.User.GdprNews.Value == true)
+                                    {
+                                        if (Model.User.GdprNewsDT.HasValue)
+                                        {
+
+                                            typeMsgNews = "success";
+                                            msgNews = $"S pravidly jste souhlasil(a) {@Model.User.GdprNewsDT.Value.ToString("dd.MM.yyyy HH:mm")}";
+                                        }
+                                        else
+                                        {
+                                            typeMsgNews = "warning";
+                                            msgNews = $"Neexistuje datum souhlasu";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        typeMsgNews = "warning";
+                                        if (Model.User.GdprNewsDT.HasValue)
+                                        {
+                                            msgNews = $"S pravidly jste nesouhlasil(a) {@Model.User.GdprNewsDT.Value.ToString("dd.MM.yyyy HH:mm")}";
+                                        }
+                                        else
+                                        {
+                                            msgNews = $"K pravidlům jste se dosud nevyjádřil(a)";
+                                        }
+                                    }
+                                }
+
+                                <div class="alert alert-@typeMsgNews" id="modalGdprNewsAlert" role="alert">
+                                    @msgNews
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger" role="alert">
+                        Nejste přihlášen
+                    </div>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    function showGdpr() {
+
+        $("#frmGdpr").modal("show");
+
+    }
+
+    function showNews() {
+
+        $("#frmNews").modal("show");
+
+    }
+
+
+    function sendYes() {
+
+        var userId = $("#frmGdpr").data("id");
+        $.ajax({
+            type: 'GET',
+            url: '/Account/SetGdpr',
+            data: { id: userId },
+            cache: false
+        }).done(function (data) {
+            console.log(data);
+            if (data.status === true) {
+                $("#sendYes").text("Uloženo :) ");
+                location.reload();
+            }
+        });
+    }
+
+    function sendNews(value) {
+
+        var userId = $("#frmNews").data("id");
+
+        var url = '/Account/SetNews0';
+        if (value == 1) {
+            url = '/Account/SetNews1';
+        }
+
+        $.ajax({
+            type: 'GET',
+            url: url,
+            data: { id: userId },
+            cache: false
+        }).done(function (data) {
+            console.log(data);
+            if (data.status === true) {
+
+                if (value == 1) {
+
+                    $("#modalGdprNewsAlert").text("Nastaveno odesílání.");
+                    $("#gdprNewsAlert").text("Nastaveno odesílání.");
+                    $("#sendNews_1").hide();
+
+                } else {
+
+                    $("#modalGdprNewsAlert").text("Nastaveno ne odesílání.");
+                    $("#gdprNewsAlert").text("Nastaveno odesílání.");
+                    $("#sendNews_0").hide();
+
+                }
+                location.reload();
+            }
+        });
+    }
+
+</script>

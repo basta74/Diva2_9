@@ -1,0 +1,161 @@
+﻿@using Diva2.Core.Main.Main
+
+@model MainIni
+
+
+
+<div class="modal fade" id="main-edit" tabindex="-1" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContactLabel">Editace hlavního nastavení</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form asp-action="SettingMainEdit">
+                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label asp-for="MasterUrl" class="control-label"></label>
+                                <input asp-for="MasterUrl" class="form-control" />
+                                <span asp-validation-for="MasterUrl" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label asp-for="MasterUrlText" class="control-label"></label>
+                                <input asp-for="MasterUrlText" class="form-control" />
+                                <span asp-validation-for="MasterUrlText" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label asp-for="MasterName" class="control-label"></label>
+                                <input asp-for="MasterName" class="form-control" />
+                                <span asp-validation-for="MasterName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label asp-for="MasterJmenoMajitele" class="control-label"></label>
+                                <input asp-for="MasterJmenoMajitele" class="form-control" />
+                                <span asp-validation-for="MasterJmenoMajitele" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <div class="form-group">
+                                <label asp-for="MasterStreet" class="control-label"></label>
+                                <input asp-for="MasterStreet" class="form-control" />
+                                <span asp-validation-for="MasterStreet" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="MasterZip" class="control-label"></label>
+                                <input asp-for="MasterZip" class="form-control" />
+                                <span asp-validation-for="MasterZip" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="form-group">
+                                <label asp-for="MasterPost" class="control-label"></label>
+                                <input asp-for="MasterPost" class="form-control" />
+                                <span asp-validation-for="MasterPost" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <div class="form-group">
+                                <label asp-for="Email" class="control-label"></label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="ICO" class="control-label"></label>
+                                <input asp-for="ICO" class="form-control" />
+                                <span asp-validation-for="ICO" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label asp-for="DIC" class="control-label"></label>
+                                <input asp-for="DIC" class="form-control" />
+                                <span asp-validation-for="DIC" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="RegisterEmail" /> @Html.DisplayNameFor(model => model.RegisterEmail)
+                        </label>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="SmsActive" /> @Html.DisplayNameFor(model => model.SmsActive)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label asp-for="SmsName" class="control-label"></label>
+                                <input asp-for="SmsName" class="form-control" />
+                                <span asp-validation-for="SmsName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label asp-for="SmsPass" class="control-label"></label>
+                                <input asp-for="SmsPass" class="form-control" />
+                                <span asp-validation-for="SmsPass" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="form-group">
+                                <label asp-for="TextNaPrijmovyDoklad" class="control-label"></label>
+                                <input asp-for="TextNaPrijmovyDoklad" class="form-control" />
+                                <span asp-validation-for="TextNaPrijmovyDoklad" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-primary" data-save="modal">Save</button>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Diva2_8.Core")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+07641cb57e7a7ad802e0e15893f0a362b94228f7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5d9da23c798a546c8ac54b7cae9763f17e2220d1")]
 [assembly: System.Reflection.AssemblyProductAttribute("Diva2_8.Core")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Diva2_8.Core")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

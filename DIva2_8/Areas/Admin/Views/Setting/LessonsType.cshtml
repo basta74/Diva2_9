@@ -1,0 +1,36 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Lessons
+@model AdminPageModel
+@{
+    ViewData["Title"] = "LektorList";
+}
+
+<!-- Modal placeholder -->
+<div id="modal-placeholder"></div>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-success" style="margin: 5px;" data-toggle="ajax-modal" data-target="#lessontype-create" data-url="@Url.Action("LessonTypeCreate")">
+    Přidat typ lekce
+</button>
+
+<table class="table table-sm">
+    <thead>
+        <tr>
+
+            <th scope="col">Název</th>
+            <th scope="col">Popis</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var le in Model.TypyLekci)
+        {
+            <tr>
+                <th scope="row" style="width: 30%">@le.Nazev</th>
+                <td>@le.Popis</td>
+                <td><button type="button" class="btn btn-outline-primary btn-sm" data-toggle="ajax-modal" data-target="#lessontype-edit" data-url="@Url.Action("LessonTypeEdit")/@le.Id">Edit</button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+

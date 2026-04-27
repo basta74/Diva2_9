@@ -1,0 +1,71 @@
+﻿@using Diva2Web.Models.Users
+@model UserModel
+@{
+    ViewData["Title"] = "LogIn";
+    Layout = "~/Views/Shared/_LayoutAccount.cshtml";
+}
+
+<!-- Modal placeholder -->
+<div id="modal-placeholder"></div>
+
+<!-- Button trigger modal -->
+
+
+
+<div class="card" style="max-width: 600px; min-width: 400px">
+    <div class="card-body">
+        <h5 class="card-title">Informace uživatele</h5>
+
+        <table class="table table-striped" style="width: 500px" cellpadding="2" cellspacing="0">
+            <tbody>
+
+                <tr><td class="nadpis textri">Titul :&nbsp;</td><td></td></tr>
+                <tr><td class="nadpis textri">Jméno :&nbsp;</td><td>@Model.Jmeno</td></tr>
+                <tr><td class="nadpis textri">Příjmení :&nbsp;</td><td>@Model.Prijmeni</td></tr>
+                <tr>
+                    <td class="nadpis textri">Email :&nbsp;</td>
+                    <td>@Model.Email</td>
+                </tr>
+                <tr>
+                    <td class="nadpis textri">Telefon :&nbsp;</td>
+                    <td>@Model.Telefon</td>
+                </tr>
+                <tr><td class="nadpis textri">Ulice :&nbsp;</td><td>@Model.Ulice</td></tr>
+                <tr><td class="nadpis textri">PSČ :&nbsp;</td><td>@Model.Psc</td></tr>
+                <tr><td class="nadpis textri">Pošta :&nbsp;</td><td>@Model.Posta</td></tr>
+                <tr bgcolor="#F0F0F0">
+                    <td align="right"></td>
+                    <td align="right">
+                        <button type="button" class="btn btn-primary btn-sm" style="margin: 5px;" data-toggle="ajax-modal" data-target="#user-edit" data-url="@Url.Action("DetailEdit")">
+                            Editace
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="nadpis">Heslo :&nbsp;</td>
+                    <td>Zadáno</td>
+                </tr>
+                <tr bgcolor="#F0F0F0">
+                    <td>
+                        <a href="/Home/Index" class="btn btn-outline-secondary btn-sm">Zpět na úvod</a>
+                    </td>
+                    <td align="right">
+                        <button type="button" class="btn btn-primary btn-sm" data-toggle="ajax-modal" data-target="#user-pass-edit" data-url="@Url.Action("PasswordEdit")">
+                            Změna hesla
+                        </button>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+@section Scripts{
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
+
+
+

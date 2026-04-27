@@ -1,0 +1,29 @@
+﻿@model LoginWithRecoveryCodeModel
+@{
+    ViewData["Title"] = "Obnovení pomocí ověřovacího kódu";
+Layout = "~/Views/Shared/_LayoutAccount.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+<p>
+    Požádali jste o přihlášení pomocí kódu pro obnovení. Toto přihlášení nebude zapamatováno, dokud nezadáte
+    přihlašovací kód autentizátoru nebo deaktivujte 2FA a znovu se přihlasíte.
+</p>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="RecoveryCode"></label>
+                <input asp-for="RecoveryCode" class="form-control" autocomplete="off" />
+                <span asp-validation-for="RecoveryCode" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Přihlásit</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

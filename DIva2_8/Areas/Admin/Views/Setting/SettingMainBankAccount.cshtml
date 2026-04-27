@@ -1,0 +1,31 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Main
+@model AdminPageModel
+
+
+
+<!-- Modal placeholder -->
+<div id="modal-placeholder"></div>
+
+<table class="table table-bordered">
+    <tr>
+        <th>Aktivní</th>
+        <th>Předčíslí</th>
+        <th>Účet</th>
+        <th>Banka</th>
+        <th></th>
+    </tr>
+    <tr>
+
+        <td>@Model.MainIniCover.BankAccountObj.Active</td>
+        <td>@Model.MainIniCover.BankAccountObj.AccountPrefix</td>
+        <td>@Model.MainIniCover.BankAccountObj.AccountNumber</td>
+        <td>@Model.MainIniCover.BankAccountObj.BankCode</td>
+        <td>
+            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="ajax-modal" data-target="#main-edit-bankaccount" data-url="@Url.Action("SettingMainBankAccountEdit")">
+                Editace bankovního účtu
+            </button>
+        </td>
+
+    </tr>
+</table>

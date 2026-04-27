@@ -1,0 +1,277 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Trans
+@using Diva2.Core.Main.Content
+
+@model AdminPageModel
+
+@{
+    string cont = this.ViewContext.RouteData.Values["controller"].ToString();
+    string action = ViewContext.RouteData.Values["action"].ToString();
+
+    var menu = Model.PublicMenuItems.FirstOrDefault();
+}
+
+<!-- Pobocky -->
+<div class="list-group">
+    @if (Model.Pobocky.Where(d => d.Visible == true).Count() == 1)
+    {
+        <a href="/Home/Index" class="list-group-item list-group-item-action active">@Model.Pobocka.Name</a>
+    }
+    else
+    {
+
+        @foreach (var pob in Model.Pobocky.Where(d => d.Visible == true))
+        {
+            if (pob.Id == Model.Pobocka.Id)
+            {
+                <a href="/Home/Index" class="list-group-item list-group-item-action active">@pob.Name</a>
+            }
+            else
+            {
+                <a href="/Home/SetPob/@pob.Id" class="list-group-item list-group-item-action">@pob.Name</a>
+            }
+        }
+
+    }
+
+</div>
+
+<!-- Pages fill menu -->
+@if (Model.Pages != null && Model.Pages.Count() > 0)
+{
+    foreach (Page p in Model.Pages)
+    {
+        string ac = p.Type.ToString() == @action ? "active" : "";
+        menu.Items.Add(new Diva2.Core.Models.MenuItem() { Url = p.Type.ToString(), Controller = p.Controller, Method = p.Method, Text = p.UrlName, Order = p.Order });
+    }
+}
+
+
+<!-- Menu s pages -->
+@if (menu != null && menu.Items != null && menu.Items.Count > 0)
+{
+    <div class="list-group  d-none d-md-block" style="margin-top: 5px">
+        @foreach (var item in menu.Items.OrderBy(d => d.Order))
+        {
+            string ac = "";
+            if (@item.Method == @action && (@item.Controller == @cont))
+            {
+                ac = "active";
+            }
+            <a href="@item.Url" class="list-group-item list-group-item-action @ac">@item.Text</a>
+        }
+    </div>
+
+}
+
+
+
+
+@if (Model.User.Id.HasValue)
+{
+    if (Model.User.Zbytek != null)
+    {
+        <div class="card" style="margin-top: 15px">
+            <div class="card-header">
+                @Model.User.CeleJmeno
+            </div>
+            <div class="card-body" style="padding: 10px 10px;">
+                @{
+                    int kr = 0;
+                    Model.User.Zbytek.Kredity.TryGetValue(Model.Pobocka.PokladnaId, out kr);
+                }
+
+                Neomezené kredity: @kr
+
+                @if (Model.GetIniPobBool("kreditCasovy"))
+                {
+                    long unixTime = ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
+
+
+                    var krCas = Model.User.Zbytek.KredityCas.Where(d => d.PokladnaId == Model.Pobocka.PokladnaId && d.PlatnostDoUnix > unixTime);
+
+                    if (krCas != null)
+                    {
+                        <div style="margin-top: 15px">Časové kredity</div>
+                        <table class="table">
+
+                            @foreach (UserZbytekKreditCas zb in krCas)
+                            {
+                                <tr>
+                                    <td>@zb.Kredit kr.</td>
+                                    @if (zb.Aktivni)
+                                    {
+                                        <td>@zb.PlatnostOd.ToString("dd.MM.yyyy")</td>
+                                        <td>@zb.PlatnostDo.ToString("dd.MM.yyyy")</td>
+                                    }
+                                    else
+                                    {
+                                        <td colspan="2">Neaktivováno</td>
+                                    }
+                                </tr>
+                            }
+                        </table>
+
+
+                    }
+                }
+            </div>
+        </div>
+    }
+
+    if (Model.GetIniPobBool("pobocka_vazba_na_datum"))
+    {
+
+        <div class="card" style="margin-top: 15px">
+            <div class="card-header">
+                Objednané hodiny
+            </div>
+            <div class="card-body">
+                <table class="table-bordered" id="js-reserved-item" style="width: 100%">
+                    @{
+                        bool jeNahr = false;
+                    }
+                    @foreach (var pob in Model.Pobocky.Where(d => d.Visible == true))
+                    {
+
+                        var data = Model.User.ObjednaneLekce.Where(d => d.PobockaId == pob.Id);
+                        if (data != null && data.Count() > 0)
+                        {
+                            <tr>
+                                <td colspan="4">@pob.Name</td>
+                            </tr>
+                            @foreach (var obj in Model.User.ObjednaneLekce.Where(d => d.PobockaId == pob.Id))
+                            {
+                                string classReserved = "reserved";
+                                if (obj.NahradnikJa)
+                                {
+                                    jeNahr = true;
+                                    classReserved = "reserved-nahradnik";
+                                }
+                                <tr id="js-row-@obj.LekceId" class="@classReserved">
+                                    <td>@obj.Lekce.Datum.ToString("dddd").Substring(0, 2)</td>
+                                    <td>@obj.Lekce.Datum.ToString("dd.MM.")</td>
+                                    <td>@obj.Lekce.Cas.ToString(@"hh\:mm")</td>
+                                    <td class="text-right">@obj.Lekce.Kredit kr.</td>
+
+                                </tr>
+
+                            }
+
+                        }
+                    }
+
+                    @if (jeNahr)
+                    {
+                        <tr>
+                            <td></td>
+                            <td colspan="3">Náhradník</td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+    }
+}
+else
+{
+
+    <div class="card" style="margin-top: 15px">
+        <div class="card-header">
+            Přihlaste  se
+        </div>
+        <div class="card-body">
+
+            <form action="/Account/Login" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+
+
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label class="control-label" for="Nick">Email</label>
+                            <input class="form-control" type="text" data-val="true" data-val-required="The Email field is required." id="Nick" name="Nick" value="">
+                            <span class="text-danger field-validation-valid" data-valmsg-for="Nick" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-group">
+                            <label class="control-label" for="Heslo">Heslo</label>
+                            <input class="form-control" type="password" data-val="true" data-val-required="The Heslo field is required." id="Heslo" name="Heslo">
+                            <span class="text-danger field-validation-valid" data-valmsg-for="Heslo" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <a href="#" id="js-login-modal" class="btn btn-outline-secondary btn-sm">Přihlášení+</a>
+                        </div>
+                        <div class="col-6" style="text-align: right; padding-right: 10px">
+                            <input type="submit" class="btn btn-primary btn-sm" value="Přihlášení" style="">
+                            <input type="hidden" name="akce" value="login">
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+}
+
+<!-- Modal placeholder -->
+<div id="modal2"></div>
+
+<script>
+    $(document).ready(function () {
+
+        var placeholderElement = $('#modal2');
+
+        $("#js-login-modal").on("click", this, function () {
+
+            $.ajax({
+                method: "GET",
+                url: "/account/loginModal",
+            })
+                .done(function (data) {
+                    placeholderElement.html(data);
+                    placeholderElement.find('.modal').modal('show');
+                });
+        });
+    });
+</script>
+
+@if (Model.RozvrhyObj != null)
+{
+    <div class="card" style="margin-top: 15px">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-7">Jen určité lektory</div>
+                <div class="col-5"><span class="badge badge-pill badge-info" id="js-reload" style="cursor: pointer;">Vyčistit</span></div>
+            </div>
+        </div>
+        <div class="card-body">
+
+
+            @foreach (var lek in Model.Lektori)
+            {
+                if (Model.RozvrhyObj.ActLectors.Contains(lek.Id))
+                {
+                    <div class="input-group margin">
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default" style="padding: 0px 12px;"><input type="checkbox" name="figures2" class="js-figure-check js-figure-@lek.Id" data-id="@lek.Id" /></button>
+                            @lek.Nick
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+}

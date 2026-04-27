@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Web</title>
+    <link rel="stylesheet" href="/css/boot/default.css" />
+    <link rel="stylesheet" href="/css/site.css?v=263127" />
+    <link rel="stylesheet" href="/css/rozvrh.css?v=263127" />
+    <link rel="stylesheet" href="/css/jquery-ui.css" />
+    <script src="/lib/jquery/dist/jquery.js"></script>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        .container {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+
+
+</head>
+<body>
+
+
+    <div class="container">
+        <div>
+            @RenderBody()
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/jquery-ui.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @RenderSection("Scripts", required: false)
+    @RenderSection("ScriptsMenu", required: false)
+
+</body>
+</html>

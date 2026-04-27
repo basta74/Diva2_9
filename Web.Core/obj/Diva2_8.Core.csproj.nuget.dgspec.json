@@ -53,13 +53,9 @@
           "framework": "net9.0",
           "targetAlias": "net9.0",
           "dependencies": {
-            "Microsoft.AspNet.Identity.EntityFramework": {
+            "Microsoft.Extensions.Identity.Core": {
               "target": "Package",
-              "version": "[2.2.4, )"
-            },
-            "Microsoft.AspNetCore.Identity": {
-              "target": "Package",
-              "version": "[2.3.9, )"
+              "version": "[9.0.15, )"
             },
             "Microsoft.Extensions.Identity.Stores": {
               "target": "Package",

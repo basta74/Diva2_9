@@ -1,0 +1,83 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Comunications;
+@using Diva2.Core.Extensions;
+@using Diva2.Core;
+
+@model AdminPageModel
+
+@{
+
+    IPagedList<SmsLog> list = ViewBag.smss as IPagedList<SmsLog>;
+
+}
+
+<div id="modal-placeholder"></div>
+
+<partial name="Main/Pagination" />
+
+<table class="table table-hover">
+    <tr>
+        <th>Uživatel</th>
+        <th>tel</th>
+        <th>Text</th>
+        <th>Vytvořeno</th>
+        <th>Odesláno</th>
+        <th>Stav</th>
+        <th>Kredit</th>
+    </tr>
+
+    @foreach (var l in list.Data)
+    {
+        <tr class="jsFormModal" data-id="@l.UserId">
+            <td class="jmeno" style="cursor: pointer">detail id: @l.UserId</td>
+            <td>@l.Cislo</td>
+
+            <td>@l.Text.Substring(0, 100) ...</td>
+            <td>@DateTimeExtensions.FromUnix(l.CreateUnix).ToString("dd.MM.yyyy HH:mm:ss")</td>
+            <td>
+                @if (l.SendUnix > 0)
+                {
+                    <span>@DateTimeExtensions.FromUnix(l.SendUnix).ToString("dd.MM.yyyy HH:mm:ss")</span>
+                }
+            </td>
+            <td>@Html.Raw(@l.Stav == 0 ? "<span style='color: green'><b>ano</b></span>" : "<span style='color: red'>chyba</span>")</td>
+            <td>
+                @l.Credit
+            </td>
+            <td>
+                @if (l.Stav != 0)
+                {
+                    <button type="button" class="btn btn-primary btn-sm" data-toggle="ajax-modal" data-target="#sms-detail" data-url="@Url.Action("Detail")/@l.Id">Detail</button>
+                }
+            </td>
+
+        </tr>
+    }
+</table>
+<partial name="Main/Pagination" />
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            var placeholderElement = $('#modal-placeholder');
+
+
+            $(document).on('click', 'tr.jsFormModal td.jmeno', function (event) {
+                var hodId = $(this).closest('tr').data('id');
+                showZak(hodId);
+            });
+
+            function showZak(zakId) {
+                $.ajax({
+                    method: "GET",
+                    url: "/Admin/Customer/DetailM",
+                    data: { id: zakId }
+                }).done(function (data) {
+                    placeholderElement.html(data);
+                    placeholderElement.find('.modal').modal('show');
+                });
+            }
+        });
+    </script>
+}

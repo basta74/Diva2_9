@@ -1,0 +1,233 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Lektori;
+
+@model Mzda
+
+
+<div class="modal fade" id="wage-edit" tabindex="-1" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContactLabel">Editace mzdy</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form asp-action="WageEdit">
+                    <input type="hidden" name="PokladnaId" id="PokladnaId" value="@Model.PokladnaId" />
+                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Mesic" class="control-label"></label>
+                                <input asp-for="Mesic" class="form-control" />
+                                <span asp-validation-for="Mesic" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Den" class="control-label"></label>
+                                <input asp-for="Den" class="form-control" />
+                                <span asp-validation-for="Den" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Hodina" class="control-label"></label>
+                                <input asp-for="Hodina" class="form-control" />
+                                <span asp-validation-for="Hodina" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Zakaznik" class="control-label"></label>
+                                <input asp-for="Zakaznik" class="form-control" />
+                                <span asp-validation-for="Zakaznik" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Pro100" class="control-label"></label>
+                                <input asp-for="Pro100" class="form-control" />
+                                <span asp-validation-for="Pro100" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2"></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Zak01" class="control-label"></label>
+                                <input asp-for="Zak01" class="form-control" />
+                                <span asp-validation-for="Zak01" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Zak02" class="control-label"></label>
+                                <input asp-for="Zak02" class="form-control" />
+                                <span asp-validation-for="Zak02" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Zak03" class="control-label"></label>
+                                <input asp-for="Zak03" class="form-control" />
+                                <span asp-validation-for="Zak03" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Zak04" class="control-label"></label>
+                                <input asp-for="Zak04" class="form-control" />
+                                <span asp-validation-for="Zak04" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Zak05" class="control-label"></label>
+                                <input asp-for="Zak05" class="form-control" />
+                                <span asp-validation-for="Zak05" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Zak06" class="control-label"></label>
+                                <input asp-for="Zak06" class="form-control" />
+                                <span asp-validation-for="Zak06" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Zak07" class="control-label"></label>
+                                <input asp-for="Zak07" class="form-control" />
+                                <span asp-validation-for="Zak07" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Zak08" class="control-label"></label>
+                                <input asp-for="Zak08" class="form-control" />
+                                <span asp-validation-for="Zak08" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Zak09" class="control-label"></label>
+                                <input asp-for="Zak09" class="form-control" />
+                                <span asp-validation-for="Zak09" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Zak10" class="control-label"></label>
+                                <input asp-for="Zak10" class="form-control" />
+                                <span asp-validation-for="Zak10" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Zak11" class="control-label"></label>
+                                <input asp-for="Zak11" class="form-control" />
+                                <span asp-validation-for="Zak11" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Zak12" class="control-label"></label>
+                                <input asp-for="Zak12" class="form-control" />
+                                <span asp-validation-for="Zak12" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Zak13" class="control-label"></label>
+                                <input asp-for="Zak13" class="form-control" />
+                                <span asp-validation-for="Zak13" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Zak14" class="control-label"></label>
+                                <input asp-for="Zak14" class="form-control" />
+                                <span asp-validation-for="Zak14" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Zak15" class="control-label"></label>
+                                <input asp-for="Zak15" class="form-control" />
+                                <span asp-validation-for="Zak15" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-2"></div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Zak16" class="control-label"></label>
+                                <input asp-for="Zak16" class="form-control" />
+                                <span asp-validation-for="Zak16" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Zak17" class="control-label"></label>
+                                <input asp-for="Zak17" class="form-control" />
+                                <span asp-validation-for="Zak17" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Zak18" class="control-label"></label>
+                                <input asp-for="Zak18" class="form-control" />
+                                <span asp-validation-for="Zak18" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Zak19" class="control-label"></label>
+                                <input asp-for="Zak19" class="form-control" />
+                                <span asp-validation-for="Zak19" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Zak20" class="control-label"></label>
+                                <input asp-for="Zak20" class="form-control" />
+                                <span asp-validation-for="Zak20" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-primary" data-save="modal">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,320 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Diva2.Core.Extensions;
+using Diva2.Core.Main;
+using Diva2.Core.Main.Pobocky;
+using Diva2.Data;
+using Diva2.Services;
+using Diva2.Services.Managers;
+using Diva2.Services.Managers.Platby;
+using Diva2.Services.Managers.Pobocky;
+using Diva2.Services.Managers.Users;
+using Diva2Web.Models;
+using Diva2Web.Models.Admin;
+using Diva2Web.Models.Users;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+
+namespace Diva2Web.Areas.Admin.Controllers
+{
+    public class BaseAdminController : Controller
+    {
+        protected AdminPageModel aa;
+
+        protected ApplicationDbContext dbContext;
+
+        protected string subDomain;
+        protected Pobocka pobocka;
+
+        protected IHttpContextAccessor httpContextAccessor;
+
+        protected CacheHelper cache;
+        protected IPobockaService pobServ;
+        protected IUser8Service userServ;
+        protected IObjednavkyService objServ;
+
+        public BaseAdminController(ApplicationDbContext context, IHttpContextAccessor httpContextAcc, IMemoryCache memoryCache,
+            IUser8Service userSer, IPobockaService pobSer)
+        {
+            this.dbContext = context;
+            this.subDomain = dbContext.SubDomain;
+            this.httpContextAccessor = httpContextAcc;
+            this.cache = new CacheHelper(memoryCache, dbContext.SubDomain);
+            this.pobServ = pobSer;
+            this.userServ = userSer;
+            this.aa = new AdminPageModel();
+
+        }
+
+        protected void SetMainPageValues()
+        {
+
+            //SetUserFromIdentity(aa.User);
+            TrySetUserFromSess(aa.User);
+
+            SetSessions();
+
+            aa.PopulateAdminMenu();
+            aa.PopulatePublicMenu();
+            aa.PopulateDays();
+
+            aa.SubDomain = subDomain;
+            aa.Pobocky = pobServ.GetPobocky();
+
+            aa.Style = new StyleModel(this.pobocka);
+
+            aa.Zacatky = pobServ.GetZacatky().Where(d => d.PobockaId == aa.Pobocka.Id).OrderBy(d => d.Poradi).ToList();
+            aa.AplyRulesToAdminMenu();
+
+        }
+
+        public void LoadUserProperty(IObjednavkyService objServ)
+        {
+            if (aa.User.Id.HasValue)
+            {
+                aa.User.ObjednaneLekce = objServ.GetObjednaneLekceUzivatele(aa.User.Id.Value);
+                aa.User.Zbytek = objServ.GetZbytekUzivatele(aa.User.Id.Value);
+<<<<<<< HEAD
+                aa.User.HistorieLekci = objServ.GetHistoriNakupu(aa.User.Id.Value);
+=======
+                aa.User.HistorieLekci = objServ.GetHistoriTransakci(aa.User.Id.Value);
+>>>>>>> b47977cc63846b60eeb76cdbd0f10b7997ef4b69
+                aa.User.HistorieLekciYears = aa.User.HistorieLekci.Select(d =>d.Datum.Year).Distinct();
+            }
+        }
+
+        protected void SetUserFromIdentity(UserModel u)
+        {
+
+            /*
+            if (User.Identity.IsAuthenticated)
+            {
+                if (int.TryParse(User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value, out int uid))
+                {
+                    u.Id = uid;
+                    u.Nick = User.Identity.Name;
+                    //u.Email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+
+
+                    List<string> rules = userService.GetRules(uid);
+                }
+            } /**/
+        }
+
+        protected void SetUserToSession(UserModel u)
+        {
+            SessionSetInt("userId", u.Id.Value);
+            SessionSetString("userNick", u.Nick);
+            SessionSetString("userName", u.CeleJmeno);
+            SessionSetString("userEmail", u.Email);
+            int gdprB = u.GdprBase == true ? 1 : 0;
+            int gdprN = u.GdprNews == true ? 1 : 0;
+            SessionSetInt("userGdpr", gdprB);
+            SessionSetString("userGdprDt", u.GdprBaseDT.HasValue == true ? u.GdprBaseDT.Value.ToString("dd.MM.yyyy HH:mm") : "");
+            SessionSetInt("userGdprNews", gdprN);
+            SessionSetString("userGdprNewsDt", u.GdprNewsDT.HasValue == true ? u.GdprNewsDT.Value.ToString("dd.MM.yyyy HH:mm") : "");
+            SessionSetInt("userPocetObjednavek", u.PocetObjednavek); 
+
+            SessionSetString("userRules", String.Join("~", u.Rules.ToArray()));
+        }
+
+        protected void TrySetUserFromSess(UserModel u)
+        {
+            int? userId = SessionGetInt("userId");
+            if (userId.HasValue)
+            {
+                u.Id = userId;
+                u.Nick = SessionGetString("userNick");
+                u.CeleJmeno = SessionGetString("userName");
+                u.Email = SessionGetString("userEmail");
+                u.GdprBase = SessionGetBool("userGdpr");
+                u.GdprNews = SessionGetBool("userGdprNews");
+
+                if (DateTime.TryParse(SessionGetString("userGdprDt"), out DateTime dateGdpr)) {
+                    u.GdprBaseDT = dateGdpr;
+                }
+                if (DateTime.TryParse(SessionGetString("userGdprDt"), out DateTime dateNews))
+                {
+                    u.GdprNewsDT = dateNews;
+                }
+
+                u.Rules = SessionGetString("userRules").Split('~').ToList();
+                u.PocetObjednavek = SessionGetInt("userPocetObjednavek").Value;
+            }
+        }
+
+        protected void ClearSessions()
+        {
+            httpContextAccessor.HttpContext.Session.Clear();
+        }
+
+        protected void SetSessions()
+        {
+
+            var main = pobServ.GetMainIni();
+
+            aa.MainIni = main.MainIniObj;
+            aa.MainIniStyle = main.MainStyleObj;
+
+
+            int? pobId = SessionGetInt("sessPobId");
+
+            if (pobId > 0)
+            {
+                aa.Pobocka = pobServ.GetPobocky().Where(d => d.Id == pobId).FirstOrDefault();
+            }
+            else
+            {
+                aa.Pobocka = pobServ.GetPobocky().Where(d => d.Visible == true).FirstOrDefault();
+            }
+
+            pobocka = aa.Pobocka;
+            if (pobId != aa.Pobocka.Id)
+            {
+                SessionSetInt("sessPobId", aa.Pobocka.Id);
+            }
+
+            bool setDatetoSess = false;
+            var strDt = SessionGetString("sessCurrentDate");
+            if (strDt == null)
+            {
+                aa.CurrentDate = DateTime.Now;
+                aa.Monday = DateTimeExtensions.StartOfWeek(aa.CurrentDate, DayOfWeek.Monday);
+                setDatetoSess = true;
+            }
+            else
+            {
+
+                DateTime result;
+                String format = "yyyy-MM-dd";
+                if (DateTime.TryParseExact(strDt, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out result))
+                {
+                    aa.CurrentDate = result;
+                    aa.Monday = DateTimeExtensions.StartOfWeek(aa.CurrentDate, DayOfWeek.Monday);
+                }
+                else
+                {
+                    aa.CurrentDate = DateTime.Now;
+                    aa.Monday = DateTimeExtensions.StartOfWeek(aa.CurrentDate, DayOfWeek.Monday);
+                    setDatetoSess = true;
+                }
+            }
+            if (setDatetoSess)
+            {
+                var date = aa.CurrentDate.ToString("yyyy-MM-dd");
+                SessionSetString("sessCurrentDate", date);
+            }
+
+
+
+            string cacheItemKey = $"GetPobockaIni{pobocka.Id}";
+
+            IList<PobockaIni> list = cache.GetDataSub<IList<PobockaIni>>(cacheItemKey);
+            if (list == null)
+            {
+                var inis = pobServ.GetInisFromDb(pobocka.Id);
+                AdminPageModel.InisPob = new Dictionary<string, string>();
+                foreach (var ini in inis)
+                {
+                    try
+                    {
+                        AdminPageModel.InisPob.Add(ini.Name, ini.Value);
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                }
+                cache.SetDataSub<IList<PobockaIni>>(cacheItemKey, inis);
+            }
+            else
+            {
+                if (AdminPageModel.InisPob == null)
+                {
+                    AdminPageModel.InisPob = new Dictionary<string, string>();
+
+                    foreach (var ini in list)
+                    {
+                        try
+                        {
+                            AdminPageModel.InisPob.Add(ini.Name, ini.Value);
+                        }
+                        catch (Exception ex)
+                        {
+                        }
+                    }
+                }
+
+            }
+        }
+
+        protected void SessionSetCurrentDate(DateTime dt)
+        {
+            SessionSetString("sessCurrentDate", dt.ToString("yyyy-MM-dd"));
+        }
+
+        protected string SessionGetString(string key)
+        {
+            return httpContextAccessor.HttpContext.Session.GetString($"{subDomain}-{key}");
+        }
+        protected int? SessionGetInt(string key)
+        {
+            var val = httpContextAccessor.HttpContext.Session.GetInt32($"{subDomain}-{key}");
+            return val;
+        }
+        protected bool SessionGetBool(string key)
+        {
+            var val = httpContextAccessor.HttpContext.Session.GetInt32($"{subDomain}-{key}");
+            return val>0;
+        }
+
+        protected void SessionSetString(string key, string value)
+        {
+            httpContextAccessor.HttpContext.Session.SetString($"{subDomain}-{key}", value);
+        }
+        protected void SessionSetInt(string key, int value)
+        {
+
+            httpContextAccessor.HttpContext.Session.SetInt32($"{subDomain}-{key}", value);
+
+            var val = httpContextAccessor.HttpContext.Session.GetInt32($"{subDomain}-{key}");
+        }
+
+        protected int? SessionGetPobInt(string key)
+        {
+            return SessionGetInt($"{pobocka.Id}-{key}");
+        }
+
+        protected string SessionGetPobString(string key)
+        {
+            return SessionGetString($"{pobocka.Id}-{key}");
+        }
+
+        protected bool SessionGetPobBool(string key)
+        {
+            return SessionGetBool($"{pobocka.Id}-{key}");
+        }
+
+        protected void SessionSetPobString(string key, string value)
+        {
+            SessionSetString($"{pobocka.Id}-{key}", value);
+        }
+
+        protected void SessionSetPobInt(string key, int value)
+        {
+            SessionSetInt($"{pobocka.Id}-{key}", value);
+        }
+
+        public IActionResult Style()
+        {
+
+            SetSessions();
+
+            return PartialView("Style", aa);
+        }
+    }
+}

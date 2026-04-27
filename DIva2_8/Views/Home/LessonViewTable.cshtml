@@ -1,0 +1,465 @@
+﻿@using Diva2Web.Models.Lekces
+@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Trans;
+
+@model AdminPageModel
+
+@{
+    LekceBoardModel lekce = Model.LekceOneBoard;
+
+    bool showButtons = (bool)ViewBag.ShowButtons;
+
+    bool active = true;
+
+    int zbyvaMist = lekce.PocetMist - lekce.PocetZakazniku;
+
+}
+
+<table border="0" style="width: 99%">
+
+    @{
+
+        int userSelfCount = lekce.Zakaznici.Where(d => d.UserId == Model.User.Id.Value).Count();
+        int inc = 0;
+
+    }
+
+
+
+    @foreach (var obj in lekce.Zakaznici.OrderBy(d => d.Poradi))
+    {
+        if (obj.Aktivni)
+        {
+            ++inc;
+        }
+        if (Model.User.Id == obj.UserId)
+        {
+
+            <tr>
+                @if (Model.GetIniPobBool("lekceUkazZakazniky"))
+                {
+                    <td style="text-align: right;">@inc &nbsp;</td>
+                }
+                <td>
+                    @if (inc > lekce.PocetMist)
+                    {
+                        <span style="color:orange">Náhradník *** </span>
+                    }
+
+                    <b>@obj.User.CeleJmeno</b>
+
+                </td>
+                <td>
+                    @{
+                        UserText msg = null;
+                        if (Model.Messages != null)
+                        {
+                            msg = Model.Messages.Where(d => d.UserId == obj.UserId && d.KontrolniCislo == obj.KontCislo).FirstOrDefault();
+                        }
+
+                        if (msg != null)
+                        {
+                            <button type="button" class="btn btn-outline-info btn-sm" data-toggle="tooltip" data-placement="top" title="@msg.Text" data-text="@msg.Text" onclick="showVzkaz(this)">
+                                Zpráva
+                            </button>
+
+                        }
+                    }
+                </td>
+                <td>
+
+                    @{
+
+                        bool showRemoveForm = false;
+                        bool showNabidniForm = false;
+
+                        DateTime dateOhdl = lekce.DatumProOdhlaseni(Model);
+
+                        if (DateTime.Now < dateOhdl)
+                        {
+                            showRemoveForm = true;
+                        }
+                        // nelze se normalne odhlasit
+                        else
+                        {
+                            // pokud je to ten den muzu jen odebrat
+                            if (!obj.Aktivni)
+                            {
+                                <span>Nabídnuto</span>
+                            }
+                            else
+                            {
+                                // pokuyd se nenacita ajaxem
+                                if (showButtons)
+                                {
+
+                                    // pokud je aktivni a je v normalnich muže to zrusit jen pres instruktora
+                                    if (inc <= lekce.PocetMist)
+                                    {
+                                        if (Model.GetIniPobBool("lekceOdhlasNabidniVolne"))
+                                        {
+                                            showNabidniForm = true;
+
+                                        }
+                                        else
+                                        {
+                                            // @textOdhlaseniPoLimituTlacitko
+                                        }
+                                    }
+                                    // pokud je v nahradnikach muze se odebrat
+                                    else
+                                    {
+                                        showRemoveForm = true;
+                                    }
+                                }
+                            }
+                        }
+
+                        // pokuyd se nenacita ajaxem
+                        if (showButtons)
+                        {
+                            @if (showRemoveForm)
+                            {
+                                <button type="button" class="btn btn-danger btn-sm" onclick="showObj2(this)" style="margin: 5px">Odebrat</button>
+                                <form class="frm-remove" method="post" style="margin: 0px; display: none">
+                                    <input type="hidden" name="akce" value="del">
+                                    <input type="hidden" name="ID" value="@obj.Id">
+                                    <input type="hidden" name="aktID" value="@lekce.Id">
+                                    <input type="hidden" name="userID" value="@Model.User.Id.Value">
+                                    <input type="hidden" name="kontCislo" value="@obj.KontCislo">
+                                    <input type="hidden" name="poradi" value="@obj.Poradi">
+                                    <input type="submit" class="btn btn-warning btn-sm" style="" value=" Opravdu ??">
+                                </form>
+                            }
+                            else
+                            {
+                                if (showNabidniForm)
+                                {
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="showObj2(this)" style="margin: 5px">Nabídni</button>
+                                    <form class="frm-remove" method="post" style="margin: 0px; display: none">
+                                        <input type="hidden" name="akce" value="nab">
+                                        <input type="hidden" name="ID" value="@obj.Id">
+                                        <input type="hidden" name="aktID" value="@lekce.Id">
+                                        <input type="hidden" name="userID" value="@Model.User.Id.Value">
+                                        <input type="hidden" name="kontCislo" value="@obj.KontCislo">
+                                        <input type="hidden" name="poradi" value="@obj.Poradi">
+                                        <input type="submit" class="btn btn-warning btn-sm" style="" value=" Opravdu ??">
+                                    </form>
+                                }
+                                else
+                                {
+                                    <div class="alert alert-warning" role="alert">
+                                        Nelze se odhlásit, je po limitu.
+                                    </div>
+                                }
+                            }
+
+
+
+                        }
+
+
+                    }
+
+                </td>
+            </tr>
+
+        }
+        else
+        {
+
+            if (Model.GetIniPobBool("lekceUkazZakazniky"))
+            {
+                <tr>
+                    <td style="text-align: right;">@inc &nbsp;</td>
+                    <td>@obj.User.CeleJmeno</td>
+                </tr>
+
+            }
+        }
+        if (inc == lekce.PocetMist)
+        {
+
+            <tr><td colspan="3"> ---------------------------------------------</td></tr>
+        }
+    }
+
+    <tr>
+        <td colspan="4">
+
+            <div id="objednavka" style="display: none;">
+                <div class="" id="hodinaIn" style="border: silver 1px solid">
+
+                    @{
+
+                        int zbN = (lekce.PocetMist + lekce.PocetNahradniku) - lekce.PocetZakazniku;
+                        bool pridat = false;
+                        bool kreditOk = false;
+
+                        List<string> textInfo = new List<string>();
+                        List<string> errText = new List<string>();
+                        int jakoNahradnik = 0;
+
+                        int krCasCount = 0;
+                        int krNormCount = 0;
+
+                        int countObjPerUser = lekce.Zakaznici.Where(d => d.UserId == Model.User.Id.Value).Count();
+                    }
+
+                    @do
+                    {
+
+                        if (!Model.User.Id.HasValue)
+                        {
+                            break;
+                        }
+                        int userId = Model.User.Id.Value;
+
+                        if (inc < (lekce.PocetMist + lekce.PocetNahradniku))
+                        {
+
+                        }
+                        else
+                        {
+                            errText.Add("Lekce je již obsazena");
+                            break;
+                        }
+
+
+                        // hodina byla
+                        if (Model.GetIniPobBool("pobocka_vazba_na_datum"))
+                        {
+                            if (DateTime.Now > lekce.DatumHodina)
+                            {
+                                errText.Add("Lekce již proběhla.");
+                                break;
+                            }
+                        }
+
+                        // hodina byla
+                        if (Model.GetIniPobBool("pobocka_vazba_na_datum"))
+                        {
+                            if (DateTime.Now > lekce.DatumProPrihlaseni(Model))
+                            {
+                                errText.Add("Na hodinu se již nelze přihlásit. Je po limitu.");
+                                break;
+                            }
+                        }
+
+                        if (lekce.Zauctovano)
+                        {
+                            errText.Add("Lekce je již proběhla");
+                            break;
+                        }
+
+
+                        if (Model.GetIniPobBool("platby_nekontrolovat_stav"))
+                        {
+                            pridat = true;
+                            break;
+                        }
+
+
+
+                        int objedKr = Model.User.ObjednaneKredity;
+                        int maxMinus = Model.GetIniPobInt("maxKreditDoMinusu");
+                        int maxMinus1 = Model.GetIniPobInt("maxKreditDoMinusu1");
+                        int iniLimitMax = (Model.User.PocetObjednavek > 0) ? maxMinus : maxMinus1;
+
+
+                        /* ----------- pausalCasovy ----------------- */
+                        /*
+                        if (Model.GetIniPobBool("pausalCasovy"))
+                        {
+                        zbPausal = zbP->isPausal(userId, _SESSION["spinIni"]["pokladna"], hodina->getUnixTime());
+                        if ((zbPausal > 0) && (round(zbPausal / 86400) > 0)) {
+
+                        textInfo.Add("Pro objednání do hodiny máte platný časový paušál ještě na dalších zbytekPausal {0} dní.");
+                        pridat = true;
+                        break;
+                        } /**/
+
+                        /* ----------- kreditNeomezeny ----------------- */
+                        string krNormText = "";
+                        if (Model.GetIniPobBool("kreditNeomezeny"))
+                        {
+                            if (pridat == false)
+                            {
+
+                                if (Model.GetIniPobInt("lekce_max_count_per_user") > 0)
+                                {
+                                    int mcpu = Model.GetIniPobInt("lekce_max_count_per_user");
+
+                                    if (countObjPerUser >= mcpu)
+                                    {
+                                        errText.Add($"Maximální možný počet objedávek u standardního kreditu na 1 hodinu je {mcpu} na účet jednoho zákazníka");
+                                        break;
+                                    }
+                                }
+
+                                int kreditK = Model.User.Zbytek.Kredity.Where(d => d.Key == Model.Pobocka.PokladnaId).FirstOrDefault().Value;
+
+                                if (kreditK > 0)
+                                {
+                                    krNormCount = kreditK;
+                                    krNormText = $"Na vašem účtě je k dispozici {kreditK} časově neomezených kreditů.";
+                                }
+
+                                if ((krCasCount + krNormCount + iniLimitMax) >= (objedKr + lekce.Kredit))
+                                {
+                                    kreditOk = true;
+                                    pridat = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        // ----------- kreditCasovy -----------------
+                        string krCasText = "";
+
+                        if (Model.GetIniPobBool("kreditCasovy"))
+                        {
+                            // if (Model.User.ObjednaneKredity > 0)
+                            {
+                                int unixNow = Diva2.Core.Extensions.DateTimeExtensions.ToUnix(DateTime.Now);
+                                krCasCount = Model.User.Zbytek.KredityCas.Where(d => d.PlatnostDoUnix > unixNow).Select(d => d.Kredit).Sum();
+                                var krCasFirst = Model.User.Zbytek.KredityCas.FirstOrDefault();
+                                if (krCasCount > 0)
+                                {
+                                    krCasText = $"Na vašem účtě je k dispozici {krCasCount} časových kreditů.";
+
+                                    if (countObjPerUser >= krCasFirst.PocetLidi)
+                                    {
+                                        errText.Add($"Maximální možný počet objednávek u časového kreditu na 1 hodinu je {krCasFirst.PocetLidi} na účet jednoho zákazníka");
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        string text = "";
+
+
+                        string aaa = $"(krCasCount {krCasCount} + krNormCount {krNormCount} + iniLimitMax {iniLimitMax} ) >= (objedKr {objedKr} + lekce.Kredit {lekce.Kredit})";
+
+
+                        if ((krCasCount + krNormCount + iniLimitMax) >= (objedKr + lekce.Kredit))
+                        {
+                            kreditOk = true;
+                            pridat = true;
+                        }
+                        else
+                        {
+
+                            text = "S dostupným kreditem";
+
+                            if (objedKr > 0)
+                            {
+                                text = $"Máte objednáno lekce za {objedKr} kreditů a společně s dostupným kreditem";
+                            }
+
+                            if (krCasCount > 0)
+                            {
+                                text += $" ( časovým {krCasCount} )";
+                            }
+                            if (krCasCount > 0)
+                            {
+                                text += (krCasCount > 0) ? " a" : "";
+                                text += $" ( standardním {krNormCount} )";
+                            }
+
+                            errText.Add(text + " nedosahujete na novou objednávku");
+                            pridat = false;
+                            break;
+                        }
+
+
+
+                    } while (false);
+
+                    @if (errText.Count == 0)
+                    {
+                        if (showButtons)
+                        {
+
+                            <form id="addToHour" method="post">
+                                <input type="hidden" name="akce" value="add">
+                                <input type="hidden" id="aktID" name="aktID" value="@lekce.Id">
+                                <input type="hidden" name="userID" value="@Model.User.Id.Value">
+                                <input type="hidden" name="Administrace" value="false">
+                                <div>
+                                    <a href="#" id="vzkazHeader" style="display: block; margin: 0 5px" onClick="showTextArea()" title="Zde můžete napsat vzkaz týkající se Vaší objednávky určený obsluze sportovního centra."><u>Přidat poznámku k objednávce</u></a><br />
+                                    <div id="textArea" style="display:none; ">
+                                        <textarea align="baseline" style="margin: 5px;" name="Text" tabindex="0" rows="4" cols="43"></textarea>
+                                    </div>
+                                </div>
+
+                                @if (errText.Count == 0)
+                                {
+                                    <input type="submit" value=" Potvrdit objednání " class="btn btn-success btn-sm" style="margin: 5px">
+                                }
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="showObj1()" style="margin: 5px">Zavřít</button>
+                            </form>
+                        }
+                    }
+                </div>
+
+            </div>
+
+
+            @if (Model.User.ObjednaneKredity > 0)
+            {
+                <div class="alert alert-info">Info: Máte objednány hodiny za @Model.User.ObjednaneKredity  kreditů.</div>
+            }
+
+            @if (errText.Count > 0)
+            {
+                int i = 0;
+                foreach (string value in errText)
+                {
+                    if (i > 1)
+                    {
+                        break;
+                    }
+                    <div class="alert alert-danger">@value</div>
+                }
+            }
+
+            @if (textInfo.Count > 0)
+            {
+                int i = 0;
+                foreach (string value in textInfo)
+                {
+                    if (i > 1)
+                    {
+                        break;
+                    }
+                    <div class="alert alert-info">@value</div>
+                }
+            }
+
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3" style="text-align: center;">
+            @if (showButtons)
+            {
+                @if (pridat == true && active == true)
+                {
+                    string btnText = "Objednat";
+
+                    if (lekce.PocetZakazniku >= lekce.PocetMist)
+                    {
+                        btnText += $" jako {lekce.PocetNahradniku - zbN + 1}. náhradník z {lekce.PocetNahradniku}";
+                    }
+                    <button id="btnAdd" class="btn btn-primary btn-sm" onclick="showObj1()">@btnText</button>
+                }
+            }
+            else
+            {
+                <b>Uloženo</b>
+            }
+        </td>
+    </tr>
+
+</table>

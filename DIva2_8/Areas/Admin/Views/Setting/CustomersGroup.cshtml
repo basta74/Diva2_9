@@ -1,0 +1,33 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Lessons
+@model AdminPageModel
+
+<!-- Modal placeholder -->
+<div id="modal-placeholder"></div>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-success btn-sm" style="margin: 5px;" data-toggle="ajax-modal" data-target="#groupcustomer-create" data-url="@Url.Action("CustomerGroupCreate")">
+    Přidat skupinu
+</button>
+
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th scope="col">Název</th>
+            <th scope="col">Popis</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var le in Model.SkupinyZakaznika)
+        {
+
+        <tr>
+            <th scope="row" style="width: 30%">@le.Nazev</th>
+            <td>@le.Popis</td>
+            <td><button type="button" class="btn btn-outline-primary btn-sm" data-toggle="ajax-modal" data-target="#groupcustomer-edit" data-url="@Url.Action("CustomerGroupEdit")/@le.Id">Edit</button></td>
+        </tr>
+        }
+    </tbody>
+</table>
+

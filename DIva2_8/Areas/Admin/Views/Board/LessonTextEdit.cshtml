@@ -1,0 +1,42 @@
+﻿@using Diva2Web.Models.Lekces
+@using Diva2.Core.Main.Lessons
+
+@model LekceTextModel
+
+
+<div class="modal fade" id="lessontext-edit" tabindex="-1" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContactLabel">Editace poznámky k lekci</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form asp-action="LessonTextEdit">
+                    <input type="hidden" name="Id" id="Id" value="@Model.Id" />
+                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Text" class="control-label"></label>
+                        <textarea asp-for="Text" class="form-control"></textarea>
+                        <span asp-validation-for="Text" class="text-danger"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-primary" data-save="modal">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

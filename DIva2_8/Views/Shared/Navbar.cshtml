@@ -1,0 +1,77 @@
+﻿@using Diva2Web.Models.Admin
+@model AdminPageModel
+
+@{
+    bool spinView = Model.User.HasRule("spin_view");
+    int? userId = Model.User.Id;
+    /*
+    userId = 1;
+    spinView = true; /**/
+
+    string styleNavbar = "";
+    if (!(Model.MainIniCover.MainStyleObj.NavbarBackgroundColor == "" || Model.MainIniCover.MainStyleObj.NavbarBackgroundColor == null))
+    {
+        styleNavbar = $"background-color: {Model.MainIniCover.MainStyleObj.NavbarBackgroundColor} !important;";
+    }
+    if (!(Model.MainIniCover.MainStyleObj.NavbarBorderColor == "" || Model.MainIniCover.MainStyleObj.NavbarBorderColor == null))
+    {
+        styleNavbar += $" border: 1px solid {Model.MainIniCover.MainStyleObj.NavbarBorderColor}!important;";
+    }
+    if (!(Model.MainIniCover.MainStyleObj.NavbarBotomTop == "" || Model.MainIniCover.MainStyleObj.NavbarBotomTop == null))
+    {
+        styleNavbar += $" margin-top: {Model.MainIniCover.MainStyleObj.NavbarBotomTop}px; ";
+    }
+
+    string cont = this.ViewContext.RouteData.Values["controller"].ToString();
+    string action = ViewContext.RouteData.Values["action"].ToString();
+    var menu = Model.PublicMenuItems.Where(d => d.Area == cont).FirstOrDefault();
+
+}
+
+<nav class="navbar navbar-expand-lg @Model.MainIniCover.MainStyleObj.NavbarThemeFore @Model.MainIniCover.MainStyleObj.NavbarThemeBg" style="@styleNavbar; padding: 5px 20px;">
+    <a class="navbar-brand" href="http://@Model.MainIniCover.MainIniObj.MasterUrl">@Model.MainIniCover.MainIniObj.MasterUrlText</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor03">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+
+                @if (false || userId.HasValue && spinView)
+                {
+                    <a class="nav-link" href="/Admin/Home">
+                        Administrace
+                    </a>
+                }
+            </li>
+        </ul>
+        <div class="form-inline">
+
+            @if (menu != null && menu.Items != null && menu.Items.Count > 0)
+            {
+
+                <ul class="navbar-nav mr-auto">
+                    <li class="list-inline-item dropdown nav-item">
+                        <a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                            Menu
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right profile-dropdown">
+
+                            @foreach (var item in menu.Items.OrderBy(d => d.Order))
+                            {
+                                <a href="@item.Url" class="dropdown-item notify-item">
+                                    <span>@item.Text</span>
+                                </a>
+                            }
+                        </div>
+                    </li>
+                </ul>
+            }
+
+
+            <partial name="_LoginPartial" model="Model" />
+        </div>
+    </div>
+</nav>
+

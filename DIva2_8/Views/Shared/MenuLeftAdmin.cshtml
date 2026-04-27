@@ -1,0 +1,54 @@
+﻿@model Diva2Web.Models.Admin.AdminPageModel
+
+@{
+    string cont = this.ViewContext.RouteData.Values["controller"].ToString();
+    string action = ViewContext.RouteData.Values["action"].ToString();
+
+    var menu = Model.AdminMenuItems.Where(d => d.Area == cont).FirstOrDefault();
+}
+<div class="left main-sidebar">
+    <div class="dropdown">
+        <a class="btn btn-secondary dropdown-toggle" style="display: block" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            @Model.Pobocka.Name
+        </a>
+
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            @foreach (var item in Model.Pobocky.Where(d => d.Visible == true))
+            {
+                <a class="dropdown-item" href="/Admin/Home/SetPob/@item.Id">@item.Name</a>
+            }
+        </div>
+    </div>
+
+    @{
+        if (menu != null && menu.Items != null && menu.Items.Count > 0)
+        {
+
+            <div class="list-group" style="margin-top: 10px">
+                @foreach (var item in menu.Items.Where(d => d.Visible == true))
+                {
+                    string ac = @item.Url == @action ? "active" : "";
+
+                    <a href="/Admin/@cont/@item.Url" class="list-group-item list-group-item-action @ac">
+                        @item.Text
+                    </a>
+                }
+            </div>
+
+        }
+    }
+</div>
+
+
+
+@if (Model.ShowCalendar == true)
+{
+    if (Model.GetIniPobBool("pobocka_vazba_na_datum"))
+    {
+        <div id="datepickerIn"></div>
+    }
+    else
+    {
+        <partial name="VazbaNaDatumNe" />
+    }
+}

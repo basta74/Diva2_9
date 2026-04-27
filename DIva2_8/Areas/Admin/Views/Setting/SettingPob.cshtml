@@ -1,0 +1,514 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Pobocky
+@model AdminPageModel
+
+@{
+    int plovHod = 0;
+    if (!int.TryParse(Model.InisPob["lekceOdhlasPlovHod"], out plovHod))
+    {
+        plovHod = 0;
+    }
+
+
+    List<PobockaIni> AllInis = ViewBag.Defaults;
+
+    List<string> ns = new List<string>();
+    ns.Add("lekceOdhlasPlov");
+    ns.Add("lekceOdhlasPevne");
+    ns.Add("lekceOdhlasPevneDenPred");
+    ns.Add("lekceOdhlasPevneHodDne");
+    ns.Add("lekceOdhlasPlovHod");
+
+
+    ns.Add("public_rozvrh_ukaz_lektora");
+    ns.Add("rozvrhUkazTyp");
+    ns.Add("lektor2");
+    ns.Add("rozvrhUkazPocet");
+    ns.Add("lekceUkazLimitOd");
+    ns.Add("public_rozvrh_ukaz_kapacitu");
+
+
+    ns.Add("public_lekce_ukaz_lektory");
+    ns.Add("public_lekce_ukaz_typ");
+    ns.Add("lekceUkazZakazniky");
+    ns.Add("lekceUkazPocet");
+    ns.Add("public_lekce_ukaz_lektor_telefon");
+    ns.Add("public_lekce_ukaz_lektor_popis");
+
+    ns.Add("public_lekce_ukaz_lektory");
+    ns.Add("public_lekce_ukaz_typ");
+    ns.Add("lekceUkazZakazniky");
+    ns.Add("lekceUkazPocet");
+    ns.Add("public_lekce_ukaz_lektor_telefon");
+    ns.Add("public_lekce_ukaz_lektor_popis");
+
+    ns.Add("gate_pay");
+    ns.Add("kredit_casovy_zobraz_od");
+    ns.Add("kredit_casovy_zobraz_do");
+    ns.Add("pobocka_vazba_na_datum");
+    //ns.Add("pobVer");
+    ns.Add("pokladna");
+    ns.Add("pobPlov");
+    ns.Add("zdrojPocet");
+    ns.Add("zdrojNazev");
+    ns.Add("plovZacatek");
+    ns.Add("plovDelkaM");
+    ns.Add("pocetHodin");
+    ns.Add("enable_spin_view_all_lesson");
+    ns.Add("public_rozvrh_ukaz_casy");
+
+    ns.Add("lekce_uctuj_rychle");
+    ns.Add("doklad_prijem_text"); // NOT USE
+    ns.Add("lekce_pevhod_prihlas_den"); // NOT USE
+    ns.Add("lekce_pevhod_prihlas_cas");
+    ns.Add("lekce_plovhod_prihlas");
+
+    ns.Add("");
+    ns.Add("");
+    ns.Add("");
+
+    // https://www.facebook.com/lucie.krizkova.5
+}
+
+
+
+<div id="main-table" data-pob="@Model.Pobocka.Id">
+    <h3>Nastavení pro pobočku @Model.Pobocka.Name</h3>
+    <div class="row">
+        <div class="col-md-12 col-xl-6">
+            <h6>Nastavení okénka v rozvrhu </h6>
+            <table style="height: 152px">
+                <tr>
+                    <td style="width: 160px; text-align: center;">
+
+                        <table style="height: 158px;width: 140px;border: 1px solid;margin: 5px;">
+                            <tr>
+                                <td style="padding: 16px">
+                                    @if (Model.GetIniPob("public_rozvrh_ukaz_lektora") == "1")
+                                    {
+                                        <span class="motiv_kontra" style="font-weight: bold;">Veronika</span>
+
+                                        <br>
+                                        if ((Model.GetIniPob("lektor2") == "1"))
+                                        {
+                                            <b>2. Lektor</b>
+
+                                            <br />
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="motiv_kontra" style="font-weight: bold; color: #f2f2f2;">Veronika</span>
+
+                                        <br>
+                                    }
+
+                                    @if (Model.GetIniPob("rozvrhUkazTyp") == "1")
+                                    {
+                                        <span class="motiv_hlavni" style="font-weight: bold;">Pro těhotné</span>
+
+                                        <br>
+                                    }
+
+
+                                    <span class="motiv_hlavni" style="">Kurz cvičení s pomůckami</span><br><br>
+
+                                    @{
+
+                                        int zb = 8;
+                                        int celkem = 15;
+                                        string zbText = "";
+                                        if ((zb > 0))
+                                        {
+                                            int od = int.Parse(Model.GetIniPob("lekceUkazLimitOd"));
+
+                                            if (zb > od)
+                                            {
+                                                zbText = od + " a více";
+                                            }
+                                            else
+                                            {
+                                                zbText += zb;
+                                            }
+
+
+
+                                            string final = $"Volné: {zbText}";
+
+
+
+                                            @if (Model.GetIniPob("public_rozvrh_ukaz_kapacitu") == "1")
+                                            {
+                                                final += $" z {celkem}";
+                                            }
+                                            <span>@final</span>
+                                            <br />
+                                        }
+                                    }
+                                    <br />
+
+                                     <b>od&nbsp;17:30</b>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td>
+                        <table class="table js-switch-method  table-sm">
+                            @{
+
+
+
+                                List<string> li = new List<string>();
+
+                                li.Add("public_rozvrh_ukaz_lektora");
+                                li.Add("rozvrhUkazTyp");
+                                li.Add("lektor2");
+                                li.Add("rozvrhUkazPocet");
+                                li.Add("lekceUkazLimitOd");
+                                li.Add("public_rozvrh_ukaz_kapacitu");
+
+                                foreach (string item in li)
+                                {
+
+                                    var ini = AllInis.Where(d => d.Name == item).FirstOrDefault();
+                                    if (ini != null)
+                                    {
+                                        <tr>
+                                            <td>@ini.Desc</td>
+                                            <td>
+                                                @if (ini.Type == PobockaIniType.Bolean)
+                                                {
+                                                    string che = Model.GetIniPob(ini.Name) == "1" ? "checked" : "";
+
+
+                                                    <div class="custom-control custom-switch js-switch">
+                                                        <input type="checkbox" class="custom-control-input" data-che="@che" data-name="@ini.Name" id="@ini.Name" @che>
+                                                        <label class="custom-control-label" for="@ini.Name"></label>
+                                                    </div>
+                                                }
+                                                else if (ini.Type == PobockaIniType.Int)
+                                                {
+                                                    <div class="input-group input-group-sm js-set-int" style="width: 100px">
+                                                        <input type="text" class="form-control" placeholder="@Model.GetIniPob(ini.Name)" value="@Model.GetIniPob(ini.Name)" aria-label="" aria-describedby="@ini.Name">
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-outline-secondary" type="button" data-name="@ini.Name" id="@ini.Name">Ulož</button>
+                                                        </div>
+                                                    </div>
+                                                }
+
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-md-12 col-xl-6">
+            <h6>Nastavení zobrazení v okně hodiny</h6>
+            <table class="table js-switch-method  table-sm" style="max-width: 600px">
+                @{
+
+
+                    li = new List<string>();
+
+                    li.Add("public_lekce_ukaz_lektory");
+                    li.Add("public_lekce_ukaz_typ");
+                    li.Add("lekceUkazZakazniky");
+                    li.Add("lekceUkazPocet");
+                    li.Add("public_lekce_ukaz_lektor_telefon");
+                    li.Add("public_lekce_ukaz_lektor_popis");
+
+
+                    foreach (string item in li)
+                    {
+
+                        var ini = AllInis.Where(d => d.Name == item).FirstOrDefault();
+                        if (ini != null)
+                        {
+                            <tr>
+                                <td>@ini.Desc</td>
+                                <td>
+                                    @if (ini.Type == PobockaIniType.Bolean)
+                                    {
+                                        string che = Model.GetIniPob(ini.Name) == "1" ? "checked" : "";
+
+
+                                        <div class="custom-control custom-switch js-switch">
+                                            <input type="checkbox" class="custom-control-input" data-che="@che" data-name="@ini.Name" id="@ini.Name" @che>
+                                            <label class="custom-control-label" for="@ini.Name"></label>
+                                        </div>
+                                    }
+                                    else if (ini.Type == PobockaIniType.Int)
+                                    {
+                                        <div class="input-group input-group-sm js-set-int" style="width: 100px">
+                                            <input type="text" class="form-control" placeholder="@Model.GetIniPob(ini.Name)" value="@Model.GetIniPob(ini.Name)" aria-label="" aria-describedby="@ini.Name">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-secondary" type="button" data-name="@ini.Name" id="@ini.Name">Ulož</button>
+                                            </div>
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                            AllInis.Remove(ini);
+                        }
+                    }
+                }
+            </table>
+        </div>
+    </div>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-12 col-xl-6">
+            <h6>Nastavení chování @Model.Pobocka.Name</h6>
+            <table class="table js-switch-method  table-sm" style="max-width: 600px">
+                @{
+
+                    AllInis = ViewBag.Defaults;
+
+                    li = new List<string>();
+
+                    li.Add("maxKreditDoMinusu");
+                    li.Add("maxKreditDoMinusu1");
+                    li.Add("lekce_max_count_per_user");
+                    li.Add("lekceOdhlasNabidniVolne");
+                    li.Add("lekceUkazPocet");
+                    li.Add("lekceDoMzdy");
+
+
+
+                    foreach (string item in li)
+                    {
+
+                        var ini = AllInis.Where(d => d.Name == item).FirstOrDefault();
+                        if (ini != null)
+                        {
+                            <tr>
+                                <td>@ini.Desc</td>
+                                <td>
+                                    @if (ini.Type == PobockaIniType.Bolean)
+                                    {
+                                        string che = Model.GetIniPob(ini.Name) == "1" ? "checked" : "";
+
+
+                                        <div class="custom-control custom-switch js-switch">
+                                            <input type="checkbox" class="custom-control-input" data-che="@che" data-name="@ini.Name" id="@ini.Name" @che>
+                                            <label class="custom-control-label" for="@ini.Name"></label>
+                                        </div>
+                                    }
+                                    else if (ini.Type == PobockaIniType.Int)
+                                    {
+                                        <div class="input-group input-group-sm js-set-int">
+                                            <input type="text" class="form-control" placeholder="@Model.GetIniPob(ini.Name)" value="@Model.GetIniPob(ini.Name)" aria-label="" aria-describedby="@ini.Name">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-secondary" type="button" data-name="@ini.Name" id="@ini.Name">Ulož</button>
+                                            </div>
+                                        </div>
+                                    }
+                                </td>
+                            </tr>
+                            AllInis.Remove(ini);
+                        }
+                    }
+
+                }
+            </table>
+
+        </div>
+
+
+        <hr />
+
+        <div class="col-md-12 col-xl-6">
+            <h6>Odhlášení z lekce</h6>
+            <ol>
+                <li>Odhlášení může být <b>pevné</b>. Např. Jeden den před v 8 hodin ráno.</li>
+                <li>Nebo <b>plovoucí</b>. Např. 12 hodin před každou hodinou.</li>
+            </ol>
+
+
+
+            @if (Model.InisPob["lekceOdhlasPevne"] == "1")
+            {
+                <b>Odhlášení je pevné</b>
+                <table>
+                    <tr>
+                        <td>    Zobrazení pevné.</td>
+                        <td>
+                            <div class="custom-control custom-switch js-switch">
+                                <input type="checkbox" class="custom-control-input" data-che="checked" data-name="lekceOdhlasPevne" id="lekceOdhlasPevne" checked>
+                                <label class="custom-control-label" for="lekceOdhlasPevne"></label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Kolik dní před se lze odhlásit</td>
+                        <td> <b>@Model.InisPob["lekceOdhlasPevneDenPred"]</b></td>
+                    </tr>
+                    <tr>
+                        <td>V kolikátou hodinu ve dni se lze odhlásit</td>
+                        <td> <b>@Model.InisPob["lekceOdhlasPevneHodDne"]</b></td>
+                    </tr>
+                </table>
+
+            }
+            // plovouci
+            else if (Model.InisPob["lekceOdhlasPlov"] == "1")
+            {
+                <b>Odhlášení je plovoucí</b>
+                <table>
+                    <tr>
+                        <td>    Zobrazení plovoucí.</td>
+                        <td>
+                            <div class="custom-control custom-switch js-switch">
+                                <input type="checkbox" class="custom-control-input" data-che="checked" data-name="lekceOdhlasPlov" id="lekceOdhlasPlov" checked>
+                                <label class="custom-control-label" for="lekceOdhlasPlov"></label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Kolik hodin před konkrétní lekcí je možno se odhlásit: </td>
+                        <td> <b>@plovHod</b></td>
+
+                    </tr>
+                    @if (plovHod < 2)
+                    {
+                        <tr>
+                            <td></td>
+                            <td><p>Pozor hodnota je příliž nízká</p></td>
+                        </tr>
+
+                    }
+                </table>
+            }
+
+
+
+
+        </div>
+    </div>
+
+    <hr />
+    <div class="row">
+        <div class="col-md-12 col-xl-6">
+
+            <table class="table  table-sm">
+                <thead>
+                    <tr>
+
+                        <th scope="col">Název</th>
+                        <th scope="col">Hodnota</th>
+                        <th scope="col">Default</th>
+                        <th scope="col">Popis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (PobockaIni inid in AllInis.Where(d => !ns.Contains(d.Name)))
+                    {
+                        if (Model.InisPob.ContainsKey(inid.Name))
+                        {
+                            var iniVal = Model.InisPob[inid.Name];
+                            if (iniVal != null)
+                            {
+                                <tr>
+                                    <td>@inid.Name</td>
+                                    <td><b>@iniVal</b></td>
+                                    <td>@inid.Value</td>
+                                    <td>@inid.Desc</td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-12 col-xl-6">
+        </div>
+    </div>
+
+</div>
+
+
+
+
+@section Scripts{
+
+    <script>
+        $(document).ready(function () {
+
+            var pobocka = $("#main-table").data("pob");
+
+            $(".js-switch").on('click', 'input', function () {
+
+                var that = $(this);
+                var name = that.data("name");
+                var val = that.data("che") == "checked" ? 0 : 1;
+                var anti = val == 1 ? 0 : 1;
+                switchSwitch(name, val);
+
+
+                // only for this lekceOdhlasPlov, lekceOdhlasPevne
+                if (name == "lekceOdhlasPlov") {
+                    switchSwitch("lekceOdhlasPevne", anti);
+
+                }
+
+                if (name == "lekceOdhlasPevne") {
+                    switchSwitch("lekceOdhlasPlov", anti);
+                }
+
+            });
+
+            $(".js-set-int").on('click', 'button', function () {
+                setInt(this);
+            });
+
+
+            function switchSwitch(name, val) {
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Admin/Setting/SetIniValue',
+                    data: { pob: pobocka, item: name, value: val },
+                    cache: false
+                }).done(function (data) {
+                    location.reload();
+                });
+            }
+
+            function setInt(item) {
+                var that = $(item);
+                var text = that.closest(".js-set-int");
+                var val = text.children("input").val();
+                var name = that.data("name");
+
+                if (isInt(val)) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Admin/Setting/SetIniValue',
+                        data: { pob: pobocka, item: name, value: val },
+                        cache: false
+                    }).done(function (data) {
+                        location.reload();
+                    });
+                } else {
+                    alert("data is not an integer")
+                }
+
+                function isInt(value) {
+                    var x = parseFloat(value);
+                    return !isNaN(value) && (x | 0) === x;
+                }
+
+
+            }
+        });
+
+    </script>
+}

@@ -1,0 +1,152 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Lessons
+@model AdminPageModel
+@{
+    ViewData["Title"] = "Home Page";
+
+}
+
+
+@section leftMenu{
+        <partial name="MenuLeftPublic" model="Model" />
+}
+
+
+<table>
+    <tbody>
+        <tr>
+            <td colspan="2">
+                   <ul class="nav  justify-content-center">
+                    <li class="nav-item"><a href="#prihlaseni" class="nav-link active">Přihlášení</a></li>
+                    <li class="nav-item"><a href="#zapomenute" class="nav-link active">Zapomenuté heslo</a></li>
+                    <li class="nav-item"><a href="#registrace" class="nav-link active">Registrace</a></li>
+                    <li class="nav-item"><a href="#objednani" class="nav-link active">Objednání</a></li>
+                    <li class="nav-item"><a href="#zruseniObjednavky" class="nav-link active">Zrušení objednávky</a></li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <h3 id="prihlaseni">Přihlášení:</h3>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 30px;">&nbsp;</td>
+            <td>
+                Dle typu aplikace a nastavení centra se lze přihlísit na dvou místech.<br>
+
+                První je umístěno na stránkách všeobecně a vypadá následovně:<br><br>
+
+                <img src="~/images/help/login.PNG" style="margin: 20px ">
+                <div style="padding: 5px;">
+                    Zde zadáte přihlašovací jméno a heslo. Poté jste přesměrováni opět na úvodní stránku.<br><br>
+                    Pokud se Vám nepodaří přihlásit, budete přesměrováni na hlavní přihlašovací stránku. <br><br>
+                    <img src="~/images/help/login2.PNG" style="margin: 10px">
+                    <div>
+                        Zde můžete opět zkusit zadat Vaše přihlašovací jméno  a heslo.<br /><br />
+                        <img src="~/images/help/noActive.PNG" style="margin: 20px "><br /><br />
+                        Pokud jste se zaregistrovali, ale nepotvrdili heslo pomocí vašeho emailu, zobrazí se oznámení, že je potřeba nejdříve kliknout na potvrzovací odkaz,
+                        který jste obdrželi v emailu po registraci. Je možno si email odeslat na Vaši emailovou adresu opakovaně.
+
+                    </div>
+
+
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <h3 id="zapomenute">Zapomenuté heslo:</h3>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 30px;"></td>
+            <td>
+                <img src="~/images/help/sendPass.PNG" style="margin: 20px">
+                <div>
+                    Hesla jsou uložena v zašifrované podobě, podobu Vašeho hesla neznáme a proto odesíláme výzvu k zadání nového hesla.
+                    Na zvolený email odešleme výzvu obsahující odkaz, který Vám umožní zadat nové heslo. Po kliknutí na odkaz budete přesměrování na stránku, kde si zadáte heslo nové.
+                    Pokud se něco nedaří, lze kontaktovat obsluhu centra a ti Vám mohou heslo změnit bez nutnosti odesílat email.
+                    <br><br>
+                    <i>
+                        Nezapomeňte však, že při přihlášení Vám bude Váš prohlížeč převydplňovat heslo staré.<br><br>
+                        Následně lze v osobních údajích změnit heslo na takové, které Vám lépe vyhovuje.
+                    </i>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <h3 id="registrace">Registrace:</h3>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 30px;"></td>
+            <td>
+                V pravém horním rohu stránky se nachází odkaz na registrační formulář.<br>
+                <br>
+                <img src="~/images/help/register.PNG" style="margin: 10px">
+                <div style="padding: 5px;">
+
+                    <b>Uživatelské jméno:</b><br>
+                    Zde zadejte jméno pod kterým se chcete registrovat. např. JanaM, pavla88 janX atd.
+                    Toto jméno musí být jedinečné a systém Vás upozorní pokud je již obsazené.
+                    <br><br>
+
+                    <b>Email pro potvrzení registrace:</b><br>
+                    Zde zadejte Váš email. Na tuto emailovou adresu obdržíte po platné registraci potvrzovací zprávu. Až poté, co potvrdíte odkaz nacházející se v emailu, můžete využívat rezervační systém.
+                    <br>
+
+                    I zde Vás systém upozorní pokud je již email v systému obsazen. Pokud tomu tak je, jedná se zřejmě o údaje zadané
+                    při Vaši předchozí registraci a je vhodné si raději nechat zaslatheslo (viz. odstavec „Zapomenuté heslo“ výše).
+                    <br><br>
+
+                    <b>Heslo:</b><br>
+                    Heslo je třeba zadat opakovaně pro kontrolu správnosti.<br>
+                    Hesla jsou ukládána v zašifrované podobě a nelze je žádným způsoben dohledat. Pro jejich získání
+                    tedy nezasíláme stará hesla, ale vygenerujeme na Vaši žádost heslo nové.
+                    <br>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <h3 id="objednani">Objednání:</h3>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 30px;"></td>
+            <td>
+                Pokud jste zaregistrováni a přihlášeni, můžete se objednat na Vámi zvolený termín.<br>
+                <img src="~/images/help/rozvrh.PNG" style="margin: 20px">
+                <div style="padding: 5px;">
+                   Klikněte na políčko s lekcí. Následně se zobrazí okno s  detailem hodiny <i>(lekce, služby)</i>. 
+                    Dle nastavení rozvrhu každého centra můžete vidět počet 
+                    volných míst, po4et obsazených nebo seznam zákazníků. Pokud je lekce obsazena lze se objednat jako náhradník.
+
+                    Pokud máte k dispozici dostatek kreditů, zobrazí se tlačítko "Přidat do hodiny".
+                    <br>
+                    Pokud na objednávku dost kreditů nemáte, tak se při zobrazení detailu hodiny zobrazí hláška o tomto stavu.
+                    Hláška se zobrazí i pokud jste již na hodinu objednán. Informuje totiž o následujícím možném objednání.
+
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <h3 id="zruseniObjednavky">Zrušení objednávky:</h3>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 30px;"></td>
+            <td>
+                <div style="padding: 5px;">
+
+                    Z hodiny se lze odhlásit v čase, který určuje samotné centrum. To určí, zda se lze odhlásit např. den předem nebo do 8:00 v den konání hodiny.
+                    Pokud se chcete odhlásit v&nbsp;termínu, kdy je to ještě možné, tak na detailu hodiny klikněte na tlačítko "Odebrat".<br>
+                    Pokud se chcete odhlásit po limitu, je potřeba kontaktovat obsluhu centra.
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>

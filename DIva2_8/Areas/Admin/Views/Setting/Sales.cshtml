@@ -1,0 +1,120 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Pobocky
+@model AdminPageModel
+
+@{
+
+    List<KeyValuePair<string, int>> kp = ViewBag.Kp;
+    string type = ViewBag.Type;
+    int sum = 0;
+}
+
+@if (type == "m")
+{
+
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <a href="/Admin/Setting/Sales/y" class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true">Roční</a>
+        <a href="/Admin/Setting/Sales/m" class="btn btn-outline-primary btn-sm active" role="button" aria-pressed="true">Měsíční</a>
+        <a href="/Admin/Setting/Sales" class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true">Za den</a>
+    </div>
+    <h4 style="margin: 5px">Tržby za pokladnu: @Model.Pobocka.PokladnaId a měsíc @Model.CurrentDate.Month . @Model.CurrentDate.Year</h4>
+    <table class="table table-sm" style="max-width: 200px">
+        <tr>
+            <th>
+                Datum
+            </th>
+            <th>
+                Částka
+            </th>
+        </tr>
+        <tbody>
+            @foreach (var item in kp)
+            {
+                sum = sum + item.Value;
+                DateTime dt = DateTime.Parse(@item.Key);
+                <tr>
+                    <td style="padding: 3px">@dt.ToString("dd.MM.yyyy")</td>
+                    <td style="padding: 3px; text-align: right">@item.Value.ToString("# ##0")</td>
+                </tr>
+            }
+            <tr>
+                <td style="padding: 3px;">Celkem</td>
+                <td style="padding: 3px; text-align: right"><b>@sum.ToString("# ##0")</b></td>
+            </tr>
+        </tbody>
+    </table>
+}
+else if (type == "y")
+{
+
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <a href="/Admin/Setting/Sales/y" class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true">Roční</a>
+        <a href="/Admin/Setting/Sales/m" class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true">Měsíční</a>
+        <a href="/Admin/Setting/Sales" class="btn btn-outline-primary btn-sm active" role="button" aria-pressed="true">Za den</a>
+    </div>
+    <h4 style="margin: 5px">Tržby za pokladnu: @Model.Pobocka.PokladnaId a rok @Model.CurrentDate.ToString("yyyy") </h4>
+    <table class="table table-sm" style="max-width: 200px">
+        <tr>
+            <th>
+                Datum
+            </th>
+            <th>
+                Částka
+            </th>
+        </tr>
+        <tbody>
+            @foreach (var item in kp)
+            {
+                sum = sum + item.Value;
+                DateTime dt = DateTime.Parse(@item.Key);
+                <tr>
+                    <td style="padding: 3px">@dt.ToString("MM.yyyy")</td>
+                    <td style="padding: 3px; text-align: right">@item.Value.ToString("# ##0")</td>
+                </tr>
+            }
+            <tr>
+                <td style="padding: 3px;">Celkem</td>
+                <td style="padding: 3px; text-align: right"><b>@sum.ToString("# ##0")</b></td>
+            </tr>
+        </tbody>
+    </table>
+}
+else
+{
+
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <a href="/Admin/Setting/Sales/y" class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true">Roční</a>
+        <a href="/Admin/Setting/Sales/m" class="btn btn-outline-primary btn-sm" role="button" aria-pressed="true">Měsíční</a>
+        <a href="/Admin/Setting/Sales" class="btn btn-outline-primary btn-sm active" role="button" aria-pressed="true">Za den</a>
+    </div>
+    <h4 style="margin: 5px">Tržby za pokladnu: @Model.Pobocka.PokladnaId a den @Model.CurrentDate.ToString("dd.MM.yyyy") : @kp.FirstOrDefault().Value</h4>
+
+}
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+
+
+            var page = "/Admin/Home/SetDate";
+            var parsedDate = new Date('@Model.CurrentDate.ToString("yyyy-MM-dd")');
+
+            $(function () {
+                $("#datepickerIn").datepicker({
+                    width: '12em',
+                    dateFormat: "yy-mm-dd",
+                    firstDay: 1,
+                    dayNamesMin: ["Ne", "Po", "Út", "St", "Čt", "Pá", "So"],
+                    monthNames: ["Leden", "Únor", "Březen", "Duben", "Květen", "Červen", "Červenec", "Srpen", "Září", "Říjen", "Listopad", "Prosinec"],
+                    onSelect: function (dateText, inst) {
+                        window.location.href = page + '?dat=' + dateText;
+                    }
+                }).datepicker("setDate", parsedDate);
+            }); /**/
+
+
+        });
+    </script>
+}
+

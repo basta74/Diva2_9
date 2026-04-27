@@ -1,0 +1,112 @@
+﻿@using Diva2Web.Models.Admin
+@model AdminPageModel
+
+
+<h2>Platby</h2>
+
+V systému diva2 se platí kredity a můžete je získat dvěma typy plateb. Platbou kreditní a časově omezenou.
+<br />
+<br />
+<hr />
+<h4>Kredity</h4>
+V celém systému se jako platební nástroj používají kredity. Všeobecně se doporučuje aby jedna lekce spotřebovala 10 kreditů. Zákazník si pak zakoupí kredity kde mu umožníte koupit si je za různou cenu nebo i platnost.
+Tím pádem můžete nabízet lekce (kredity) za různé ceny. Můžete některé hodiny zvýhodnit tím, že budou stát například 7 kreditů a nebo budete pořádat speciální lekci, která bude buď delší, nebo jinak atraktivní a bude stát 15 kreditů.
+
+<br />
+Zákazníkovi navíc umožníte zakoupit kredity za různé ceny. Např. 10 kreditů za 100 Kč, 30 kreditů za 290 Kč a 100 kreditů za 900 Kč. Cenovou politiku si určíte dle svého uvážení.
+Důchodcům nebo studentům můžete také levnější nabídnout ceny. Kredity samotné tedy může zákazník získat 2 typu plateb. A to standardní a časově omezenou.
+<br />
+Díky kreditnímu systému tedy nebudete řešit za kolik zákazník konkrétní hodinu zaplatil ani jak levná, díky velkému množství nakoupených kreditů (např. 200) klienta bude. Lekce spotřebuje z účtu klienta určité množství a vy máte vše bezpečně a variabilně pod kontrolou.
+<br />
+<br />
+<h6>Standardní kredit (kredit)</h6>
+Jeho platnost je neomezená a zakoupením umožníte zákazníkovi využít kredity kdykoliv. Dokonce umožníte zákazníkovi "jít do mínusu". Jak moc může jít zákazník so mínusu si určíte také.
+
+<br />
+<h6>Časově omezený kredit (časový kredit)</h6>
+Zde se nabízí klientům z pravidla levnější, zato časově omezená verze zakoupení kreditu.
+U neomezených kreditů je teoreticky jedno, jestli přijde zákazník sám, nebo spolu s ním přijdou další 2 lidé a zákazníkovi by se strhl kredit za lekci celkem 3x. Pokud však dáte klientovi možnost koupit časově omezený a výhodnější kredit, bylo by nefér aby s ním chodilo na lekce několik známých a ti by mu časově omezenou akci pomohl "vychodit".
+<br />
+Proto můžete u časově omezeného kreditu nastavit u kolika lidí je povoleno, aby mohlo se zákazníkem přijít.
+<br />
+<br />
+<hr />
+<h3>Ceník</h3>
+
+V ceníku si mimo odlišnost u časového kreditu jako je platnost a počet lidí, kteří mohou přijít na jednu, hodinu můžete nastavit ještě 3 vlastnosti.
+<br />
+<table>
+    <tr>
+        <td style="width: 200px"><b>Platnost v systému celkově</b></td>
+        <td>
+            Zdali se s položkou bude moct platit v systému. Máte časově omezenou akci nákupou kreditů za zvýjodněnou cenu a nastavíte platnost i viditelnost na webu.
+            Pokud akce zkončí, položku nebudete mazat, protože ji budete chtít použít za nějakou dobu. Položka tedy nebude nikde v systému použitelná.
+        </td>
+    </tr>
+    <tr>
+        <td><b>Viditelnost na webu</b></td>
+        <td> Zda se položka zobrazí na webu pro běžného uživatele. Máte například slevu pro vaše známé a nazvete cenu jako V.I.P. kterou nebudete nabízet veřejně, ale v systému ji budete moci použít.</td>
+    </tr>
+    <tr>
+        <td><b>Pořadí v ceníku na webu</b></td>
+        <td>Jaké bude mít položka pořadí.</td>
+    </tr>
+</table>
+<br />
+<hr />
+<h3>Přidání peněz zákazníkovi</h3>
+Kredity přidáte zákazníkovi na jeho detailu.
+<br />
+Zvolíte požadovaný typ Kredity (standard/slevněné), Kredity časové (standard/slevněné). Poté zadáte položku ze seznamu a opíšete kontrolní číslo.
+
+Změna se projeví ve všech budoucích položkách. Tzn. Pokud má zákazník 10 kreditů, vy zaúčtujete lekci tak u zákazník se zobrazí (červená nula).
+Pokud zákazníka přidáte na nějakou další lekci, bude mít ve stavu kreditů opět nulu.
+Pokud zákazníkovi vložíte 100 kreditů, tak v budoucí lekci se objeví (zelená stovka), ale v zaúčtované lekci zůstane stále nula.
+Je to z toho důvodu aby bulo jasné s jakými kredity zákazník lekci absolvoval.
+<br />
+
+<hr />
+<h6>Přidání časoých kreditů</h6>
+Defaultně je nastaveno, že se přidávají časově omezené kredity bez platnosti, která se spustí jakmile se kredit poprvé použije. Nicméně můžete  z jakýchkoliv důvodů potřebovat aby se definovala platnost od a do rovnou při přidání kreditu.
+V tom případě je systém dle Vašeho požadavku, zobrazovat (platnost od, platnost do, obojí). Je to na přepínač a stačí mi dát vědět.
+<br />
+Pokud zvolíte platnost od, tak se automaticky připočte počet měsíců pro konec platnosti.
+
+<br />
+<br />
+<hr/>
+<h3>Zobrazení kreditů u zákazníka</h3>
+Aby jste věděli jakými kredity bude zákazník platit,  používáme následující pravidla (jedná se o barevné políčka s čísly zobrazující počet zbývajících , kreditů).
+<table class="table" style="width: 600px">
+    <tr>
+        <td>100</td>
+        <td>jen číslo</td>
+        <td>jedná se o klasický kredit</td>
+    </tr>
+    <tr>
+        <td>100/8</td>
+        <td></td>
+        <td>kredit časově omezen a k danému datumu zbývá platnost 8 dní</td>
+    </tr>
+    <tr>
+        <td>100/-</td>
+        <td></td>
+        <td>kredit časově omezen a ještě nebyl použit a nemá nastaven datum od-do</td>
+    </tr>
+    <tr>
+        <td>100/*</td>
+        <td></td>
+        <td>zákazník má více časově omezených kreditů</td>
+    </tr>
+</table>
+<hr />
+<h3>Pays</h3>
+Pokud budete chtít využívat platební bránu Pays, už nebudete moci rozhodovat o tom, který kredit si zákazník koupí. Může dojít k situaci, kdy si zákazník zakoupí studentskou slevu, na kterou nebude mít nárok.
+Proto přibyla v systému možnost na detailu zákazníka nastavení, zdali budu moci využívat slevněné kredity. Proto zvažte i možnost sjednotit, ceny pro důchodce nebo studenty. Aby vám nevadilo, že student bude kupovat levnější "důchudcovskou" permanentku.
+<br />
+Správně by měly být platby rozděleny do standardních a slevněných. Někteří přesto umisťovali slevněné platby k standardním.
+ Aby jste nemuseli zneplatňovat slevněné platby, které máte umístěny ve standardních platbách a přidávát je do slevněných, přibyla na detailu položka "Je slevněná (zobrazí se ve slevách)". 
+Pokud ji zaškrtnete, přesune se do slevněných a naopak.
+
+
+

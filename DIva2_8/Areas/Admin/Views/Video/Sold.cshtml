@@ -1,0 +1,31 @@
+﻿@using Diva2Web.Models.Admin
+@model AdminPageModel
+
+@{
+
+    IEnumerable<Diva2.Core.Main.Videa.UserVideo> videos = ViewBag.SoldVideos;
+
+}
+
+
+<table class="table table-hover">
+
+    <tr>
+        <th>Id</th>
+        <th>Zákazník</th>
+        <th>Video</th>
+        <th>Zaplaceno</th>
+        <th>Zobrazeno</th>
+    </tr>
+
+    @foreach (var vi in videos)
+    {
+        <tr>
+            <td>@vi.Id</td>
+            <td>@vi.User.Prijmeni @vi.User.Jmeno</td>
+            <td>@vi.Video.Name</td>
+            <td>@vi.ZaplacenoDt.ToString("hh:mm dd.MM.yy")</td>
+            <td>@vi.ZobrazenoDt.ToString("hh:mm dd.MM.yy")</td>
+        </tr>
+    }
+</table>

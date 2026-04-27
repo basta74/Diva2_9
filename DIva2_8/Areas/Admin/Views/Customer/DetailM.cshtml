@@ -1,0 +1,1871 @@
+﻿@using Diva2Web.Models.Zakaznici
+@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Trans
+@using System.Text.Json;
+@using Diva2.Core.Extensions;
+
+@model ZakaznikDetailModel
+
+@{
+    Random rnd = new Random();
+    int contrCislo = rnd.Next(10000, 99999);
+
+    ZakaznikModel zakaznik = Model.Zakaznik;
+
+    int Y = zakaznik.TransakceYears.LastOrDefault();
+
+    Random ra = new Random();
+    int kontCislo = ra.Next(1000, 9999);
+
+
+    int kontCisloPass = ra.Next(10000, 99999);
+
+
+    int kredity = zakaznik.Zbytek.KredityItem(Model.Pobocka.PokladnaId);
+    var krc = zakaznik.Zbytek.KredityTimeItem(Model.Pobocka.PokladnaId, DateTime.Now);
+    int krcKredit = 0;
+    string krcZbyva = "";
+    if (krc != null)
+    {
+        krcKredit = krc.Kredit;
+        krcZbyva = krc.ZbyvaDni;
+    }
+
+
+}
+
+<div class="modal fade" id="mustr-edit" tabindex="-1" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true" data-id="@Model.Id">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <table class="modal-title" style="width: 95%">
+                    <tr>
+                        <td><h5 style="color: #4393E1" id="addContactLabel">@zakaznik.Name</h5></td>
+                        <td><h5 style="color: #4393E1">id: <span style="color: orange">@zakaznik.Id</span></h5>   </td>
+                        <td><h5 style="color: #4393E1">k: <span style="color: orange" id="jsKredity">@kredity</span> </h5> </td>
+
+                        @{
+
+                            string kcstr = "";
+                            if (krcKredit > 0)
+                            {
+                                if(krc.PlatnostUnixBreak == null)
+                                {
+                                    kcstr = $"{krcKredit} / {krcZbyva}";
+                                }
+                                else
+                                {
+                                    kcstr = $"{krcKredit} / stop";
+                                }
+
+                            }
+                        }
+                        <td><h5 style="color: #4393E1">kč: <span style="color: orange" id="jsKredityCasove">@kcstr</span></h5></td>
+
+                    </tr>
+                </table>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" style="padding: 2px">
+
+                <div class="row" id="js-css-view">
+                    <!-- levá strana výpisy -->
+                    <div class="col-7">
+
+                        <div class="card">
+                            <div class="card-header">
+                                Vkládání kreditu
+                            </div>
+                            <div class="card-body" style="padding: 2px">
+                                <div class="btn-group btn-group-sm" role="group" aria-label="..." style="width: 100%">
+                                    <button class="btn btn-outline-primary btn-xs js-show-m" data-t="1">Kredit</button>
+                                    <button class="btn btn-outline-success btn-xs js-show-m" data-t="2">Kredit slev.</button>
+                                    @if (Model.IniDict["kreditCasovy"])
+                                    {
+                                        <button class="btn btn-outline-secondary btn-xs js-show-m" data-t="3">Kredit časový</button>
+                                        <button class="btn btn-outline-success btn-xs js-show-m" data-t="4">Kredit časový slev.</button>
+                                    }
+                                </div>
+
+                                <div>
+                                    <form id="jsAddMoneyForm" class="form-inline" style="display: none; background-color: aliceblue; margin: 10px 2px">
+                                        <input type="hidden" name="UserId" value="@zakaznik.Id">
+                                        <input type="hidden" name="TypPlatbyId" id="typPlatbyId" value="">
+                                        <input type="hidden" name="DoPokladny" id="DoPokladny" value="1">
+                                        <div id="drop-money" style="width: 100%">
+                                        </div>
+                                        <table style="margin: 10px">
+                                            @if (Model.IniDict["kredit_casovy_zobraz_od"])
+                                            {
+                                                <tr>
+                                                    <td>Platnost od</td>
+                                                    <td>
+                                                        <input type="date" class="form-control" id="dateFrom" name="dateFrom" value="dd. MM. yyyy" />
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                            @if (Model.IniDict["kredit_casovy_zobraz_do"])
+                                            {
+                                                <tr>
+                                                    <td>Platnost do</td>
+                                                    <td>
+                                                        <input type="date" class="form-control" id="dateTo" name="dateTo" value="dd. MM. yyyy" />
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                            <tr>
+                                                <td> Kont č: @kontCislo</td>
+                                                <td>
+                                                    <div>
+                                                        <label for="inputPassword2" class="sr-only">Kontrolní číslo</label>
+                                                        <input type="text" class="form-control" name="KontCislo1" placeholder="napište: @kontCislo">
+                                                    </div>
+                                                </td>
+                                                <td colspan="2">
+                                                    <input type="hidden" value="@kontCislo" name="KontCislo2" />
+                                                    <button type="submit" id="btnAddMoneySave" class="btn btn-sm btn-success">Přidat platbu</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </form>
+                                </div>
+
+                                <div id="messagesDetailCustomer" style="margin-top: 15px"></div>
+                            </div>
+                        </div>
+                        @{
+                            int kr = 0;
+                            zakaznik.Zbytek.Kredity.TryGetValue(Model.Pobocka.PokladnaId, out kr);
+
+                            string visibleCardTransakce = "display: none";
+                            string visibleCardTransakcePrijem = "display: none";
+                            if (Model.OpenTab == "jsCardTransakcePrijem")
+                            {
+                                visibleCardTransakcePrijem = "";
+                            }
+                            if (Model.OpenTab == "jsCardTransakce")
+                            {
+                                visibleCardTransakce = "";
+                            }
+
+                        }
+
+                        <!-- Kredity -->
+                        <div class="card" style="margin-top: 15px">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-4">Zbytek kreditů</div>
+                                    <div class="col-8"><b style="color: #4393E1" id="jsKredity2">Neomezené kredity: @kr</b></div>
+                                </div>
+                            </div>
+                            <div class="card-body" style="padding: 10px 7px; background-color: lightskyblue">
+
+                                @if (Model.IniDict["kreditCasovy"])
+                                {
+                                    long unixTime = ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
+
+
+                                    var krCas = zakaznik.Zbytek.KredityCas.Where(d => d.PokladnaId == Model.Pobocka.PokladnaId && d.PlatnostDoUnix > unixTime);
+                                    bool spustit = false;
+                                    if (krCas != null)
+                                    {
+                                        <table id="js-table-kredity-casove" class="table-bordered tableTrans" style="background-color: white">
+                                            <tr class="nadpis">
+                                                <td>Typ</td>
+                                                <td>Kredit</td>
+                                                <td>Plat. od</td>
+                                                <td>Plat. do</td>
+                                                <td>Zbývá dní</td>
+                                            </tr>
+
+                                            @foreach (UserZbytekKreditCas zb in krCas)
+                                            {
+                                                var dateCreated = DateTimeExtensions.FromUnix(@zb.KreditUnixTime);
+                                                string prodlouzeno = zb.Prodlouzeno ? "*" : "";
+                                                <tr data-id="@zb.Id" data-dou="@zb.PlatnostDoUnix">
+                                                    <td>kredit časový</td>
+                                                    <td><b>@zb.Kredit</b></td>
+                                                    @if (zb.Aktivni)
+                                                    {
+                                                        if (zb.PlatnostUnixBreak != null && zb.PlatnostUnixBreak > 0)
+                                                        {
+                                                            spustit = true;
+                                                            <td>Zastaveno</td>
+                                                            <td><button type="button" class="btn btn-sm btn-danger btn6 js-edit-pl-show-spust" data-count="8888">Spustit</button></td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>@zb.PlatnostOd.ToString("dd.MM.yyyy")</td>
+                                                            <td><b>@zb.PlatnostDo.ToString("dd.MM.yyyy")  @prodlouzeno</b></td>
+                                                        }
+
+                                                        if(!spustit){
+                                                            <td class="js-edit-pl-show" data-enable="1" title="Prodloužit platnost">@DateTimeExtensions.ZbyvaDni(zb.PlatnostDoUnix) @prodlouzeno</td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td></td>
+                                                        }
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <td colspan="2">Neaktivováno</td>
+                                                        <td style="cursor: pointer;">
+                                                            @if (DateTime.Now.Date == dateCreated.Date)
+                                                            {
+                                                                <div class="badge badge-info js-del-credit">Vrátit</div>
+                                                            }
+                                                        </td>
+                                                    }
+
+                                                </tr>
+                                            }
+                                        </table>
+                                        <div id="js-edit-pl-div" data-id="0" data-count="0" data-dou="0" style="display: none; background-color: white">
+
+                                            <table style="width: 100%">
+
+                                                @if (!spustit)
+                                                {
+                                                    <tr>
+                                                        <td rowspan="2" style="padding: 3px">Prodloužit <br /> platnost o</td>
+                                                        <td id="js-edit-pld-7"></td>
+                                                        <td id="js-edit-pld-14"></td>
+                                                        <td id="js-edit-pld-30"></td>
+                                                        <td id="js-edit-pld-61"></td>
+                                                        <td id="js-edit-pld-91"></td>
+                                                        <td>Stop</td>
+                                                        <td id="js-edit-pld-999"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><button type="button" class="btn btn-sm btn-primary btn6 js-edit-pl" data-count="7">+1 týd</button></td>
+                                                        <td><button type="button" class="btn btn-sm btn-primary btn6 js-edit-pl" data-count="14">+2 týd</button></td>
+                                                        <td><button type="button" class="btn btn-sm btn-primary btn6 js-edit-pl" data-count="30">+ 1 měs</button></td>
+                                                        <td><button type="button" class="btn btn-sm btn-primary btn6 js-edit-pl" data-count="61">+ 2 měs</button></td>
+                                                        <td><button type="button" class="btn btn-sm btn-primary btn6 js-edit-pl" data-count="91">+ 3 měs</button></td>
+                                                        <td><button type="button" class="btn btn-sm btn-danger btn6 js-edit-pl" data-count="7777">stop</button></td>
+                                                        <td><button type="button" class="btn btn-sm btn-secondary btn6 js-edit-pl" data-count="999">neom.</button></td>
+                                                    </tr>
+                                                }
+                                                <tr>
+                                                    <td colspan="6" id="js-edit-pl-form" style="text-align: center; display: none;">
+                                                        <div style="padding: 3px" id="js-edit-pl-text-0">Prodloužit platnost do : <b><span id="js-edit-pl-text"></span></b></div>
+                                                        <button type="button" class="btn btn-sm btn-success btn6" id="js-edit-pl-send">Potvrdit</button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div id="js-del-credit-div" data-id="0" data-count="0" data-dou="0" style="display: none; background-color: white">
+                                            <form id="jsRemoveMoneyForm" class="form-inline" style="display: none; background-color: aliceblue; margin: 10px 2px">
+                                                <input type="hidden" name="UserId" value="@zakaznik.Id">
+                                                <input type="hidden" name="PlatbaId" id="js-del-credit-id" value="">
+                                                <table>
+                                                    <tr>
+                                                        <td> Kont č: @kontCislo</td>
+                                                        <td>
+                                                            <div>
+                                                                <label for="inputPassword2" class="sr-only">Kontrolní číslo</label>
+                                                                <input type="text" class="form-control" name="KontCislo1" placeholder="napište: @kontCislo">
+                                                            </div>
+                                                        </td>
+                                                        <td colspan="2">
+                                                            <input type="hidden" value="@kontCislo" name="KontCislo2" />
+                                                            <input type="button" value="Smazat" class="btn btn-sm btn-warning js-delete-next">
+                                                            <button type="submit" id="js-del-credit-force" class="btn btn-sm btn-danger" style="display: none;">Opravdu smazat</button>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+
+                                            </form>
+
+
+                                        </div>
+                                        <div id="messagesDetailCustomerRemoveCredit" style=""></div>
+                                    }
+                                }
+
+                            </div>
+                        </div>
+
+                        <div class="btn-group" role="group" aria-label="Basic example" style="width: 99%; margin: 20px 0 0px">
+                            <button type="button" class="btn btn-sm btn-outline-secondary jsPohNaUctu" onclick="showTransaction()">Pohyby na účtu</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary jsObjLek" onclick="showObjednavky()">Objednané lekce</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary jsPrijmDokl" onclick="showTransactionPrijem()">Příjmové doklady</button>
+                        </div>
+
+                        <div class="card" id="jsCardTransakce" style="margin-top: 15px; @visibleCardTransakce">
+                            <div class="card-header">
+                                <b>Pohyby na účtě</b>
+                            </div>
+                            <div class="card-body" id="mainCardBody" style="padding: 10px 7px;">
+                                <nav aria-label="Page navigation example">
+                                    @{
+                                        int o1 = 0;
+                                    }
+                                    <ul class="pagination">
+                                        @foreach (int y in zakaznik.TransakceYears.OrderByDescending(d => d))
+                                        {
+                                            o1++;
+                                            if (o1 < 7)
+                                            {
+                                                <li class="page-item" style="cursor: pointer;"><div class="page-link  jsSetYearTrans" data-id="@y">@y</div></li>
+                                            }
+                                        }
+                                    </ul>
+                                </nav>
+                                <table class="table-bordered tableTrans" style="width: 99%">
+                                    <tr class="nadpis">
+                                        <td colspan="3">datum / provedl</td>
+                                        <td>Typ kreditu</td>
+                                        <td>+/-</td>
+                                        <td>kred.</td>
+                                        <td>Kč</td>
+                                        <td>Zbytek</td>
+                                        <td>Doklad</td>
+                                    </tr>
+                                    <tbody id="jsTableTransBody">
+                                        @{
+                                            var data = zakaznik.Transakce;
+                                        }
+                                        @foreach (UserTransakce tran in data.Where(d => d.Datum.Year == Y))
+                                        {
+                                            string krt = tran.Typ == "k" ? "standardní" : "časový";
+                                            string kc = tran.Castka > 0 ? $"{tran.Castka} kč" : "";
+
+                                            <tr>
+                                                <td class="dt">@tran.Datum.ToString("dd.MM.yyyy")</td>
+                                                <td class="tm">@tran.Datum.ToString("HH:mm")</td>
+                                                <td class="stt">@tran.ProvedlId</td>
+                                                <td class="krt">@krt</td>
+                                                <td class="stt">@tran.Status</td>
+                                                <td class="kr">@tran.Kredit</td>
+                                                <td class="kc">@kc</td>
+                                                <td class="zb">@tran.Zbytek</td>
+                                                <td style="cursor: pointer;">
+                                                    @if (tran.Doklad > 0)
+                                                    {
+                                                        <div class="badge badge-primary" onclick="$('#pokladniDoklad').printpok(@tran.Id);"> Tisk </div>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card" id="jsCardObjednavky" style="margin-top: 15px; @visibleCardTransakce">
+                            <div class="card-header">
+                                <b>Objednané hodiny</b>
+                            </div>
+                            <div class="card-body" id="jsCardObjednavkyBody" style="padding: 10px 7px;">
+                            </div>
+                        </div>
+
+                        <div class="card" id="jsCardTransakcePrijem" style="margin-top: 15px; @visibleCardTransakcePrijem">
+                            <div class="card-header">
+                                <b>Příjmové doklady</b>
+                            </div>
+                            <div class="card-body" id="mainCardBody" style="padding: 10px 7px;">
+                                <nav aria-label="Page navigation example">
+                                    @{
+                                        int o2 = 0;
+                                    }
+                                    <ul class="pagination">
+
+                                        @foreach (int y in zakaznik.TransakceYears.OrderByDescending(d => d))
+                                        {
+                                            o2++;
+                                            if (o2 < 7)
+                                            {
+                                                <li class="page-item" style="cursor: pointer;"><div class="page-link  jsSetYearTransPrijem" data-id="@y">@y</div></li>
+                                            }
+                                        }
+                                    </ul>
+                                </nav>
+                                <table class="table-bordered tableTrans">
+                                    <tr class="nadpis">
+                                        <td colspan="3">datum / provedl</td>
+                                        <td>Typ kreditu</td>
+                                        <td>+/-</td>
+                                        <td>kred.</td>
+                                        <td>Kč</td>
+                                        <td>Zbytek</td>
+                                        <td>Doklad</td>
+                                    </tr>
+                                    <tbody id="jsTableTransPrijemBody">
+                                        @{
+                                            var dataPrijm = zakaznik.Transakce.Where(d => d.Status == "+" || d.Doklad > 0);
+                                        }
+                                        @foreach (UserTransakce tran in dataPrijm.Where(d => d.Datum.Year == Y))
+                                        {
+                                            string krt = tran.Typ == "k" ? "standardní" : "časový";
+                                            string kc = tran.Castka > 0 ? $"{tran.Castka} kč" : "";
+
+                                            <tr>
+                                                <td class="dt">@tran.Datum.ToString("dd.MM.yyyy")</td>
+                                                <td class="tm">@tran.Datum.ToString("HH:mm")</td>
+                                                <td class="stt">@tran.ProvedlId</td>
+                                                <td class="krt">@krt</td>
+                                                <td class="stt">@tran.Status</td>
+                                                <td class="kr">@tran.Kredit</td>
+                                                <td class="kc">@kc</td>
+                                                <td class="zb">@tran.Zbytek</td>
+                                                <td style="cursor: pointer;">
+                                                    @if (tran.Doklad > 0)
+                                                    {
+                                                        <div class="badge badge-primary" onclick="$('#pokladniDoklad').printpok(@tran.Id);"> Tisk </div>
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- pravá strana zákazník -->
+                    <div class="col-5">
+                        <div class="card">
+                            <div class="card-header">
+
+                                <table style="width: 100%">
+                                    <tr>
+                                        <td>Detail</td>
+                                        <td style="text-align: right;"><a href="/Admin/Help/Zakaznik" class="badge badge-info">Nápověda</a></td>
+                                        <td style="text-align: right;"><button class="btn btn-sm btn-outline-primary btn6" onclick="switchEdit()">Edit</button></td>
+                                    </tr>
+                                </table>
+
+                            </div>
+                            <div class="card-body" style="padding: 10px 7px;">
+
+                                <table style="border-collapse: collapse; width: 100%" id="zakaznik-detail">
+                                    <tbody>
+                                        <tr>
+                                            <td class="nadpis">ID :</td>
+                                            <td>@zakaznik.Id</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="nadpis">Int. číslo :</td>
+                                            <td>@zakaznik.Number</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="nadpis">Jméno :</td>
+                                            <td><b>@zakaznik.Name</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="nadpis">Email :</td>
+                                            <td>@zakaznik.Email</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="nadpis">Telefon :</td>
+                                            <td>@zakaznik.Phone</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="nadpis">Adresa :</td>
+                                            <td>@zakaznik.Street</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="nadpis"></td>
+                                            <td>@zakaznik.Zip  @zakaznik.Post</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td colspan="2" align="center">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="nadpis">Aktivní</td>
+                                            <td>
+
+                                                @if (zakaznik.Aktivni)
+                                                {
+                                                    <span style="color: green; float: left;"><b> Aktivní</b></span>
+                                                }
+                                                else
+                                                {
+                                                    <div class="custom-control custom-switch js-switch" style="min-height: 0.5rem; float: left;">
+                                                        <input type="checkbox" class="custom-control-input" data-che="" data-name="zakAkt">
+                                                        <label class="custom-control-label" for="zakAkt"></label>
+                                                    </div>
+                                                    <span style="color: red; float: left;"> Neaktivní</span>
+                                                }
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td colspan="2" align="center">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="nadpis">Gdpr :</td>
+                                            <td>
+                                                @if (zakaznik.GdprBase.HasValue)
+                                                {
+                                                    @if (zakaznik.GdprDt.HasValue)
+                                                    {
+                                                        @zakaznik.GdprDt.Value.ToString("dd.MM.yyyy HH:mm")
+                                                        ;
+                                                    }
+                                                    else
+                                                    {
+                                                        <div style="color: Red">
+                                                            Je potvrzen ale není datum
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div style="color: Red">
+                                                        Není potvrzen
+                                                    </div>
+                                                }
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="nadpis">Zasílání novinek :</td>
+                                            <td>
+                                                @if (zakaznik.GdprNews.HasValue)
+                                                {
+                                                    if (zakaznik.GdprNewsDT.HasValue)
+                                                    {
+                                                        if (zakaznik.GdprNews.Value)
+                                                        {
+                                                            <div style="color: forestgreen">
+                                                                @zakaznik.GdprNewsDT.Value.ToString("dd.MM.yyyy HH:mm") - Souhlasil
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div style="color: orangered">
+                                                                @zakaznik.GdprNewsDT.Value.ToString("dd.MM.yyyy HH:mm") - Zakázal
+                                                            </div>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <div style="color: Red">
+                                                            Je potvrzen ale není datum
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div>Nevyjádřil se</div>
+                                                }
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" align="center">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="nadpis">Může mít slevu</td>
+                                            <td>
+                                                @{
+                                                    string che3 = @zakaznik.MayCheaper ? "checked" : "";
+                                                }
+
+                                                <div class="custom-control custom-switch js-switch" style="min-height: 0.5rem; float: left;">
+                                                    <input type="checkbox" class="custom-control-input" data-che="@che3" data-name="zakMayCheaper" @che3>
+                                                    <label class="custom-control-label" for="zakMayCheaper"></label>
+                                                </div>
+
+                                                @if (zakaznik.MayCheaper)
+                                                {
+                                                    <span style="color: green">&nbsp;<b>Ano</b></span>
+                                                }
+                                                else
+                                                {
+                                                    <span style="color: red">&nbsp;Ne</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <!--  Skupina zákazníků -->
+                                <div class="card" style="margin-top: 10px">
+                                    <div class="card-header">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td>Skupina zákazníků</td>
+                                                <td style="text-align: right;"><button class="btn btn-sm btn-outline-secondary btn6" onclick="showGroupEdit()">Edit</button></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="card-body" id="" style="padding: 0">
+                                        <div id="jsGroupView" style="margin: 10px 7px;">
+                                            @foreach (var cat in Model.SkupinyZakaznika)
+                                            {
+                                                string style = zakaznik.Groups.Select(d => d.GroupId).Contains(cat.Id) ? "font-weight: bold" : "font-weight: inherit";
+                                                <span style="@style">@cat.Nazev, </span>
+                                            }
+                                        </div>
+                                        <div id="jsGroupEdit" style="display:none; padding: 10px 7px;">
+                                            @foreach (var cat in Model.SkupinyZakaznika)
+                                            {
+                                                string che = Model.Zakaznik.Groups.Select(d => d.GroupId).Contains(cat.Id) ? "checked" : "";
+                                                <input type="checkbox" class="js-cat-user" data-id="@cat.Id" name="gender" @che value="@cat.Id"> @cat.Nazev <br />
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!-- Poznámka -->
+                                <div class="card" style="margin-top: 10px;">
+                                    <div class="card-header" style="padding: 5px 9px">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td>Poznámka</td>
+                                                <td style="text-align: right;"><button class="btn btn-sm btn-outline-secondary btn6" onclick="showNoteEdit()">Edit</button></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="card-body" style="padding: 0">
+                                        <div id="jsNoteView">
+                                            @if (zakaznik.Poznamka != null && zakaznik.Poznamka.Length > 0)
+                                            {
+                                                <div style="margin: 10px 7px;">
+                                                    @zakaznik.Poznamka
+                                                </div>
+                                            }
+                                        </div>
+                                        <div id="jsNoteEdit" style="margin: 10px 7px; display:none">
+                                            <textarea id="js-edit-note-edit" align="baseline" style="margin: 5px;" tabindex="0" rows="4" cols="33">@zakaznik.Poznamka</textarea><br>
+                                            <p id="js-edit-note-save" class="btn-sm btn-primary" style="margin: 5px; display:inline ">Ulož</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <!-- Poznámka2 -->
+                                <div class="card" style="margin-top: 10px;">
+                                    <div class="card-header" style="padding: 5px 9px">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td>Poznámka 2</td>
+                                                <td style="text-align: right;"><button class="btn btn-sm btn-outline-secondary btn6" onclick="showNote2Edit()">Edit</button></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="card-body" style="padding: 0">
+                                        <div id="jsNote2View">
+                                            @if (zakaznik.Poznamka2 != null && zakaznik.Poznamka2.Length > 0)
+                                            {
+                                                <div style="margin: 10px 7px;">
+                                                    @zakaznik.Poznamka2
+                                                </div>
+                                            }
+                                        </div>
+                                        <div id="jsNote2Edit" style="margin: 10px 7px; display:none">
+                                            <textarea id="js-edit-note2-edit" align="baseline" style="margin: 5px;" tabindex="0" rows="4" cols="33">@zakaznik.Poznamka2</textarea><br>
+                                            <p id="js-edit-note2-save" class="btn-sm btn-primary" style="margin: 5px; display:inline ">Ulož</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+                <div id="js-css-edit" style="display: none">
+
+                    <div class="row">
+
+                        <div class="col-6">
+                            <button class="btn btn-sm btn-outline-secondary btn6" onclick="switchEditForm()" style="float: right; margin: 11px">Editace detailu</button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-sm btn-outline-secondary btn6" onclick="switchEdit()" style="float: right; margin: 11px">Zpět na přehled</button>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-6">
+
+                            <div id="js-detail-form" style="padding: 10px">
+
+                                <table style="border-collapse: collapse; width: 100%; margin: 11px" id="zakaznik-detail">
+                                    <tbody>
+                                        <tr>
+                                            <td class="nadpis">ID :</td>
+                                            <td>@zakaznik.Id</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="nadpis">Int. číslo :</td>
+                                            <td>@zakaznik.Number</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="nadpis">Jméno :</td>
+                                            <td><b>@zakaznik.Name</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="nadpis">Email :</td>
+                                            <td>@zakaznik.Email</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="nadpis">Telefon :</td>
+                                            <td>@zakaznik.Phone</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="nadpis">Adresa :</td>
+                                            <td>@zakaznik.Street</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="nadpis"></td>
+                                            <td>@zakaznik.Zip  @zakaznik.Post</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td colspan="2" align="center">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="nadpis">Aktivní</td>
+                                            <td>
+
+                                                @if (zakaznik.Aktivni)
+                                                {
+                                                    <span style="color: green; float: left;"><b> Aktivní</b></span>
+                                                }
+                                                else
+                                                {
+                                                    <div class="custom-control custom-switch js-switch" style="min-height: 0.5rem; float: left;">
+                                                        <input type="checkbox" class="custom-control-input" data-che="" data-name="zakAkt">
+                                                        <label class="custom-control-label" for="zakAkt"></label>
+                                                    </div>
+                                                    <span style="color: red; float: left;"> Neaktivní</span>
+                                                }
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td colspan="2" align="center">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="nadpis">Gdpr :</td>
+                                            <td>
+                                                @if (zakaznik.GdprBase.HasValue)
+                                                {
+                                                    @if (zakaznik.GdprDt.HasValue)
+                                                    {
+                                                        @zakaznik.GdprDt.Value.ToString("dd.MM.yyyy HH:mm")
+                                                        ;
+                                                    }
+                                                    else
+                                                    {
+                                                        <div style="color: Red">
+                                                            Je potvrzen ale není datum
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div style="color: Red">
+                                                        Není potvrzen
+                                                    </div>
+                                                }
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td class="nadpis">Zasílání novinek :</td>
+                                            <td>
+                                                @if (zakaznik.GdprNews.HasValue)
+                                                {
+                                                    if (zakaznik.GdprNewsDT.HasValue)
+                                                    {
+                                                        if (zakaznik.GdprNews.Value)
+                                                        {
+                                                            <div style="color: forestgreen">
+                                                                @zakaznik.GdprNewsDT.Value.ToString("dd.MM.yyyy HH:mm") - Souhlasil
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div style="color: orangered">
+                                                                @zakaznik.GdprNewsDT.Value.ToString("dd.MM.yyyy HH:mm") - Zakázal
+                                                            </div>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <div style="color: Red">
+                                                            Je potvrzen ale není datum
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div>Nevyjádřil se</div>
+                                                }
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" align="center">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="nadpis">Může mít slevu</td>
+                                            <td>
+
+                                                @if (zakaznik.MayCheaper)
+                                                {
+                                                    <span style="color: green">&nbsp;<b>Ano</b></span>
+                                                }
+                                                else
+                                                {
+                                                    <span style="color: red">&nbsp;Ne</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                            <div id="js-edit-form" style="display: none">
+                                <form id="jsEditZakaznik">
+                                    <input type="hidden" name="Id" id="Id" value="1">
+                                    <input name="IsValid" type="hidden" value="True">
+
+
+                                    <div class="form-group">
+                                        <label class="control-label" for="Jmeno">Jméno</label>
+                                        <input class="form-control" type="text" data-val="true" data-val-required="The Jméno field is required." id="Jmeno" name="Jmeno" value="@zakaznik.Jmeno">
+                                        <span class="text-danger field-validation-valid" data-valmsg-for="Jmeno" data-valmsg-replace="true"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="Prijmeni">Příjmení</label>
+                                        <input class="form-control" type="text" data-val="true" data-val-required="The Příjmení field is required." id="Prijmeni" name="Prijmeni" value="@zakaznik.Prijmeni">
+                                        <span class="text-danger field-validation-valid" data-valmsg-for="Prijmeni" data-valmsg-replace="true"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="Email">Email</label>
+                                        <input class="form-control" type="email" data-val="true" data-val-email="The Email field is not a valid e-mail address." data-val-required="The Email field is required." id="Email" name="Email" value="@zakaznik.Email">
+                                        <span class="text-danger field-validation-valid" data-valmsg-for="Email" data-valmsg-replace="true"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="Telefon">Telefon</label>
+                                        <input class="form-control" type="text" id="Telefon" name="Telefon" value="@zakaznik.Phone">
+                                        <span class="text-danger field-validation-valid" data-valmsg-for="Telefon" data-valmsg-replace="true"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="Ulice">Ulice</label>
+                                        <input class="form-control" type="text" id="Ulice" name="Ulice" value="@zakaznik.Street">
+                                        <span class="text-danger field-validation-valid" data-valmsg-for="Ulice" data-valmsg-replace="true"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="Psc">Psč</label>
+                                        <input class="form-control" type="text" id="Psc" name="Psc" value="@zakaznik.Zip">
+                                        <span class="text-danger field-validation-valid" data-valmsg-for="Psc" data-valmsg-replace="true"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="Posta">Pošta</label>
+                                        <input class="form-control" type="text" id="Posta" name="Posta" value="@zakaznik.Post">
+                                        <span class="text-danger field-validation-valid" data-valmsg-for="Posta" data-valmsg-replace="true"></span>
+                                    </div>
+                                    <div class="form-group">
+
+                                        <p>Zatím nefunguje uložení</p>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-6">
+
+                            <div id="messagesDetailCustomer2" style="margin-top: 15px;"></div>
+
+                            @if (Model.User.HasRule("heslo_edit"))
+                            {
+
+                                <div class="card" style="margin-top: 10px;">
+                                    <div class="card-header" style="padding: 5px 9px">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td>Změna hesla</td>
+                                                <td style="text-align: right;"><button class="btn btn-sm btn-outline-secondary btn6" onclick="showPassEdit()">Edit</button></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="card-body" id="jsChangePasswordCard" style="padding: 10px 7px; display: none">
+
+                                        <form id="jsChangePassword" class="form-inline">
+                                            <table>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>Kontrolní číslo : @kontCisloPass</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Kont. č.</td>
+                                                    <td>
+                                                        <label for="KontCislo2" class="sr-only">Kontrolní číslo</label>
+                                                        <input type="text" class="form-control" name="KontCislo2" placeholder="napište: @kontCisloPass">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Heslo</td>
+                                                    <td>
+                                                        <label for="Heslo" class="sr-only">Heslo</label>
+                                                        <input type="text" class="form-control " name="Heslo">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>
+                                                        <input type="hidden" value="@kontCisloPass" name="KontCislo1">
+                                                        <input type="hidden" value="@zakaznik.Id" name="userId">
+                                                        <button type="submit" class="btn btn-primary btn-sm">Edit</button>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </form>
+                                    </div>
+                                </div>
+                            }
+
+
+                            <!-- Vložení kreditů -->
+                            <div class="card" style="margin-top: 10px;">
+                                <div class="card-header" style="padding: 5px 9px">
+
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td>Vložení kreditů</td>
+                                            <td style="text-align: right;"><button class="btn btn-sm btn-outline-secondary btn6" onclick="showAddCredit0()">Edit</button></td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+                                <div class="card-body" id="jsChangePasswordCard" style="padding: 0">
+                                    <form id="jsAddCredit0" class="form-inline" style="margin: 10px 7px; display: none">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td></td>
+                                                <td>Kontrolní číslo : @kontCisloPass</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Kont. č.</td>
+                                                <td>
+                                                    <label for="KontCislo2" class="sr-only">Kontrolní číslo</label>
+                                                    <input type="text" class="form-control" name="KontCislo2" placeholder="napište: @kontCisloPass">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Kredity</td>
+                                                <td>
+                                                    <label for="Kredit" class="sr-only">Kredity</label>
+                                                    <input type="text" class="form-control" id="js-credit-val-to-add" name="Kredit">
+                                                </td>
+                                                <td>
+                                                    @if (kredity > 0)
+                                                    {
+                                                        <p class="btn btn-primary btn-sm" id="js-copy-credit-to-zero" data-count="@kredity" style="margin: 0;">nulovat</p>
+                                                    }
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>
+                                                    <input type="hidden" value="@kontCisloPass" name="KontCislo1">
+                                                    <input type="hidden" value="@zakaznik.Id" name="userId">
+                                                    <button type="submit" class="btn btn-primary btn-sm">Přidat</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                            <!-- Převody kreditů -->
+                            <div class="card" style="margin-top: 10px;">
+                                <div class="card-header" style="padding: 5px 9px">
+
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td>Převod kreditů</td>
+                                            <td style="text-align: right;"><button class="btn btn-sm btn-outline-secondary btn6" onclick="showAddCreditToUser()">Edit</button></td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+                                <div class="card-body" style="padding: 0">
+
+                                    <p style="margin: 10px">Převede časově neomezené kredity, na nového zákazníka</p>
+
+                                    <form id="jsCreditPrevod" class="form-inline" style="margin: 10px 7px; display: none">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td></td>
+                                                <td>Kontrolní číslo : @kontCisloPass</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Kont. č.</td>
+                                                <td>
+                                                    <label for="KontCislo2" class="sr-only">Kontrolní číslo</label>
+                                                    <input type="text" class="form-control" name="KontCislo2" placeholder="napište: @kontCisloPass">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Id zákazníka, který obdrží kredity</td>
+                                                <td>
+                                                    <label for="Kredit" class="sr-only">Id zákazníka pro převod</label>
+                                                    <input type="text" class="form-control" id="js-credit-val-zakaznik" name="NewUserId">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>
+                                                    <input type="hidden" value="@kontCisloPass" name="KontCislo1">
+                                                    <input type="hidden" value="@zakaznik.Id" name="userId">
+                                                    <button type="submit" class="btn btn-primary btn-sm">Převézt</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                            <!-- Spárování vlastních kreditů -->
+                            <div class="card" style="margin-top: 10px;">
+                                <div class="card-header" style="padding: 5px 9px">
+
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td>Spárování vlastních kreditů</td>
+                                            <td style="text-align: right;"><button class="btn btn-sm btn-outline-secondary btn6" onclick="showCreditPairSelf()">Edit</button></td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+                                <div class="card-body" id="" style="padding: 0">
+                                    <form id="jsCreditPairSelf" class="form-inline" style="margin: 10px 7px; display: none">
+                                        <table style="width: 100%">
+                                            <tr>
+                                                <td></td>
+                                                <td>Kontrolní číslo : @kontCisloPass</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Kont. č.</td>
+                                                <td>
+                                                    <label for="KontCislo2" class="sr-only">Kontrolní číslo</label>
+                                                    <input type="text" class="form-control" name="KontCislo2" placeholder="napište: @kontCisloPass">
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td></td>
+                                                <td>
+                                                    <input type="hidden" value="@kontCisloPass" name="KontCislo1">
+                                                    <input type="hidden" value="@zakaznik.Id" name="userId">
+                                                    <button type="submit" class="btn btn-primary btn-sm">Přidat</button>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                            <!-- Smazat  -->
+                            <div class="card" style="margin-top: 10px;">
+                                <div class="card-header" style="padding: 5px 9px">
+
+                                    <table style="width: 100%">
+                                        <tr>
+                                            <td>Smazat zákazníka</td>
+                                            <td style="text-align: right;"><button class="btn btn-sm btn-outline-secondary btn6" onclick="showDeleteUser()">Edit</button></td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+                                <div class="card-body" id="jsChangePasswordCard" style="padding: 0">
+                                    <div id="messagesDelete" style=""></div>
+                                    <form id="jsDeleteUser" class="form-inline" style="margin: 10px 7px; display: none">
+
+                                        <table>
+                                            <tr>
+                                                <td></td>
+                                                <td>Kontrolní číslo : @kontCisloPass</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Kont. č.</td>
+                                                <td>
+                                                    <label for="KontCislo2" class="sr-only">Kontrolní číslo</label>
+                                                    <input type="text" class="form-control" name="KontCislo2" placeholder="napište: @kontCisloPass">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td>
+                                                    <input type="hidden" value="@kontCisloPass" name="KontCislo1">
+                                                    <input type="hidden" value="@zakaznik.Id" name="userId">
+                                                    <input type="button" value="Smazat" class="btn btn-sm btn-warning js-delete-next">
+                                                    <button type="submit" id="js-delete-force" class="btn btn-sm btn-danger" style="display: none;">Opravdu smazat</button>
+
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="pokladniDoklad" style="display: none">
+    Div 2
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        $.fn.extend({
+            printpok: function (tid) {
+
+                var saa = this;
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/Admin/Customer/Receipt',
+                    data: { id: tid },
+                    cache: false
+                }).done(function (data) {
+                    $("#pokladniDoklad").html(data);
+
+                    var frameName = 'printIframe';
+                    var doc = window.frames[frameName];
+                    if (!doc) {
+                        $('<iframe>').hide().attr('name', frameName).appendTo(document.body);
+                        doc = window.frames[frameName];
+                    }
+                    doc.document.body.innerHTML = saa.html();
+                    doc.window.print();
+                    return saa;
+
+                });
+            }
+        });
+    });
+
+
+    var zakId = $("#mustr-edit").data('id');
+    var transC = @(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.JsonTransaction)));
+    var trasnsJs = JSON.parse(transC);
+
+    var placeholderElement = $('#modal-placeholder');
+
+    var spinner = '<div class="d-flex justify-content-center"><div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div></div>';
+
+    // -------------- zobraz transakce -----------------------
+    $(document).on("click", ".jsSetYearTrans", function () {
+
+        var Y = $(this).data("id");
+        var tbody = "";
+        for (var key in trasnsJs) {
+            // skip loop if the property is from prototype
+            if (!trasnsJs.hasOwnProperty(key)) continue;
+
+            var obj = trasnsJs[key];
+            for (var prop in obj) {
+                // skip loop if the property is from prototype
+                if (!obj.hasOwnProperty(prop)) continue;
+
+                if (key == Y) {
+                    var o = obj[prop];
+                    var castka = "";
+                    if (o.Castka != null) {
+                        castka = o.Castka + " kč";
+                    }
+                    var d = new Date(o.Datum);
+                    var dt = d.getDate() + "." + (d.getMonth() + 1) + "." + d.getFullYear();
+                    var t = d.getHours().pad(2, "0") + ":" + d.getMinutes().pad(2, "0");
+                    var typ = "standardní";
+                    if (o.Typ == "kc") {
+                        typ = "časový";
+                    }
+                    var dokt = "";
+                    if (o.Doklad > 0) {
+
+                        dokt = '<button class="btn btn-sm btn-primary" onclick="$(\'#pokladniDoklad\').printpok(' + o.Id + ');"> Tisk </button>';
+                    }
+                    tbody += '<tr><td class="dt">' + dt + '</td><td class="tm">' + t + '</td><td> ' + o.ProvedlId + ' </td><td>' + typ + '</td><td>' + o.Status + '</td><td>' + o.Kredit + '</td><td class="kc">' + castka + '</td><td class="zb">' + o.Zbytek + '</td><td>' + dokt + '</td></tr>';
+                }
+            }
+        }
+        $("#jsTableTrans").show();
+        $("#jsTableTransBody").html(tbody);
+
+    });
+
+    // -------------- zobraz transakce prijem -----------------------
+    $(document).on("click", ".jsSetYearTransPrijem", function () {
+
+        var Y = $(this).data("id");
+        var tbody = "";
+        for (var key in trasnsJs) {
+            // skip loop if the property is from prototype
+            if (!trasnsJs.hasOwnProperty(key)) continue;
+
+            var obj = trasnsJs[key];
+            for (var prop in obj) {
+                // skip loop if the property is from prototype
+                if (!obj.hasOwnProperty(prop)) continue;
+
+                if (key == Y) {
+                    var o = obj[prop];
+                    console.log(o);
+
+                    if (o.Status == "+") {
+
+                        var castka = "";
+                        if (o.Castka != null) {
+                            castka = o.Castka + " kč";
+                        }
+                        var d = new Date(o.Datum);
+                        var dt = d.getDate() + "." + (d.getMonth() + 1) + "." + d.getFullYear();
+                        var t = d.getHours().pad(2, "0") + ":" + d.getMinutes().pad(2, "0");
+                        var typ = "standardní";
+                        if (o.Typ == "kc") {
+                            typ = "časový";
+                        }
+                        var dokt = "";
+                        if (o.Doklad > 0) {
+                            dokt = '<div class="badge badge-primary" onclick="$(\'#pokladniDoklad\').printpok(' + o.Id + ')"> Tisk </div>';
+                            //dokt = '<button class="btn btn-sm btn-primary" onclick="$(\'#pokladniDoklad\').printpok(' + o.Id +');"> Tisk </button>';
+                        }
+                        tbody += '<tr><td class="dt">' + dt + '</td><td class="tm">' + t + '</td><td> ' + o.ProvedlId + ' </td><td>' + typ + '</td><td>' + o.Status + '</td><td>' + o.Kredit + '</td><td class="kc">' + castka + '</td><td class="zb">' + o.Zbytek + '</td><td style="cursor: pointer">' + dokt + '</td></tr>';
+                    }
+                }
+            }
+        }
+
+        $("#jsTableTransPrijem").show();
+        $("#jsTableTransPrijemBody").html(tbody);
+
+    });
+
+    // -------------- pridat penize --------------------------
+    $('#jsAddMoneyForm').bind('submit', function () {
+        $('#messagesDetailCustomer').html(spinner);
+        $('#drop-money').hide();
+        $('#jsAddMoneyForm').hide();
+        var that = $(this);
+        $.ajax({
+            type: 'post',
+            url: '/Admin/Api/AddMoney',
+            data: $(this).serialize(),
+            cache: false
+        }).done(function (data) {
+            $('#messagesDetailCustomer').html(writeMesssages(data.messages));
+            if (data.status == true) {
+                $('#jsKredity').html(data.kredity);
+                $('#jsKredity2').html("Neomezené kredity: " + data.kredity);
+                if (data.kredityCasove != null) {
+                    $('#jsKredityCasove').html(data.kredityCasove);
+                }
+                setTimeout(function () {
+                    location.reload(true);
+                }, 1500);
+
+            }
+            else {
+                $('#drop-money').show();
+                $('#jsAddMoneyForm').show();
+
+            }
+        });
+        return false;
+    });
+
+    // -------------- odebrat penize --------------------------
+    $('#jsRemoveMoneyForm').bind('submit', function () {
+        $('#messagesDetailCustomerRemoveCredit').html(spinner);
+        $('#jsRemoveMoneyForm').hide();
+        var that = $(this);
+        $.ajax({
+            type: 'post',
+            url: '/Admin/Api/RemoveMoney',
+            data: $(this).serialize(),
+            cache: false
+        }).done(function (data) {
+
+            $('#messagesDetailCustomerRemoveCredit').html(writeMesssages(data.messages));
+            if (data.status == true) {
+
+                $('#jsKredity').html(data.kredity);
+                $('#jsKredity2').html("Neomezené kredity: " + data.kredity);
+                if (data.kredityCasove != null) {
+                    $('#jsKredityCasove').html(data.kredityCasove);
+                }
+                setTimeout(function () {
+                    location.reload(true);
+                }, 1500);
+
+            }
+            else {
+
+                $('#jsRemoveMoneyForm').show();
+
+            }
+        });
+        return false;
+    });
+
+    // ---------------- zobrazi polozky pro pridani dle typu plateb --------
+    $(document).on("click", ".js-show-m", function () {
+        var that = $(this);
+        var id = $(this).data('t');
+
+        $.ajax({
+            method: "GET",
+            url: "/Admin/Api/GetPays",
+            data: { id: id }
+        }).done(function (data) {
+
+            count = data.items.length;
+
+            if (count > 0) {
+                $("#typPlatbyId").attr("value", id);
+
+                var t = '<table class="selectCredit" style="width: 100%"><tr><td><h6>' + data.name + '</h6></td></tr><tr><td>';
+
+                var drop = '<select class="custom-select" name="platbaID" onchange="0" data-id="' + id + '" style="width: 100%">';
+
+                for (var index1 = 0; index1 < count; index1++) {
+                    var row1 = data.items[index1];
+                    var suma = row1.castka;
+                    drop += '<option value="' + row1.id + '">' + suma.pad(4, "_") + ' - ' + row1.popis + '</option>'
+                }
+                drop += '</select>';
+
+                t += drop + '</td></tr></table>';
+
+                $('#drop-money').html(t);
+                $('#jsAddMoneyForm').show();
+            }
+            else {
+                $('#drop-money').html("");
+                $('#jsAddMoneyForm').hide();
+                $('#messagesDetailCustomer').html('<div class="alert alert-primary" role="alert">Nejsou položky k zobrazní</div>');
+            }
+        });
+
+    });
+
+    // ------------- zobrazit tlacitka pro pridani ------------
+    $(".js-edit-pl-show").click(function () {
+        var clos = $(this).closest("tr");
+        var id = clos.data("id");
+        var dou = clos.data("dou");
+
+        $("#js-edit-pl-div").attr("data-id", id);
+        $("#js-edit-pl-div").attr("data-dou", dou);
+        $("#js-edit-pld-7").text(writeDate(dou + (daySecond * 7)));
+        $("#js-edit-pld-14").text(writeDate(dou + (daySecond * 14)));
+        $("#js-edit-pld-30").text(writeDate(dou + (daySecond * 30)));
+        $("#js-edit-pld-61").text(writeDate(dou + (daySecond * 61)));
+        $("#js-edit-pld-91").text(writeDate(dou + (daySecond * 91)));
+        $("#js-edit-pld-999").text("neom.");
+
+        $("#js-edit-pl-div").show();
+
+    });
+
+    // ------------- zobrazit tlacitka pro pridani ------------
+    $(".js-edit-pl-show-spust").click(function () {
+        var clos = $(this).closest("tr");
+
+        var id = clos.data("id");
+        var count = $(this).data("count");
+        
+        $("#js-edit-pl-div").attr("data-id", id);
+        $("#js-edit-pl-div").attr("data-count", count);
+            
+        $("#js-edit-pl-text-0").text("Spustit platnost")
+        $("#js-edit-pl-div").show();
+        $("#js-edit-pl-form").show();
+
+    });
+
+    // ------------- zobrazit tlacitka odebrani ------------
+    $(".js-del-credit").click(function () {
+        $("#jsRemoveMoneyForm").show();
+        var clos = $(this).closest("tr");
+        var id = clos.data("id");
+        $("#js-del-credit-div").data("id", id);
+        $("#js-del-credit-id").attr("value", id);
+        $("#js-del-credit-div").show();
+
+    });
+
+    // ------------- vybrat prodlouzeni nabidnout potvrzeni ------------
+    $(".js-edit-pl").click(function () {
+
+        var id = $("#js-edit-pl-div").data("id");
+        var dou = $("#js-edit-pl-div").data("dou");
+        var count = $(this).data("count");
+
+
+        $("#js-edit-pl-div").attr("data-id", id);
+        $("#js-edit-pl-div").attr("data-count", count);
+        if (count != 999) {
+            if (count == 7777) {
+                $("#js-edit-pl-text-0").text(" Pozastavit platnost")
+            }
+            else {
+                $("#js-edit-pl-text").text(writeDate(dou + (daySecond * count)))
+            }
+
+        }
+        else {
+            $("#js-edit-pl-text").text(" na neomezené")
+        }
+
+
+        $("#js-edit-pl-form").show();
+
+    });
+
+    // ------------- potvrdit prodlouzeni ------------
+    $("#js-edit-pl-send").click(function () {
+        var clos = $("#js-edit-pl-div");
+        var id = clos.data("id");
+        var count = clos.data("count");
+        $("#js-edit-pl-form").hide();
+        $.ajax({
+            type: 'post',
+            url: '/Admin/Api/ExtendValidity',
+            data: { Id: id, Count: count },
+            cache: false
+        }).done(function (data) {
+            console.log(data);
+            $('#messagesDetailCustomer').html(writeMesssages(data.messages));
+            if (data.status == true) {
+                $("#js-edit-pl-div").hide();
+            }
+            else {
+                $("#js-edit-pl-form").show();
+            }
+        });
+
+
+
+    });
+
+    // -------------- zmena hesla --------------------------
+    $('#jsChangePassword').bind('submit', function () {
+        $('#messagesDetailCustomerR').html('<div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>');
+        $('#jsChangePasswordCard').hide();
+        var that = $(this);
+        $.ajax({
+            type: 'post',
+            url: '/Account/ChangePassword',
+            data: $(this).serialize(),
+            cache: false
+        }).done(function (data) {
+
+
+            $('#messagesDetailCustomer2').html(writeMesssages(data.messages));
+            if (data.status == true) {
+
+            }
+            else {
+
+                $('#jsChangePasswordCard').show();
+
+            }
+        });
+        return false;
+    });
+
+    // ------------- pridate odebrat skupinu ------------
+    $(".js-cat-user").click(function () {
+
+        var id = $(this).data("id");
+        var isa = $(this).is(':checked')
+
+        $.ajax({
+            type: 'POST',
+            url: '/Admin/Customer/AddRemoveGroup',
+            data: { GroupId: id, Value: isa, UserId: zakId },
+            cache: false
+        }).done(function (data) {
+            $('#messagesDetailCustomer2').html(writeMesssages(data.messages));
+        });
+
+    });
+
+    // ------------- editace poznamky ------------
+    $("#js-edit-note-save").click(function () {
+
+        var zakId = $("#mustr-edit").data('id');
+        var note = $("#js-edit-note-edit").val();
+
+        $.ajax({
+            type: 'POST',
+            url: '/Admin/Customer/EditNote',
+            data: { UserId: zakId, Temp: note },
+            cache: false
+        }).done(function (data) {
+            $('#messagesDetailCustomer2').html(writeMesssages(data.messages));
+            var notet = "";
+            if (note != "") {
+                var notet = '<div style="margin: 10px 7px;">' + note + '</div>';
+            }
+            $('#jsNoteView').html(notet);
+            showNoteEdit();
+        });
+    });
+
+    // ------------- editace poznamky ------------
+    $("#js-edit-note2-save").click(function () {
+
+        var zakId = $("#mustr-edit").data('id');
+        var note2 = $("#js-edit-note2-edit").val();
+
+        $.ajax({
+            type: 'POST',
+            url: '/Admin/Customer/EditNote2',
+            data: { UserId: zakId, Temp: note2 },
+            cache: false
+        }).done(function (data) {
+            $('#messagesDetailCustomer2').html(writeMesssages(data.messages));
+            var notet = "";
+            if (note2 != "") {
+                var notet = '<div style="margin: 10px 7px;">' + note2 + '</div>';
+            }
+            $('#jsNote2View').html(notet);
+            showNote2Edit();
+        });
+    });
+
+    // -------------- přidání kreditů --------------------------
+    $('#jsAddCredit0').bind('submit', function () {
+        $('#jsAddCredit0').hide();
+        var that = $(this);
+        $.ajax({
+            type: 'post',
+            url: '/Admin/Api/AddCredit0',
+            data: $(this).serialize(),
+            cache: false
+        }).done(function (data) {
+
+            $('#messagesDetailCustomer2').html(writeMesssages(data.messages));
+            if (data.status == true) {
+            }
+            else {
+                $('#jsAddCredit0').show();
+            }
+        });
+        return false;
+    });
+
+    // -------------- převod kreditů --------------------------
+    $('#jsCreditPrevod').bind('submit', function () {
+        $('#jsCreditPrevod').hide();
+        var that = $(this);
+        $.ajax({
+            type: 'post',
+            url: '/Admin/Api/CreditPrevod',
+            data: $(this).serialize(),
+            cache: false
+        }).done(function (data) {
+
+            $('#messagesDetailCustomer2').html(writeMesssages(data.messages));
+            if (data.status == true) {
+            }
+            else {
+                $('#jsCreditPrevod').show();
+            }
+        });
+        return false;
+    });
+
+    // -------------- párování self kreditů --------------------------
+    $('#jsCreditPairSelf').bind('submit', function () {
+        $('#jsCreditPairSelf').hide();
+        var that = $(this);
+        $.ajax({
+            type: 'post',
+            url: '/Admin/Api/CreditPrevodSelf',
+            data: $(this).serialize(),
+            cache: false
+        }).done(function (data) {
+
+            $('#messagesDetailCustomer2').html(writeMesssages(data.messages));
+            if (data.status == true) {
+            }
+            else {
+                $('#jsCreditPairSelf').show();
+            }
+        });
+        return false;
+    });
+
+
+    // -------------- smazání zákazníka --------------------------
+    $('#jsDeleteUser').bind('submit', function () {
+        $('#jsDeleteUser').hide();
+        var that = $(this);
+        $.ajax({
+            type: 'post',
+            url: '/Admin/Customer/DeleteUser',
+            data: $(this).serialize(),
+            cache: false
+        }).done(function (data) {
+            $('#messagesDelete').html(writeMesssages(data.messages));
+            if (data.status == true) {
+                setTimeout(function () {
+                    location.reload(true);
+                }, 1000);
+            }
+            else {
+                $('#jsDeleteUser').show();
+            }
+        });
+        return false;
+    });
+
+    // -------------- odebrat penize --------------------------
+    $('#jsEditZakaznik').bind('submit', function () {
+        alert("as");
+        /*
+            console.log("aa");
+            var that = $(this);
+            $.ajax({
+                type: 'post',
+                url: '/Admin/Customer/Edit',
+                data: $(this).serialize(),
+                cache: false
+            }).done(function (data) {
+
+                console.log(data);
+
+            }); /**/
+        return false;
+    });
+
+    $(document).on("click", ".js-switch", function (ev) {
+        ev.preventDefault(); // cancel form submission
+        var that = $(this).children("input");
+        switchParam(that)
+
+    }); /**/
+
+    //
+    $(document).on("click", "#js-copy-credit-to-zero", function () {
+
+        var count = $(this).data("count");
+        $("#js-credit-val-to-add").val(count * -1);
+    });
+
+
+    function switchParam(that) {
+        var zakId = $("#mustr-edit").data('id');
+        var item = that.data("name");
+        var val = that.data("che") == "checked" ? 0 : 1;
+
+        $.ajax({
+            type: 'POST',
+            url: '/Admin/Customer/SetDetailSwitch',
+            data: { user: zakId, item: item, value: val },
+            cache: false
+        }).done(function (data) {
+
+            if (data.status == true) {
+                var str = "Zapsáno: " + ((val == 1) ? "<span style='color: green'> aktivní</span>" : "<span style='color: red'> vypnuto</span>");
+                that.closest("td").html(str);
+            }
+            // location.reload();
+        });
+    };
+
+
+    function showTransaction() {
+        $("#jsCardTransakce").show();
+        $("#jsCardObjednavky").hide();
+        $("#jsCardTransakcePrijem").hide();
+    }
+
+    function showTransactionPrijem() {
+        $("#jsCardTransakce").hide();
+        $("#jsCardObjednavky").hide();
+        $("#jsCardTransakcePrijem").show();
+    }
+
+    function showObjednavky() {
+
+        var that = $(this);
+        $.ajax({
+            type: 'post',
+            url: '/Admin/Customer/GetObjednavky',
+            data: { id: zakId },
+            cache: false
+        }).done(function (data) {
+
+
+            if (data.status == true) {
+                var text = writeObjTable(data)
+                $("#jsCardObjednavkyBody").html(text);
+            }
+
+        });
+
+        $("#jsCardObjednavky").show();
+
+        $("#jsCardTransakce").hide();
+        $("#jsCardTransakcePrijem").hide();
+    }
+
+    function reload() {
+
+        var zakId = $("#mustr-edit").data('id');
+        $.ajax({
+            method: "GET",
+            url: "/Admin/Customer/DetailM",
+            data: { id: zakId }
+        }).done(function (data) {
+            placeholderElement.html(data);
+        });
+    }
+
+    function showPassEdit() {
+        $("#jsChangePasswordCard").toggle();
+    }
+
+    function showGroupEdit() {
+        $("#jsGroupView").toggle();
+        $("#jsGroupEdit").toggle();
+    }
+
+    function showNoteEdit() {
+        $("#jsNoteView").toggle();
+        $("#jsNoteEdit").toggle();
+    }
+
+
+    function showNote2Edit() {
+        $("#jsNote2View").toggle();
+        $("#jsNote2Edit").toggle();
+    }
+
+    function showAddCredit0() {
+        $("#jsAddCredit0").toggle();
+    }
+
+    function showAddCreditToUser() {
+        $("#jsCreditPrevod").toggle();
+    }
+
+    function showCreditPairSelf() {
+        $("#jsCreditPairSelf").toggle();
+    }
+
+    function showDeleteUser() {
+        $("#jsDeleteUser").toggle();
+    }
+
+    $("#js-delete-force").hide();
+
+    $(".js-delete-next").on("click", function () {
+        $(this).hide(200);
+        $(this).next("button").show(400);
+    });
+
+    function writeObjTable(data) {
+
+        var table = '<table style="width: 100%">';
+        var t = "";
+        var count = 0;
+        if (data.ItemsCount === 0) {
+            table = 'Nalezeno 0 záznamů.'
+
+        } else {
+            count = data.items.length;
+
+            for (var index1 = 0; index1 < count; index1++) {
+
+                var row1 = data.items[index1];
+
+                t += '<tr><td><a href="/Admin/Board/Index/' + row1.id + '" class="badge badge-info" >lekce</a> </td><td>' + row1.d + '</td><td>' + row1.h + '</td></tr>';
+
+            }
+            table = t + '</table>';
+        }
+        return table;
+    }
+
+    var editShowed = false;
+
+    function switchEdit() {
+        if (editShowed == false) {
+            editShowed = true;
+            $("#js-css-view").hide();
+            $("#js-css-edit").show();
+        }
+        else {
+            editShowed = false;
+            $("#js-css-view").show();
+            $("#js-css-edit").hide();
+        }
+    }
+
+    var editForm = false;
+
+    function switchEditForm() {
+        if (editForm == false) {
+            editForm = true;
+            $("#js-detail-form").hide();
+            $("#js-edit-form").show();
+        }
+        else {
+            editForm = false;
+            $("#js-detail-form").show();
+            $("#js-edit-form").hide();
+        }
+    }
+
+
+
+
+</script>

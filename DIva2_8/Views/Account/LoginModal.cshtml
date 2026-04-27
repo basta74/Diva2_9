@@ -1,0 +1,53 @@
+﻿@using Diva2Web.Models.Users
+@model UserModelLogin
+
+
+<div class="modal" tabindex="-2" role="dialog" style="margin-top: -15px; ">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Přihlašovací okno</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form action="/Account/Login" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+
+
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label class="control-label" for="Nick">Email</label>
+                                <input class="form-control" type="text" data-val="true" data-val-required="The Email field is required." id="Nick" name="Nick" value="">
+                                <span class="text-danger field-validation-valid" data-valmsg-for="Nick" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label class="control-label" for="Heslo">Heslo</label>
+                                <input class="form-control" type="password" data-val="true" data-val-required="The Heslo field is required." id="Heslo" name="Heslo">
+                                <span class="text-danger field-validation-valid" data-valmsg-for="Heslo" data-valmsg-replace="true"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Zavřít</button>
+                            </div>
+                            <div class="col-6" style="text-align: right; padding-right: 10px">
+                                <input type="submit" class="btn btn-primary btn-sm" value="Přihlášení" style="margin: 5px">
+                                <input type="hidden" name="akce" value="login">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+           
+        </div>
+    </div>
+</div>

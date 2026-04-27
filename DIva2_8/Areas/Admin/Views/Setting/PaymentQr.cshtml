@@ -1,0 +1,37 @@
+﻿@using Diva2.Core.Main.Main
+@using Diva2.Core.Model.Json
+
+@model JsonStatus
+
+
+
+<div class="modal fade" id="main-edit" tabindex="-1" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContactLabel">Platba</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <table>
+                    <tr>
+                        <td><img src="@Model.Meta" /></td>
+                        <td>
+                            <table>
+                                <tr><th colspan="2">Hodnoty uložené v kódu</th></tr>
+                                <tr><td>Platba na účet :</td><td>@ViewBag.Ucet</td></tr>
+                                <tr><td>Částka :</td><td>@ViewBag.Castka</td></tr>
+                                <tr><td>VarSym :</td><td>@ViewBag.VS</td></tr>
+                                <tr><td>Zpráva :</td><td>@ViewBag.Message</td></tr>
+
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

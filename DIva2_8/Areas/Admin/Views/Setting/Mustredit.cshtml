@@ -1,0 +1,107 @@
+﻿@using Diva2Web.Models.Lekces
+@using Diva2.Core.Main.Lessons
+
+@model LekceMustrModel
+
+
+<div class="modal fade" id="mustr-edit" tabindex="-1" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContactLabel">Editace šablony</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form asp-action="MustrEdit">
+                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" name="Id" id="Id" value="@Model.Id" />
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label asp-for="Nazev" class="control-label"></label>
+                                <input asp-for="Nazev" class="form-control" />
+                                <span asp-validation-for="Nazev" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label asp-for="Typy" class="control-label"></label>
+                                @Html.DropDownList("Typ", new SelectList(@Model.Typy.OrderBy(d => d.Text), "Id", "Text"), new { @class = "form-control" })
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="Aktivni" /> @Html.DisplayNameFor(model => model.Aktivni)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="Cas" class="control-label"></label>
+                                <input asp-for="Cas" class="form-control" />
+                                <span asp-validation-for="Cas" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="Kredit" class="control-label"></label>
+                                <input asp-for="Kredit" class="form-control" />
+                                <span asp-validation-for="Kredit" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="Minuty" class="control-label"></label>
+                                <input asp-for="Minuty" class="form-control" />
+                                <span asp-validation-for="Minuty" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3"></div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="PocetMist" class="control-label"></label>
+                                <input asp-for="PocetMist" class="form-control" />
+                                <span asp-validation-for="PocetMist" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="PocetNahradniku" class="control-label"></label>
+                                <input asp-for="PocetNahradniku" class="form-control" />
+                                <span asp-validation-for="PocetNahradniku" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <label asp-for="Lektori" class="control-label"></label>
+                            @Html.DropDownList("Lektor", new SelectList(@Model.Lektori.OrderBy(d =>d.Text), "Id", "Text"), new { @class = "form-control" })
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-primary" data-save="modal">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

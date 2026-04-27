@@ -1,0 +1,209 @@
+﻿@using Diva2Web.Models.Admin
+@model AdminPageModel
+<!-- Modal placeholder -->
+
+@{
+
+    List<string> pismena = new List<string>() { "A", "Á", "B", "C", "Č", "D", "Ď", "E", "É", "Ě", "F", "G", "H", "Ch", "I", "Í", "J", "K", "L", "M", "N", "Ň", "O", "Ó", "P", "Q", "R", "Ř", "S", "Š", "T", "Ť", "U", "Ú", "Ů", "V", "W", "X", "Y", "Ý", "Z", "Ž" };
+}
+
+
+
+<div class="btn-group btn-group-sm" role="group" aria-label="...">
+    <button class="btn btn-outline-secondary btn-xs" style="width: 150px">Dle jména</button>
+    <button class="btn btn-outline-secondary btn-xs js-zak" data-method="id">Všichni (dle ID)</button>
+    <button class="btn btn-outline-secondary btn-xs js-zak" data-method="number">Všichni (dle int. čísla)</button>
+    <button class="btn btn-outline-secondary btn-xs js-zak" data-method="last">dle poslední návštěvy</button>
+    <button class="btn btn-outline-secondary btn-xs js-zak" data-method="email">jen Emaily</button>
+</div>
+<a href="/Admin/Help/Zakaznik" class="badge badge-info">Nápověda</a>
+<div style="clear: none; width: 100% "></div>
+
+<div class="btn-group btn-group-sm" role="group" aria-label="..." style="margin-top: 5px">
+    <button class="btn btn-outline-secondary btn-xs " style="width: 150px">Dle nejvyší návštěvy</button>
+    <button class="btn btn-outline-secondary btn-xs js-zak" data-method="topM" style="padding-left: 30px; padding-right: 30px">posledních 30 dní</button>
+    <button class="btn btn-outline-secondary btn-xs js-zak" data-method="top3M" style="padding-left: 30px; padding-right: 30px">poslední 3 měsíce</button>
+    <button class="btn btn-outline-secondary btn-xs js-zak" data-method="top6M" style="padding-left: 30px; padding-right: 30px">poslední půlrok</button>
+    <button class="btn btn-outline-secondary btn-xs js-zak" data-method="top1Y" style="padding-left: 30px; padding-right: 30px">poslední rok</button>
+</div>
+<div style="clear: none; width: 100% "></div>
+
+<div class="btn-group btn-group-sm" role="group" aria-label="..." style="margin-top: 8px">
+    <button class="btn btn-outline-secondary btn-xs" style="width: 150px">Dle jména</button>
+    @foreach (string p in pismena)
+    {
+    <button class="btn btn-outline-secondary btn-xs js-zak" data-method="abc" data-hide="#js-pismena" data-value="@p" style="width: 30px">@p</button>
+    }
+</div>
+<div style="clear: none; width: 100% "></div>
+
+
+<div class="btn-group btn-group-sm" role="group" aria-label="..." style="margin-top: 5px">
+    <button class="btn btn-outline-secondary btn-xs" style="width: 150px">Dle kategorie</button>
+    @foreach (var sk in Model.SkupinyZakaznika)
+    {
+    <button class="btn btn-outline-secondary btn-xs js-zak" data-method="cat" data-hide="#js-cat" data-value="@sk.Id" style="padding: 0 30px">@sk.Nazev</button>
+    }
+
+</div>
+
+<div style="clear: none"></div>
+
+<div class="row">
+    <div class="col-12">
+        <div id="js-zak-progress" class="progress" style="float: left; min-width: 750px; height: 2px; margin-bottom: 4px">
+            <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                <span class="sr-only">0% Complete (success)</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-10">
+        <div id="js-zak-list"></div>
+    </div>
+</div>
+
+
+<div id="modal-placeholder"></div>
+
+@section Scripts{
+    <script>
+
+        $(document).ready(function () {
+
+            $(document).on("click", ".js-zak", function () {
+                var that = $(this);
+                var meth = $(this).data("method");
+                var val = $(this).data("value");
+
+                writeZak(meth, val, that);
+            });
+
+
+            var placeholderElement = $('#modal-placeholder');
+
+            $(document).on('click', 'tr.jsFormModal', function (event) {
+
+                var hodId = $(this).data('id');
+                $.ajax({
+                    method: "GET",
+                    url: "/Admin/Customer/DetailM",
+                    data: { id: hodId }
+                }).done(function (data) {
+                    placeholderElement.html(data);
+                    placeholderElement.find('.modal').modal('show');
+                });
+            });
+
+        });
+
+        function writeZak(meth, val, that) {
+
+            var pisPism = meth == 'abc';
+            var delkaPism = 1;
+            if (((meth === 'abc')) === true) {
+                delkaPism = 2;
+            }
+            $(".js-zak").removeClass('btn-primary')
+            that.addClass('btn-primary');
+
+            $("#js-zak-progress .progress-bar").show(100);
+            $("#js-zak-progress .progress-bar").animate({ width: "80%" }, 200);
+            $("#js-zak-list").html("");
+
+            var showTop = meth.startsWith('top');
+
+            $.ajax({
+                type: 'POST',
+                url: '/Admin/Customer/GetAjaxData',
+                data: { method: meth, value: val },
+                cache: false
+            }).done(function (data) {
+                var table = "";
+                var t = "";
+                var count = 0;
+
+                if (data.status === true) {
+                    var prvPismOld = "";
+                    if (data.ItemsCount === 0) {
+                        table = 'Nalezeno 0 záznamů.'
+
+                    } else {
+                        count = data.items.length;
+                        if (!(meth === 'email' || meth === 'cat-email')) {
+                            if (showTop) {
+                                t += drawTR("Id", "Návštěvy");
+                            } else {
+                                t += drawTRdefault();
+                            }
+                        }
+                        var oddEm = '';
+                        for (var index1 = 0; index1 < count; index1++) {
+                            var row1 = data.items[index1];
+                            if (pisPism) {
+                                var prvPism = row1.nameClear.substring(0, delkaPism)
+                                if (prvPism !== prvPismOld) {
+                                    t += '<tr><td  class="nadpis"><b>' + prvPism + '</b></td><td colspan="8"  class="nadpis"></td></tr>';
+                                }
+                            }
+                            if (meth === 'email' || meth === 'cat-email') {
+                                t = t + oddEm + row1.email;
+                                oddEm = ', ';
+                            } else {
+
+                                if (showTop) {
+                                    row1.number = row1.pocetLekci;
+                                }
+
+                                t += draw(row1);
+                            }
+                            prvPismOld = prvPism;
+
+                        }
+                        table = '<table class="table-hover sprava" style="cursor: pointer; min-width: 700px;" border="1">' + t + '</table>';
+                    }
+
+                    $("#cat-email").remove();
+                    if (meth === 'cat') {
+                        if (count > 0) {
+                            $("#cat-group").append(catEmail(val));
+                        }
+                    }
+
+                    $("#js-zak-list").html(table);
+                    $("#js-zak-progress .progress-bar").animate({ width: "100%" }, 100, function () {
+                        $("#js-zak-progress .progress-bar").hide(200, function () {
+                            $("#js-zak-progress .progress-bar").animate({ width: "0%" }, 10);
+                        });
+                    });
+                }
+
+            });
+
+        }
+
+        function drawTRdefault() {
+            return drawTR("ID", "Číslo")
+        }
+
+        function drawTR(t1, t2) {
+            return '<tr><th  class="nadpis">' + t1 + '</th><th class="nadpis">' + t2 + '</th><th class="nadpis">Celé jméno</th><th class="nadpis">Nick</th><th class="nadpis">Email</th><th class="nadpis">Přihlášen</th><th class="nadpis">Telefon</th><th  class="nadpis">Kredit</th></tr>';
+        }
+        function draw(o) {
+            var ro = "";
+            ro += '<tr class="jsFormModal" data-id="' + o.id + '"><td  class="textri">' + o.id + '</td><td>' + o.number + '</td><td class="motiv-hlavni"><b>' + o.name + '</b></td>';
+            ro += '<td class="nadpis textri">' + o.nick + '</td><td>' + o.email + '</td><td>' + o.lastLoginStr + '</td><td class="textri">' + o.phone + '</td>';
+            ro += '<td style="background-color:' + o.zbytekBg + '; font-weight: bold; text-align: right; color: white;" >' + o.zbytek + '</td>';
+            ro += '</tr>';
+            return ro;
+        }
+
+        function catEmail(ca) {
+            return btn = '<button class="btn btn-outline-secondary btn-xs js-zak" id="cat-email" data-method="cat-email" data-hide="#js-cat" data-value="' + ca + '" style="padding-left: 30px; padding-right: 30px">Emaily</button>';
+
+        }
+
+    </script>
+}

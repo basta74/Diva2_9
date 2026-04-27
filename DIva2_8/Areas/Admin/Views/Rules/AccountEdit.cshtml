@@ -1,0 +1,111 @@
+﻿@using Diva2Web.Models.Users
+
+
+@model AccountEditModel
+
+
+
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@Model.User.Prijmeni @Model.User.Jmeno - přiřazení rolí</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="main-table-modal" data-id="@Model.User.Id">
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    @foreach (var le in Model.Roles)
+                    {
+                        string bg = "";
+                        string che = "";
+                        if (Model.UserRoles.Any(d => d.RoleId == le.Id))
+                        {
+                            bg = "background-color: #08C552";
+                            che = "checked";
+                        }
+                        <tr>
+                            <td></td>
+                            <td class="js-name" style="@bg"> @le.Name </td>
+                            <td>
+                                <div class="custom-control custom-switch js-switch" style="min-height: 0.5rem">
+                                    <input type="checkbox" class="custom-control-input" data-che="@che" data-name="@le.Name" id="@le.Name" data-ruid="@le.Id" @che>
+                                    <label class="custom-control-label" for="@le.Name"></label>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </table>
+                <div id="messagesAccDet">
+
+                </div>
+                <div class="alert alert-primary" role="alert" style="margin: 10px">
+                    Každý jednotlivý přepínač na tomto formuláři lze přepnout jen jednou.
+                    Pro vrácení předchozího stavu zavřete formulář a  otevřete ho znovu.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                    <div class="col-lg-6">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $(".js-switch").on('click', 'input', function () {
+            switchSwitch(this);
+        });
+
+
+        function switchSwitch(item) {
+            var that = $(item);
+
+            var userId = $("#main-table-modal").data("id");
+
+            console.log(userId);
+
+            var roleId = that.data("ruid");
+            var val = that.data("che") == "checked" ? 0 : 1;
+
+            $.ajax({
+                type: 'POST',
+                url: '/Admin/Rules/SetUserRole',
+                data: { userId: userId, roleId: roleId, value: val },
+                cache: false
+            }).done(function (data) {
+
+                that.attr('disabled', 'disabled');
+
+                var name = that.closest("td").prev("td");
+                if (data.status == true) {
+                    if (val == 0) {
+                       name.css('background-color', 'white');
+                    }
+                    else {
+                        
+                         name.css('background-color', '#08C552');
+                    }
+                }
+                else {
+                     name.css('background-color', 'red');
+                }
+                  $('#messagesAccDet').html(writeMesssages(data.messages));
+                //location.reload();
+            });
+        }
+    });
+</script>

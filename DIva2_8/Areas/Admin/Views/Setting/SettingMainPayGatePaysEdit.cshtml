@@ -1,0 +1,74 @@
+﻿@using Diva2.Core.Main.Main
+
+@model MainIniPayGates
+
+
+
+<div class="modal fade" id="main-edit" tabindex="-1" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContactLabel">Editace hlavního nastavení</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form asp-action="SettingMainPayGatePaysEdit">
+                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="Pays_Active" /> @Html.DisplayNameFor(model => model.Pays_Active)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="Pays_Merchant" class="control-label"></label>
+                                <input asp-for="Pays_Merchant" class="form-control" />
+                                <span asp-validation-for="Pays_Merchant" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="Pays_Shop" class="control-label"></label>
+                                <input asp-for="Pays_Shop" class="form-control" />
+                                <span asp-validation-for="Pays_Shop" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="Pays_Pass" class="control-label"></label>
+                                <input asp-for="Pays_Pass" class="form-control" />
+                                <span asp-validation-for="Pays_Pass" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                   
+
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-primary" data-save="modal">Save</button>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

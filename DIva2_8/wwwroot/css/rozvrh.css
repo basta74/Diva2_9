@@ -1,0 +1,343 @@
+﻿.loader {
+    left: 50%;
+    margin-left: -4em;
+}
+
+.tooltip {
+    z-index: 2000 !important;
+}
+
+.nadpis {
+    background-color: #e3f2fd;
+}
+
+.textri {
+    text-align: right;
+}
+
+table.sprava {
+    border: 1px #ACCEFF solid;
+    border-collapse: collapse;
+    border-spacing: 0px;
+    background-color: #FFFFFF;
+}
+
+    table.sprava td {
+        padding: 3px;
+    }
+
+    table.sprava th {
+        padding: 3px;
+    }
+
+
+#tableBoardAdmin td {
+    width: 25px;
+    padding: 0px;
+    box-sizing: content-box !important;
+    height: 24px;
+    font-size: 0.85em;
+    text-align: center;
+}
+
+    #tableBoardAdmin td.datumDnes {
+        background-color: #88c149 !important;
+    }
+
+    #tableBoardAdmin td.datum:hover {
+        background-color: #FF8E00 !important;
+    }
+
+    #tableBoardAdmin td.datumActive {
+        background-color: #FF8E00 !important;
+    }
+
+    #tableBoardAdmin td.datum {
+        background-color: #0088D5 !important;
+    }
+
+    #tableBoardAdmin td.zaun {
+        background-color: rgb(237, 237, 237);
+    }
+
+    #tableBoardAdmin td.zau {
+        background-color: #C0E1F1 !important;
+    }
+
+    #tableBoardAdmin td.akt {
+        background-color: orange !important;
+        color: white;
+    }
+    #tableBoardAdmin td.obs {
+        background-color: #ffd5c6 !important;
+        font-weight: bold;
+    }
+
+
+
+#tableObjednani td {
+    line-height: 1em;
+}
+
+
+    #tableObjednani td.zb {
+        background-color: gray;
+        color: white;
+    }
+
+    #tableObjednani td.zbA {
+        background-color: forestgreen;
+        color: white;
+    }
+
+    #tableObjednani td.zbN {
+        background-color: orangered;
+        color: white;
+    }
+
+    #tableObjednani td.zbB {
+        background-color: #0088D5 !important;
+        color: white;
+    }
+
+    #tableObjednani td.poradi {
+        background-color: #ECF5FD;
+        width: 35px
+    }
+
+    #tableObjednani td.poradiPrve {
+        background-color: forestgreen;
+        color: white;
+        width: 35px;
+    }
+
+#tableObjednani btn {
+    padding: 1px 8px;
+}
+
+#tableObjednani .jsFormModal div {
+    color: #909090;
+    font-size: 11px;
+    padding: 4px 16px 5px;
+}
+
+#tableObjednani .jsFormModal b {
+    color: #0B61A4;
+    font-size: 12px;
+    padding: 1px 4px;
+}
+
+#tableObjednani td.jsFormModal {
+    border-right-width: 0;
+    width: 55%;
+}
+
+#tableObjednani td.tdAction {
+    border-left-width: 0;
+}
+
+#tableObjednani td.nahradnik {
+    background-color: #FF8E00;
+}
+
+    #tableObjednani td.nahradnik div {
+        color: white;
+    }
+
+#tableObjednani td.pasivni {
+    background-color: gray;
+}
+
+    #tableObjednani td.pasivni div {
+        color: white;
+    }
+
+#pismena .js-zak {
+    padding: 0.05rem 0.03rem;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+}
+
+#hr {
+    color: black;
+}
+
+#tableObjednani td.tdAction {
+    width: 25px;
+    padding: 0;
+}
+
+#AdminBoardSetPob a.page-link {
+    padding: 10px 20px;
+    font-size: 1.4em;
+    border: none;
+}
+
+#AdminBoardSetLesson {
+    margin-bottom: 6px;
+}
+
+table.tableTrans {
+    width: 100%;
+}
+
+    table.tableTrans th {
+        text-align: center;
+        font-weight: bold;
+    }
+
+    table.tableTrans td {
+        text-align: center;
+    }
+
+        table.tableTrans td.dt {
+            text-align: right;
+            padding-right: 10px;
+        }
+
+        table.tableTrans td.tm {
+            text-align: right;
+            padding-right: 5px;
+            color: gray;
+        }
+
+
+        table.tableTrans td.kc {
+            text-align: right;
+            padding-right: 5px;
+        }
+
+        table.tableTrans td.zb {
+            text-align: right;
+            font-weight: bold;
+        }
+
+/* The container must be positioned relative: */
+.custom-select {
+    position: relative;
+    font-family: Arial;
+}
+
+    .custom-select select {
+        display: none; /*hide original SELECT element: */
+    }
+
+.select-selected {
+    background-color: DodgerBlue;
+}
+
+    /* Style the arrow inside the select element: */
+    .select-selected:after {
+        position: absolute;
+        content: "";
+        top: 14px;
+        right: 10px;
+        width: 0;
+        height: 0;
+        border: 6px solid transparent;
+        border-color: #fff transparent transparent transparent;
+    }
+
+    /* Point the arrow upwards when the select box is open (active): */
+    .select-selected.select-arrow-active:after {
+        border-color: transparent transparent #fff transparent;
+        top: 7px;
+    }
+
+/* style the items (options), including the selected item: */
+.select-items div, .select-selected {
+    color: #ffffff;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+    cursor: pointer;
+}
+
+/* Style items (options): */
+.select-items {
+    position: absolute;
+    background-color: DodgerBlue;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 99;
+}
+
+/* Hide the items when the select box is closed: */
+.select-hide {
+    display: none;
+}
+
+.select-items div:hover, .same-as-selected {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.selectCredit td {
+    padding: 5px;
+}
+
+#zakaznik-detail td:first-child {
+    text-align: right;
+    padding-right: 8px;
+}
+
+.nadpis {
+    text-align: right;
+    padding-right: 8px;
+}
+
+button.btn6 {
+    font-size: 0.7rem
+}
+
+.js-edit-pl-show {
+    cursor: pointer;
+}
+
+/*
+ul.mr-auto li.dropdown:hover > div.dropdown-menu {
+    display: block;
+} /**/
+
+.kredit-green {
+    background-color: green;
+    color: white;
+    text-align: center;
+    font-size: 13px;
+}
+
+.kredit-blue {
+    background-color: #0088D5 !important;
+    color: white;
+    text-align: center;
+    font-size: 13px;
+}
+
+.kredit-silver {
+    background-color: silver;
+    color: white;
+    text-align: center;
+    font-size: 13px;
+}
+
+.kredit-red {
+    background-color: orangered;
+    color: white;
+    text-align: center;
+    font-size: 13px;
+}
+
+table.js-td-odkaz tr {
+    cursor: pointer;
+}
+
+table.js-td-odkaz-m tr {
+    cursor: pointer;
+}
+
+
+.hour-setting-active {
+    background: green !important;
+    color: white !important;
+}

@@ -1,0 +1,26 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Main
+@model AdminPageModel
+
+@{
+    MainIni ini = Model.MainIniCover.MainIniObj;
+    MainIniStyle style = Model.MainIniCover.MainStyleObj;
+}
+
+<!-- Modal placeholder -->
+<div id="modal-placeholder"></div>
+
+<table>
+    <tr>
+        <td>Pays</td>
+        <td>Merchant</td>
+        <td>@Model.MainIniCover.MainGatePaysObj.Pays_Merchant</td>
+        <td>Shop</td>
+        <td>@Model.MainIniCover.MainGatePaysObj.Pays_Shop</td>
+        <td>
+            <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="ajax-modal" data-target="#main-edit-paygates" data-url="@Url.Action("SettingMainPayGatePaysEdit")">
+            Editace brány</button> 
+        </td>
+
+    </tr>
+</table>

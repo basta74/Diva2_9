@@ -1,0 +1,50 @@
+﻿@using Diva2Web.Models.Admin
+@model AdminPageModel
+<!-- Modal placeholder -->
+<div id="modal-placeholder"></div>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-success  btn-sm" style="margin: 5px;" data-toggle="ajax-modal"  data-target="#lector-create" data-url="@Url.Action("LectorCreate")">
+    Přidat lektora
+</button>
+
+<table class="table table-sm">
+    <thead>
+        <tr>
+
+            <th scope="col">Nick</th>
+            <th scope="col">Jméno</th>
+            <th scope="col">Email</th>
+            <th scope="col">Platnost</th>
+            <th scope="col">Zobrazit</th>
+            <th scope="col">Pořadí</th>
+            <th scope="col">Id</th>
+            <th scope="col">Pořadí	ID v systému</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var le in Model.Lektori)
+        {
+            string styleTr = @le.Platnost ? "" : "table-active";
+            <tr class="@styleTr">
+                <th scope="row">@le.Nick</th>
+                <td>@le.Jmeno</td>
+                <td>@le.Email</td>
+                <td>@le.Platnost</td>
+                <td>@le.Viditelnost</td>
+                <td>@le.Poradi</td>
+                <td>@le.Id</td>
+
+                <td>@le.UserId</td>
+
+                <td><button type="button" class="btn btn-outline-primary  btn-sm" data-toggle="ajax-modal" data-target="#lector-edit" data-url="@Url.Action("LectorEdit")/@le.Id">Edit</button></td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

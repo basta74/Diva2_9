@@ -1,0 +1,87 @@
+﻿
+@model Diva2Web.Models.Admin.AdminPageModel
+
+<style>
+    body {
+        font-size: 0.8em;
+    }
+
+    .navbar {
+        margin-bottom: 20px
+    }
+
+    .motiv-hlavni {
+        color:@Model.Style.MotivHlavni;
+    }
+    .motiv-kontra {
+         color:@Model.Style.MotivKontra;
+    }
+
+    tr.dnesniDen {
+        border: solid orange 2px;
+    }
+
+    td.rozByl {
+        background-color: #EDEDED;
+    }
+
+    table.jsRozvrh tr:hover {
+        background-color: silver;
+    }
+
+
+    table.jsRozvrh tr td:hover {
+        background-color: #dddddd;
+    }
+
+
+
+    table.jsRozvrh td {
+        overflow: hidden;
+        text-align: center;
+        vertical-align: top;
+    }
+
+    table.jsRozvrh tr th {
+        border-color: @Model.Style.Color1;
+        background-color: @Model.Style.Color1;
+        color: white;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    table.jsRozvrh tr td:first-child {
+        background-color: @Model.Style.Color2;
+        border-left-color: @Model.Style.Color2;
+        border-right-color: @Model.Style.Color2;
+        padding: 20px;
+        color: white;
+        font-weight: bold;
+    }
+
+    .list-group-item.active {
+        background-color: @Model.Style.Color1;
+        border-color: @Model.Style.Color1;
+    }
+
+    .reserved {
+        background-color: #b3f0ff !important;
+        padding: 2px;
+    }
+
+
+    .reserved-nahradnik {
+        background-color: #FAD7A0 !important;
+        padding: 2px;
+    }
+
+    .lekce-byla {
+        background-color: #f1f2f3 !important;
+        padding: 2px;
+    }
+
+    .lekce-obsazena {
+        background-color: #ffd5c6 !important;
+        padding: 2px;
+    }
+</style>

@@ -8,43 +8,23 @@
     ".NETCoreApp,Version=v9.0": {
       "Diva2_8.Web/1.0.0": {
         "dependencies": {
+          "Diva2.Services": "1.0.0",
+          "Diva2_8.Core": "1.0.0",
           "Diva2_8.Data": "1.0.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "9.0.15",
-          "Pomelo.EntityFrameworkCore.MySql": "9.0.0"
+          "Microsoft.Extensions.Configuration.Binder": "10.0.7",
+          "Pomelo.EntityFrameworkCore.MySql": "9.0.0",
+          "cloudscribe.Pagination.Models": "8.7.0"
         },
         "runtime": {
           "Diva2_8.Web.dll": {}
         }
       },
-      "EntityFramework/6.1.0": {
+      "cloudscribe.Pagination.Models/8.7.0": {
         "runtime": {
-          "lib/net45/EntityFramework.SqlServer.dll": {
-            "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.1.30225.0"
-          },
-          "lib/net45/EntityFramework.dll": {
-            "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.1.30225.0"
-          }
-        }
-      },
-      "Microsoft.AspNet.Identity.Core/2.2.4": {
-        "runtime": {
-          "lib/net45/Microsoft.AspNet.Identity.Core.dll": {
-            "assemblyVersion": "2.0.0.0",
-            "fileVersion": "2.2.4.50621"
-          }
-        }
-      },
-      "Microsoft.AspNet.Identity.EntityFramework/2.2.4": {
-        "dependencies": {
-          "EntityFramework": "6.1.0",
-          "Microsoft.AspNet.Identity.Core": "2.2.4"
-        },
-        "runtime": {
-          "lib/net45/Microsoft.AspNet.Identity.EntityFramework.dll": {
-            "assemblyVersion": "2.0.0.0",
-            "fileVersion": "2.2.4.50621"
+          "lib/net8.0/cloudscribe.Pagination.Models.dll": {
+            "assemblyVersion": "8.7.0.0",
+            "fileVersion": "8.7.0.0"
           }
         }
       },
@@ -104,7 +84,7 @@
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "9.0.15",
           "Microsoft.Extensions.Caching.Memory": "9.0.15",
-          "Microsoft.Extensions.Configuration.Abstractions": "9.0.15",
+          "Microsoft.Extensions.Configuration.Abstractions": "10.0.7",
           "Microsoft.Extensions.Logging": "9.0.15"
         },
         "runtime": {
@@ -116,7 +96,7 @@
       },
       "Microsoft.Extensions.Caching.Abstractions/9.0.15": {
         "dependencies": {
-          "Microsoft.Extensions.Primitives": "9.0.15"
+          "Microsoft.Extensions.Primitives": "10.0.7"
         },
         "runtime": {
           "lib/net9.0/Microsoft.Extensions.Caching.Abstractions.dll": {
@@ -131,7 +111,7 @@
           "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.15",
           "Microsoft.Extensions.Logging.Abstractions": "9.0.15",
           "Microsoft.Extensions.Options": "9.0.15",
-          "Microsoft.Extensions.Primitives": "9.0.15"
+          "Microsoft.Extensions.Primitives": "10.0.7"
         },
         "runtime": {
           "lib/net9.0/Microsoft.Extensions.Caching.Memory.dll": {
@@ -140,14 +120,38 @@
           }
         }
       },
-      "Microsoft.Extensions.Configuration.Abstractions/9.0.15": {
+      "Microsoft.Extensions.Configuration/10.0.7": {
         "dependencies": {
-          "Microsoft.Extensions.Primitives": "9.0.15"
+          "Microsoft.Extensions.Configuration.Abstractions": "10.0.7",
+          "Microsoft.Extensions.Primitives": "10.0.7"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.Configuration.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.726.21808"
+          }
+        }
+      },
+      "Microsoft.Extensions.Configuration.Abstractions/10.0.7": {
+        "dependencies": {
+          "Microsoft.Extensions.Primitives": "10.0.7"
         },
         "runtime": {
           "lib/net9.0/Microsoft.Extensions.Configuration.Abstractions.dll": {
-            "assemblyVersion": "9.0.0.0",
-            "fileVersion": "9.0.1526.17522"
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.726.21808"
+          }
+        }
+      },
+      "Microsoft.Extensions.Configuration.Binder/10.0.7": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration": "10.0.7",
+          "Microsoft.Extensions.Configuration.Abstractions": "10.0.7"
+        },
+        "runtime": {
+          "lib/net9.0/Microsoft.Extensions.Configuration.Binder.dll": {
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.726.21808"
           }
         }
       },
@@ -223,7 +227,7 @@
       "Microsoft.Extensions.Options/9.0.15": {
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "9.0.15",
-          "Microsoft.Extensions.Primitives": "9.0.15"
+          "Microsoft.Extensions.Primitives": "10.0.7"
         },
         "runtime": {
           "lib/net9.0/Microsoft.Extensions.Options.dll": {
@@ -232,11 +236,11 @@
           }
         }
       },
-      "Microsoft.Extensions.Primitives/9.0.15": {
+      "Microsoft.Extensions.Primitives/10.0.7": {
         "runtime": {
           "lib/net9.0/Microsoft.Extensions.Primitives.dll": {
-            "assemblyVersion": "9.0.0.0",
-            "fileVersion": "9.0.1526.17522"
+            "assemblyVersion": "10.0.0.0",
+            "fileVersion": "10.0.726.21808"
           }
         }
       },
@@ -272,9 +276,22 @@
           }
         }
       },
+      "Diva2.Services/1.0.0": {
+        "dependencies": {
+          "Diva2_8.Core": "1.0.0",
+          "Diva2_8.Data": "1.0.0",
+          "Newtonsoft.Json": "13.0.4"
+        },
+        "runtime": {
+          "Diva2.Services.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
       "Diva2_8.Core/1.0.0": {
         "dependencies": {
-          "Microsoft.AspNet.Identity.EntityFramework": "2.2.4",
+          "Microsoft.Extensions.Identity.Core": "9.0.15",
           "Microsoft.Extensions.Identity.Stores": "9.0.15",
           "Newtonsoft.Json": "13.0.4"
         },
@@ -288,7 +305,8 @@
       "Diva2_8.Data/1.0.0": {
         "dependencies": {
           "Diva2_8.Core": "1.0.0",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "9.0.15"
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "9.0.15",
+          "Microsoft.Extensions.Configuration.Binder": "10.0.7"
         },
         "runtime": {
           "Diva2_8.Data.dll": {
@@ -305,26 +323,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "EntityFramework/6.1.0": {
+    "cloudscribe.Pagination.Models/8.7.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-u/M0OEfqxTUsL5BwzD66eBGm278/ozqdLK3JvMO6QwUxxc+z7ZUkTYm4suDhWRqzkc6mOhvXDQY5dZUwbldxyQ==",
-      "path": "entityframework/6.1.0",
-      "hashPath": "entityframework.6.1.0.nupkg.sha512"
-    },
-    "Microsoft.AspNet.Identity.Core/2.2.4": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-s3u/o3iG5h0z7Ggukwo4soPwogD56ZrYbolGxTfw41zkuG6jAXUJT/V3EThqHJXGuCNvWSdSnnwAhPfT9Sn36g==",
-      "path": "microsoft.aspnet.identity.core/2.2.4",
-      "hashPath": "microsoft.aspnet.identity.core.2.2.4.nupkg.sha512"
-    },
-    "Microsoft.AspNet.Identity.EntityFramework/2.2.4": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-ay5FMSwNF0tb9KiC4l4aqm7D1E6Da9nU3euI/X0UD1SuumJX7OkZ9LtZjU9xT3xmou3XLXO8DDcgrW6udSQk6Q==",
-      "path": "microsoft.aspnet.identity.entityframework/2.2.4",
-      "hashPath": "microsoft.aspnet.identity.entityframework.2.2.4.nupkg.sha512"
+      "sha512": "sha512-NjfIyIYqDl8El1e2V2BU/PAd7MUYDDf/2Bo4F0l3O2ZMkFpa0L3kRizaL9PEF7R1Rj4y7nB7o3Udfno4A3gkAw==",
+      "path": "cloudscribe.pagination.models/8.7.0",
+      "hashPath": "cloudscribe.pagination.models.8.7.0.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Cryptography.Internal/9.0.15": {
       "type": "package",
@@ -382,12 +386,26 @@
       "path": "microsoft.extensions.caching.memory/9.0.15",
       "hashPath": "microsoft.extensions.caching.memory.9.0.15.nupkg.sha512"
     },
-    "Microsoft.Extensions.Configuration.Abstractions/9.0.15": {
+    "Microsoft.Extensions.Configuration/10.0.7": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-M9s2mDxtfNdS6SbemODzDxHgm+eIhZPSuTc0s0QazQoSceTXTv+OjthKqf8r/FehXtABXD01ijQNdtODDFtnxg==",
-      "path": "microsoft.extensions.configuration.abstractions/9.0.15",
-      "hashPath": "microsoft.extensions.configuration.abstractions.9.0.15.nupkg.sha512"
+      "sha512": "sha512-wZbGh7J8R1vXN525O6d8dlcDTxhRTnd5MyW4LdfP5S0tSnTwTCseYSrq6g0Mxh7W9xn8P/2xPuf0D/m6k2dy2w==",
+      "path": "microsoft.extensions.configuration/10.0.7",
+      "hashPath": "microsoft.extensions.configuration.10.0.7.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Configuration.Abstractions/10.0.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-t56nEgvECcyLPojZIUFWJknQQDAbgfTf9J+QMYJE1YYvVgz69vN6B/AKL8Grvj3Lcnp8kTpNqwmwFhb3YLJmtQ==",
+      "path": "microsoft.extensions.configuration.abstractions/10.0.7",
+      "hashPath": "microsoft.extensions.configuration.abstractions.10.0.7.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Configuration.Binder/10.0.7": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-8bS1qIaRivny+WX+49pmeJ6iAylbtX8C0DLEcCQWZjdxQvLqaMssXiGD9P/6pYElrHbK5/nAHmjbQ8STqdMYeg==",
+      "path": "microsoft.extensions.configuration.binder/10.0.7",
+      "hashPath": "microsoft.extensions.configuration.binder.10.0.7.nupkg.sha512"
     },
     "Microsoft.Extensions.DependencyInjection/9.0.15": {
       "type": "package",
@@ -438,12 +456,12 @@
       "path": "microsoft.extensions.options/9.0.15",
       "hashPath": "microsoft.extensions.options.9.0.15.nupkg.sha512"
     },
-    "Microsoft.Extensions.Primitives/9.0.15": {
+    "Microsoft.Extensions.Primitives/10.0.7": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-WRPJ9kpIwsOcghRT0tduIqiz7CDv7WsnL4kTJavtHS4j5AW++4LlR63oOSTL2o/zLR4T1z0/FQMgrnsPJ5bpQQ==",
-      "path": "microsoft.extensions.primitives/9.0.15",
-      "hashPath": "microsoft.extensions.primitives.9.0.15.nupkg.sha512"
+      "sha512": "sha512-D5M0Jr551iTgwkZMN9rm0pSkgNLj5quUWQUmQPMZh7k/bnvZTnXRGfE2KuvXf1EEjt/ofD9yw9IumpgdP9QCnw==",
+      "path": "microsoft.extensions.primitives/10.0.7",
+      "hashPath": "microsoft.extensions.primitives.10.0.7.nupkg.sha512"
     },
     "MySqlConnector/2.4.0": {
       "type": "package",
@@ -465,6 +483,11 @@
       "sha512": "sha512-cl7S4s6CbJno0LjNxrBHNc2xxmCliR5i40ATPZk/eTywVaAbHCbdc9vbGc3QThvwGjHqrDHT8vY9m1VF/47o0g==",
       "path": "pomelo.entityframeworkcore.mysql/9.0.0",
       "hashPath": "pomelo.entityframeworkcore.mysql.9.0.0.nupkg.sha512"
+    },
+    "Diva2.Services/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "Diva2_8.Core/1.0.0": {
       "type": "project",

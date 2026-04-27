@@ -1,0 +1,69 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Lessons
+@model AdminPageModel
+@{
+
+    IList<Lekce> lekce = ViewData["lekce"] as IList<Lekce>;
+}
+
+
+<div id="messages"></div>
+
+<table class="">
+    <thead>
+        <tr>
+
+            <th scope="col">Datum</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var les in lekce.GroupBy(d => d.PobockaId))
+        {
+            <tr>
+                <th>Pobočka : @Model.Pobocky.Where(d => d.Id == les.Key).FirstOrDefault().Name</th>
+                <td></td>
+                <td></td>
+            </tr>
+            foreach (var le in les)
+            {
+                <tr>
+                    <td>@le.Datum.ToString("dd.MM.yyy") @le.Cas</td>
+                    <td><a href="/Admin/Board/Index/@le.Id" class="btn btn-primary btn-sm" role="button" aria-pressed="true">Do lekce</a></td>
+                    <td><div class="jsFormUctuj btn btn-primary btn-sm" data-id="@le.Id">Zaúčtovat</div> </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script>
+
+        //-------------- zauctovat hodinu --------------
+        $('.jsFormUctuj').bind('click', function () {
+            var that = $(this);
+            var id = that.data("id");
+            that.hide();
+            $.ajax({
+                type: 'post',
+                url: '/Admin/Api/PostLesson',
+                data: { LekceId: id, kontCislo1: 1, kontCislo2: 1 },
+                cache: false
+            }).done(function (data) {
+                $('#messages').html(writeMesssages(data.messages));
+                if (data.status == true) {
+                    setTimeout(function () {
+                        location.reload(true);
+                    }, 500);
+                }
+                else {
+                    that.show();
+                }
+            });
+            return false;
+        });
+
+    </script>
+}

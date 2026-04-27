@@ -1,0 +1,35 @@
+﻿@using Diva2Web.Models.Admin
+@model AdminPageModel
+
+@{
+    ViewData["Title"] = "Logout";
+    Layout = "~/Views/Shared/_LayoutAccount.cshtml";
+}
+
+
+<div class="card" style="max-width: 600px; min-width: 400px">
+    <div class="card-body">
+        <h5 class="card-title">Registrace</h5>
+
+        @if (Model.MainIniCover.MainIniObj.RegisterEmail)
+        {
+            <div class="alert alert-success" role="alert">
+                Na Vaši emailovou adresu byl odeslána výzva pro potvrzení registrace
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-success" role="alert">
+                Registrace proběhla úspěšně :)
+                Můžete se přihlásit a začít používat systém.
+            </div>
+        }
+
+
+        <a href="/Home/Index" class="btn btn-outline-secondary">Zpět na rozvrh</a>
+
+    </div>
+</div>
+
+
+

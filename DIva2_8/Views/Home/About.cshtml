@@ -1,0 +1,15 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Lessons
+@model AdminPageModel
+@{
+    ViewData["Title"] = "Home Page";
+
+}
+
+
+@section leftMenu{
+    <partial name="MenuLeftPublic" model="Model" />
+}
+
+<h4>@Model.Page.Title</h4>
+<div>@Html.Raw(@Model.Page.Content)</div>

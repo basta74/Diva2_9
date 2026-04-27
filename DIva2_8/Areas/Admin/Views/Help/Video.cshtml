@@ -1,0 +1,57 @@
+﻿@using Diva2Web.Models.Admin
+@model AdminPageModel
+
+
+
+<h2>Video lekce</h2>
+
+
+
+<h4></h4>
+
+V systému si můžete evidovat a prodávat videolekce, které máte "někde" uloženy. Naši zákazníci využívají služby jako <a href="https://bunnycdn.com">https://bunnycdn.com</a>.
+<br />
+<br />
+
+<b>V záložce videa si vložíte odkaz na video. Nastavujete tyto vlastnosti.</b>
+<br />
+<table class="table table-bordered">
+    <tr>
+        <td>Název</td>
+        <td>Název pod kterým se bude video zobrazovat</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Url videa</td>
+        <td>Url odkaz kde je video uloženo. např <a href="https://www.youtube.com/watch?v=jFAA6Z_YIEM">https://www.youtube.com/watch?v=jFAA6Z_YIEM</a> </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Url obrázku</td>
+        <td>Odkaz na obrázek, který pomůže zákazníkovi představit co od videa může okčekávat. Pokud nebude url obrázku zadána zobrazí se defaulní obrázek.
+        <br/> <img src="/images/default-video-thumbnail.jpg" style="width: 150px"/></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Popis</td>
+        <td>Popis vystihující obsah videa.</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Viditelné</td>
+        <td>Zda je video viditelné pro zákazníka</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Kredity</td>
+        <td>Počet kreditů, které se strhnou zákazníkovi při nákupu.</td>
+        <td></td>
+    </tr>
+</table>
+<br />
+Pro zobrazení videí zákazníkům je potřeba nastavit v sekci <a href="/Admin/Content/Pages"><b>Vlastní stránky</b></a> stránku video, jako viditenou. Popřípadě můžete stránku video obohatit o vlastní texty.
+<br/>
+
+Zákazník si poté video zakoupí a odečte se mu daný kredit. Následně má neomezenou dobu na to aby si video spustil. Poté co video poprve spustí a bude si jej prohlížet. bude odkaz na aktivní jen 2 hodiny.
+
+

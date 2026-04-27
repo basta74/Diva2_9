@@ -1,0 +1,59 @@
+﻿@model int;
+@{
+    ViewData["Title"] = "Logout";
+    Layout = "~/Views/Shared/_LayoutAccount.cshtml";
+}
+
+    <div style="max-width: 740px; min-width: 540px">
+        <ul class="nav justify-content-center">
+            <li class="nav-item"><a href="/Account/Login" class="nav-link">Přihlášení</a></li>
+            <li class="nav-item"><a href="/Account/Register" class="nav-link active">Registrace</a></li>
+            <li class="nav-item"><a href="//Help" class="nav-link active">Nápověda</a></li>
+        </ul>
+        <div class="card" >
+            <div class="card-body">
+                <h5 class="card-title">Neaktivní účet</h5>
+                @Html.ValidationSummary(true)
+                <div class="alert alert-warning" role="alert">
+                    Vaše přihlašovací údaje jsou platné, ale ještě nemáte potvrzen aktivační email.
+                </div>
+
+                <div class="row">
+                    <div class="col-7">
+                        <a href="/Index" class="btn btn-outline-secondary">Zpět na úvod</a>
+                    </div>
+                    <div class="col-5" style="text-align: right; padding-right: 10px">
+                        <a href="#" class="btn btn-primary" data-id="@Model" id="jsSend">Odeslat email</a>
+                    </div>
+                </div>
+
+                <div id="messages">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    @section Scripts{
+        <script>
+
+            $(document).ready(function () {
+
+                $(document).on('click', '#jsSend', function (event) {
+
+                    var id = $(this).data('id');
+                    $.ajax({
+                        method: "GET",
+                        url: "/Account/SendActiveEmail",
+                        data: { id: id }
+                    }).done(function (data) {
+                        $('#messages').html(writeMesssages(data.messages));
+                    });
+                });
+
+            });
+
+        </script>
+    }
+

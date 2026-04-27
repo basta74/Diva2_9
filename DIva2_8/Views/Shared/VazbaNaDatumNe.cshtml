@@ -1,0 +1,15 @@
+﻿@model Diva2Web.Models.Admin.AdminPageModel
+@using Diva2.Core.Extensions
+@{
+    var monday = DateTimeExtensions.StartOfWeek(Model.CurrentDate, DayOfWeek.Monday);
+}
+
+
+<div class="list-group">
+    @foreach (var da in Model.Weaks)
+    {
+        var mon = DateTimeExtensions.StartOfWeek(da, DayOfWeek.Monday);
+        string active = da == monday ? "active" : "";
+        <a href="/Admin/Home/SetDate?dat=@da.ToString("yyyy-MM-dd")" class="list-group-item list-group-item-action @active">@da.ToString("yyyy MMMM")</a>
+    }
+</div>

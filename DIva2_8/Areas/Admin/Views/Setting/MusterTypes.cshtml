@@ -1,0 +1,63 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Lessons
+@model AdminPageModel
+@{
+    var leks = Model.Lektori.ToLookup(d => d.Id);
+    var typs = Model.TypyLekci.ToLookup(d => d.Id);
+    ViewData["Title"] = "LektorList";
+}
+
+<!-- Modal placeholder -->
+<div id="modal-placeholder"></div>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-success" style="margin: 5px;" data-toggle="ajax-modal" data-target="#lessontype-create" data-url="@Url.Action("MusterTypeCreate")">
+    Přidat šablonu
+</button>
+
+<table class="table table-sm">
+    <thead>
+        <tr>
+
+            <th scope="col">Název</th>
+            <th scope="col">Aktivní</th>
+            <th scope="col">Název hodiny</th>
+            <th scope="col">Typ</th>
+            <th scope="col">Kredit</th>
+            <th scope="col">Minuty</th>
+            <th scope="col">Lektor</th>
+            <th scope="col">Míst</th>
+            <th scope="col">Náhradníků</th>
+            <th scope="col"><a href="/Admin/Help/Rozvrh" class="badge badge-info">Nápověda</a></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var le in Model.LekceMustrTypy)
+        {
+            <tr>
+                <th scope="row" style="width: 30%">@le.NazevTyp</th>
+                <td>@Html.Raw(@le.Aktivni ? "<span style='color: green'>ano</span>" : "<span style='color: red'>ne</span>")</td>
+                <td>@le.Nazev</td>
+                <td>
+                    @if (le.Typ > 0)
+                    {
+                    <p>@typs[le.Typ].FirstOrDefault().Nazev</p>
+                    }
+                </td>
+                <td>@le.Kredit</td>
+                <td>@le.Minuty</td>
+                <td>
+                    @if (le.Lektor > 0)
+                    {
+                    <p>@leks[le.Lektor].FirstOrDefault().Nick</p>
+                    }
+                </td>
+                <td>@le.PocetMist</td>
+                <td>@le.PocetNahradniku</td>
+
+                <td><button type="button" class="btn btn-outline-primary btn-sm" data-toggle="ajax-modal" data-target="#lessontype-edit" data-url="@Url.Action("MusterTypeEdit")/@le.Id">Edit</button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+

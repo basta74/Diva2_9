@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup><TargetFramework>net9.0</TargetFramework>	  
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Diva2_8.Data\Diva2_8.Data.csproj" />
+    <ProjectReference Include="..\Web.Core\Diva2_8.Core.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,90 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Trans
+@using Diva2.Core;
+
+@model AdminPageModel
+
+@{
+
+    IPagedList<UserLekceLogIn> list = ViewBag.logs as IPagedList<UserLekceLogIn>;
+
+}
+
+<div id="modal-placeholder"></div>
+
+<partial name="Main/Pagination" />
+
+<table class="table table-hover">
+    <tr>
+        <th>Provedl</th>
+        <th>Zákazník</th>
+        <th>Lekce</th>
+        <th>Počet míst</th>
+        <th>Pořadí</th>
+        <th>Počet náhr.</th>
+        <th>Kredit lekce</th>
+        <th>Kredit ini</th>
+        <th>Obj. zak</th>
+        <th>Obj. zak in</th>
+        <th>Obj. kred.</th>
+        <th>Zbytek k</th>
+        <th>Zbytek kč</th>
+        <th>+</th>
+        <th>Adm</th>
+
+        <th>Max </th>
+        <th>Max kc</th>
+        <th>Datum</th>
+    </tr>
+
+    @foreach (var l in list.Data)
+    {
+        <tr>
+            <td>@l.ProvedlId</td>
+            <td>@l.UserId</td>
+            <td>@l.LekceId</td>
+            <td>@l.PocetMist</td>
+            <td>@l.Poradi</td>
+            <td>@l.PocetZakazniku</td>
+            <td>@l.KreditLekce</td>
+            <td>@l.KreditInit</td>
+            <td>@l.ObjednanychLekci</td>
+            <td>@l.ObjednanychVLekci</td>
+            <td>@l.ObjednaneKredity</td>
+            <td>@l.ZbytekKredit</td>
+            <td>@l.ZbytekKreditCas</td>
+            <td>@l.Pridat</td>
+            <td>@l.FromAdministrace</td>
+            <td>@l.MaxPerUser</td>
+            <td>@l.MaxPerUserTime</td>
+            <td>@l.TsCz</td>
+        </tr>
+    }
+</table>
+
+<partial name="Main/Pagination" />
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            var placeholderElement = $('#modal-placeholder');
+
+            $(document).on('click', 'tr.jsFormModal td.jmeno', function (event) {
+                var zakId = $(this).data('id');
+                showZak(zakId);
+            });
+
+            function showZak(zakId) {
+                $.ajax({
+                    method: "GET",
+                    url: "/Admin/Customer/DetailM",
+                    data: { id: zakId }
+                }).done(function (data) {
+                    placeholderElement.html(data);
+                    placeholderElement.find('.modal').modal('show');
+                });
+            }
+        });
+    </script>
+}

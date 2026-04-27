@@ -1,0 +1,237 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h4>Vítejte v nové verzi rezervačního sytému diva2</h4>
+
+<a href="/Admin/Board" class="btn btn-outline-success btn-lg active" role="button" aria-pressed="true">Rozvrh</a>
+<a href="/Admin/Customer" class="btn btn-outline-secondary btn-lg" role="button" aria-pressed="true">Zákazníci</a>
+<a href="/Admin/Setting" class="btn btn-outline-info btn-lg " role="button" aria-pressed="true">Nastavení</a>
+
+<a href="/Admin/Sms/Logout" class="btn btn-outline-success btn-lg" role="button" aria-pressed="true">Logy</a>
+
+
+
+
+<ul style="margin-top: 15px">
+
+
+    <!--
+
+        <h6>24.4.2020 </h6>
+        Vážení zákazníci, vzhledem k tomu, že se neměnily ceny od samého začátku, t.j. více než 12 let, budu muset přistoupit k úpravě ceníku od 1.7.2020. <br />
+        U některých z vás se zvýšení ani neprojeví, a věřím pro ty co ho využívají na maximum to nebude problém.
+        <br />        <br />
+        <table>
+            <tr>
+                <td>Základ</td>
+                <td></td>
+                <td style="text-align: right">200 Kč</td>
+            </tr>
+            <tr>
+                <td>Více rozvrhů v týdnu</td>
+                <td></td>
+                <td style="text-align: right">+ 100 Kč</td>
+            </tr>
+            <tr>
+                <td>Používání časového kreditu</td>
+                <td></td>
+                <td style="text-align: right"> + 40 Kč</td>
+            </tr>
+            <tr>
+                <td>Používání platební brány Pays</td>
+                <td></td>
+                <td style="text-align: right">+ 50 Kč</td>
+            </tr>
+            <tr>
+                <td>Pokud je v systému více než 1000 zákaníků</td>
+                <td></td>
+                <td style="text-align: right">+ 50 Kč</td>
+            </tr>
+        </table>
+        <br />
+        <div class="alert alert-success" role="alert">
+            Dále k situaci ohledně koronaviru. Opozdil jsem se s vystavením faktur a měl to nachystáno v den kdy se vyhlásil zákaz. Proto budou faktury poslány až nyní.
+            Nebude tam zaúčtovány 2 měsíce a faktura bude vystavena jen na první pololetí. T.j. 4 měsíce.
+        </div>
+        <br />
+        -->
+
+     <li>
+        <h6>11.05.2022</h6>
+        <div class="alert alert-success" role="alert">
+            <b>Přidána QR platby</b><br />
+            Implementovala se funkce  z webu <a href="https://qr-platba.cz">qr-platba.cz</a>. Pokud bude zákazník přihlášen a vy budete mít tuto službu aktivní, 
+            zobrazí se na řádku v ceníku tlačítko <input type="button" value="Zobrazit QR" class="btn btn-sm btn-primary" />.<br/> 
+            Po kliknutí na něj se vygeneruje QR kód pro platbu na Váš účet. 
+            Jako variabilní symbol bude id zákazníka. Ve zprávě pro příjemce bude uveden, typ kreditu, jeho ID a email uživatele. <br/> např: KR-CAS:12 jana@seznam.cz <br/>
+            Pro zprovoznění je třeba mít nastaven účet, na který se částka posílá.
+        </div>
+    </li>
+    <li>
+        <h6>1.02.2021</h6>
+        <div>
+            <b>Přidána možnost nastavit hodinu jako celodenní akci</b><br />
+            Pokud chcete naplánovat celodenní akci tak v týdenních kopiích zaškrtněte nejlépe na první hodine políčko "celodenní akce". 
+            Je podmínkou aby v daném dni neexistovala žádná hodina. V tom případě se hodina nevytvoří. 
+
+        </div>
+    </li>
+    <li>
+        <h6>7.10.2020</h6>
+        <div>
+            <b>Přidána možnost prodávat svoje videa</b><br />
+            Nahrajte si video, uložte ho na nějaké úložiště a následně jej můžete nabídnout zákazníkům za kredity ke shlédnutí. Více v nápovědě pro <a href="/admin/help/video">videa</a>.
+
+        </div>
+    </li>
+    <li>
+        <h6>13.9.2020</h6>
+        <div>
+            <b>Přidány 3 funkce</b><br />
+            <ul>
+                <li>Lze převádět kredity mezi zákazníky.</li>
+                <li>Lze upravit kredity klienta tak, že mínusové neomezené kredity opravíte na nulu použitím čaových kreditů</li>
+                <li>
+                    V hlavní šabloně lze přidávat sloupce s časy. Např. chcete přidat nový čas V 17:30, tak kliknete na
+                    <a href="#" class="badge badge-primary">Editace časů</a> a přidáte si potřebný sloupec do rozvrhů
+                </li>
+            </ul>
+
+        </div>
+    </li>
+
+    <li>
+        <h6>11.6.2020</h6>
+
+        <b> Přidáno zobrazení zbývajících kreditů</b><br />
+        Přidala se funkčnost, na kterou jste byli zvyklí. Pokud v rozvrhu vyhledáváte zákazníka  podle začátečního písmena, zobrazí se i jeho kredity.
+
+
+        <b> Přidáno třídění mezd.</b>
+        U mezd, lze zobrazovat výpočet mzdy lektorů dle všech lekcí v měsíci nebo je zaúčovaných. Kdo má víc poboček tak, i po pobočkách.
+        <i>Nefunguje ještě započítání odměny za určitý počet zákazníků na lekci.</i>
+        <br /> <br />
+    </li>
+    <li>
+        <h6>9.6.2020</h6>
+
+        <b> Přidán log pro přihlášení uživatele.</b>
+        Kolikátý je zákazník, jestli je v lekci, kolik má objednávek, zbytek kreditu, zbytek časového. Více popisů k logu dodám později.
+
+        <br />
+    </li>
+    <li>
+        <h6>3.6.2020</h6>
+
+        <b> Přidán log pro odhlášení uživatele.</b>
+        Kolikátý je zákazník, jestli je v lekci, jestli existuje záhradník. Kdo to je a jestli mu byla odeslána SMS.
+
+        <br />
+    </li>
+    <li>
+        <h6>1.6.2020</h6>
+        <div>
+            Přidán log pro zobrazení sms zpráv v systému.
+        </div>
+        <br />
+    </li>
+    <li>
+        <h6>14.5.2020</h6>
+        Zavedl jsem tolik požadovanou funkci "vrácení špatně zaúčtované permanentky". Pokud jste se spletli a špatně přiřadili permanentku pro časové kredity,  můžete ji vrátit.
+        <br /><br />
+
+    </li>
+    <li>
+        <h6>5.5.2020</h6>
+
+        Pokud potřebujete prodložit kredity které byly platné po 15.3. tak mi napište o kolik si to přejete.
+
+        <br /> <br />
+    </li>
+    <li>
+        <h6>30.4.2020</h6>
+        Na detailu zákazníka lze vlevo dole zákazníka smazat. Popis práce na detailu zákazníka je popsán v nápovědě.
+        <br /> <br />
+    </li>
+    <li>
+        <h6>26.4.2020</h6>
+        Přibyla možnost definovat a zaktivovat si 2 individuální stránky (Info a O nás). V administraci přibyla v menu nahoře položka "Obsah". Následně si v levém menu vyberete položku stránky a zobrazí se seznam možných stránek.
+        Název stránky i obsah, můžete mít jakýkoliv chcete. Typ (info a about) jsou tam proto aby se mohly zoprazit. Více v nápovědě.
+
+        <br />
+    </li>
+    <li>
+        <h6>23.4.2020</h6>
+        Přibyla možnost si na každou pobočku zvlášt nastavit, jestli při zadání časové platby zadávat rovnou datum platnosti od nebo do.
+        Zatím je to na přepínač takže stačí mi dát vědět a aktivuji dle potřeby.
+        <br />
+    </li>
+    <li>
+        <h6>18.4.2020</h6>
+        <b>Přidal jsem několik novinek </b><br />
+
+        Už se může zaznamenávat kdo a kdy zaúčtoval lekci. Ve videu pro lekci si můžete zadat i svůj text, který se zobrazí zákazníkům.
+        Pokud budete upravovat platbu, můžete nastavit, že je slevněná a zobrazí se mezi slevněnými (bude potřeba pokud budete používat platební bránu).
+        U zákazníka můžete nastavit, zda si může koupit přes platební bránu slevněné ktedity (je student nebo důchodce).
+        Nově můžete neaktivního zákazníka (nepotvrdil email) aktivovat přímo na jeho detailu. Přibyla  možnost v nastavení zobrazit nezaúčtované hodiny.
+        V rozvrhu v administraci si můžete vybrat, jestli chcete zobrazovat počet volných míst nebo počet zákazníků.
+        <br />
+    </li>
+    <li>
+        <h6>14.4.2020</h6>
+        <div class="alert alert-success" role="alert">
+            Rezervační systém nově zpracovává platební bránu <a href="https://www.pays.cz"><b>Pays</b></a>. Pokud se platba v pořádku provede, automaticky se přidají kredity rovnou na účet zákazníka a vám se připíše částka na účet.
+            Bude se zpracovávát i EET pokud bude potřeba. Firma nebude účtovat paušál a strhne z každé platby 1.5% až 2.5% z částky dle celkového objemu a jednání mezi firmou.
+        </div>
+    </li>
+    <li>
+        <h6>13.4.2020</h6>
+        <h6>Přibyla možnost vložit k lekci.</h6>
+        Na detailu lekce pořibylo tlačítko video. Po kliknutí zadejte url odkazu kde budete vide sdílet.
+        Zákázníkům se na detailu zobrazí hláška, že se přesně v čas začátku lekce zobrazí soukromý odklaz.
+        <br />
+    </li>
+    <li>
+        <h6>10.4.2020</h6>
+        Přidána možnost nastavení pořadí plateb ve veřejné části ceníku.
+        <br />
+    </li>
+    <li>
+        <h6>9.4.2020</h6>
+        Nasazen nový systém na doménu .cz
+        <br />
+    </li>
+    <li>
+        <h6>8.3.2020</h6>
+        Funguje zaúčtování hodiny
+        <br />
+    </li>
+
+
+</ul>
+
+<div style="margin-top: 15px">
+    <ul>
+        <li>
+            Systém je postaven na novém nejrychlejším jádru ASP.NET Core 3 a umožní nasazovat nejnovější technologie.
+        </li>
+        <li>
+            Oproti stávající verzi si budete shopni nastavit všechny polkožky sami. Např. vzhled stránek, heslo a jméno pro SMS bránu, atd. atd.
+        </li>
+        <li>
+            Při uzavření hopdiny se zapíše kdo a kdy ji zaúčtoval. Bude možno prodloužit platnost časově omezených kreditů.
+        </li>
+        <li>
+            Pracovat s platební bránou a zákazníci si budou moci koupit kredit a zaplatit ho kartou nebo přímo z bankovního účtu.
+        </li>
+        <li>
+            Přihlašovat se pomocí facebooku, google atd atd.
+        </li>
+    </ul>
+</div>
+
+
+
+

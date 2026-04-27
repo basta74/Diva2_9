@@ -1,0 +1,215 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Main
+@model AdminPageModel
+
+@{
+    MainIni ini = Model.MainIniCover.MainIniObj;
+    MainIniStyle style = Model.MainIniCover.MainStyleObj;
+}
+
+<!-- Modal placeholder -->
+<div id="modal-placeholder"></div>
+
+
+
+<div class="row">
+    <div class="col-4"><h5>Nastavení hlavních dat</h5></div>
+    <div class="col-6"></div>
+    <div class="col-2">
+        <button type="button" class="btn btn-outline-primary btn-sm" style="margin: 5px;"  data-toggle="ajax-modal" data-target="#main-edit" data-url="@Url.Action("SettingMainEdit")">
+            Editace
+        </button>
+    </div>
+
+</div>
+
+<table class="table table-bordered  table-sm">
+
+    <tr>
+        <td class="nadpis">
+            Název firmy
+        </td>
+        <td>@ini.MasterName</td>
+        <td class="nadpis">Jméno majitele:</td>
+        <td>@ini.MasterJmenoMajitele</td>
+    </tr>
+    <tr>
+        <td class="nadpis">Ulice        </td>
+        <td>@ini.MasterStreet</td>
+        <td class="nadpis">IČO</td>
+        <td>@ini.ICO</td>
+
+    </tr>
+
+    <tr>
+        <td class="nadpis">
+            Pošta
+        </td>
+        <td>@ini.MasterZip @ini.MasterPost</td>
+        <td class="nadpis">DIC</td>
+        <td>@ini.DIC</td>
+    </tr>
+    <tr>
+        <td class="nadpis">Email:</td>
+        <td>@ini.Email</td>
+        <td> </td>
+        <td>@ini.MasterUrl > @ini.MasterUrlText</td>
+    </tr>
+
+    <tr>
+        <td class="nadpis">
+            Aktivní SMS brána
+        </td>
+        <td>@ini.SmsActive</td>
+        <td class="nadpis">Registrace porvtdit emailem:</td>
+        <td>@ini.RegisterEmail</td>
+    </tr>
+    <tr>
+        <td class="nadpis">
+            Text pro příjmový doklad
+        </td>
+        <td colspan="3">@ini.TextNaPrijmovyDoklad</td>
+    </tr>
+</table>
+
+
+
+<div class="row">
+    <div class="col-4"><h5>Vzhled hlavní stránky</h5></div>
+    <div class="col-6"></div>
+    <div class="col-2">
+        <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="ajax-modal" data-target="#main-edit-style" data-url="@Url.Action("SettingMainStyleEdit")">
+            Editace stylů
+        </button>
+    </div>
+
+</div>
+
+
+<table class="table table-bordered  table-sm">
+    <tr>
+        <td>
+            <div class="bs-component">
+                <b>navbar-dark, bg-primary</b>
+                <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+                    <a class="navbar-brand" href="#">Navbar</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarColor01">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Features</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Pricing</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">About</a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </nav>
+
+            </div>
+        </td>
+        <td>
+            <div class="bs-component">
+                <b>navbar-dark, bg-dark</b>
+                <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                    <a class="navbar-brand" href="#">Navbar</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarColor01">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Features</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Pricing</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">About</a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </nav>
+
+            </div>
+        </td>
+        <td>
+            <div class="bs-component">
+                <b>navbar-light, bg-light</b>
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <a class="navbar-brand" href="#">Navbar</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="navbarColor01">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Features</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Pricing</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">About</a>
+                            </li>
+                        </ul>
+
+                    </div>
+                </nav>
+
+            </div>
+        </td>
+    </tr>
+</table>
+
+<table class="table table-bordered  table-sm">
+    <tr>
+        <td>
+            Hlavní vzhled viz. <a href="https://bootswatch.com">dostupné styly</a>
+        </td>
+        <td>@style.File</td>
+        <td></td>
+        <td></td>
+
+    </tr>
+    <tr>
+        <td>
+            Pozadí navigace
+        </td>
+        <td>@style.NavbarThemeBg</td>
+        <td>
+            Hlavní téma navigace
+        </td>
+        <td>@style.NavbarThemeFore</td>
+    </tr>
+    <tr>
+        <td>
+            Pozadí za rozvrhem
+        </td>
+        <td>@style.BackgroundContainer</td>
+        <td>
+            Pozadí hlavní strany
+        </td>
+        <td>@style.BackgroundPage</td>
+    </tr>
+</table>
+

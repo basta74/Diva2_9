@@ -1,0 +1,10 @@
+﻿@using Diva2Web.Models.Users
+@model LoginModel
+@{
+    ViewData["Title"] = "Home Page";
+Layout = "~/Views/Shared/_LayoutAccount.cshtml";
+}
+
+<partial name="Navbar" />
+
+@await Html.PartialAsync("~/Views/Shared/Account/_Login.cshtml", Model)

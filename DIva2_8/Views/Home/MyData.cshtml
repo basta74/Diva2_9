@@ -1,0 +1,50 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Lessons
+@model AdminPageModel
+@{
+    ViewData["Title"] = "Home Page";
+
+}
+
+
+@section leftMenu{
+    <partial name="MenuLeftPublic" model="Model" />
+}
+
+
+@{
+    var data = Model.User.HistorieLekci;
+}
+
+@if (!Model.User.Id.HasValue)
+{
+    <div class="alert alert-warning">Nejste přihlášen</div>
+}
+else
+{
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            @foreach (int y in Model.User.HistorieLekciYears)
+            {
+                <li class="page-item"><a class="page-link" href="/moje-data/@y">@y</a></li>
+            }
+        </ul>
+    </nav>
+    <table class="table table-bordered">
+        <tr>
+            <th style="text-align: left;width: 175px;">Datum</th>
+            <th>Typ kreditu</th>
+            <th>Pohyb </th>
+            <th style="text-align: right">Částka</th>
+            <th style="text-align: right">Zbytek / platnost</th>
+        </tr>
+        @foreach (var lek in data.Where(d => d.Datum.Year == Model.Id))
+        {
+            string kr = lek.Typ == "k" ? "standardní" : "časový";
+
+            <tr><td>@lek.Datum.ToString("dd.MM.yyyy") <span style="color: gray"> @lek.Datum.ToString("HH:mm")</span></td><td>@kr</td><td style="text-align: right;">@lek.Status</td><td style="text-align: right">@lek.Castka Kč</td><td style="text-align: right;"><b> @lek.Zbytek</b></td></tr>
+        }
+    </table>
+
+}

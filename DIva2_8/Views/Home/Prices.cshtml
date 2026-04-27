@@ -1,0 +1,255 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Lessons
+@model AdminPageModel
+
+
+@section leftMenu{
+<partial name="MenuLeftPublic" model="Model" />
+}
+
+
+
+@{
+
+    <div id="messages"></div>
+
+    if (Model.PlatbyKredit != null && Model.PlatbyKredit.Count > 0)
+    {
+        <h5>Kreditní platby</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width: 64%"></th>
+                    <th class="text-right">Kredity</th>
+                    <th class="text-right">Částka</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var pl in Model.PlatbyKredit.Where(d => d.Kategorie == 1).OrderBy(d => d.Poradi))
+                {
+                    <tr>
+                        <td>@pl.Popis</td>
+                        <td class="text-right">@pl.Kredity</td>
+                        <td class="text-right">@pl.Castka Kč</td>
+                        <td style="text-align: right;">
+                            @if (Model.MainIniCover.MainGatePaysObj.Pays_Active && Model.User.Id.HasValue)
+                            {
+                                <input type="button" value="Zaplatit online" class="btn btn-sm btn-primary js-pay">
+                                <input type="button" value="Provést platbu" data-id="@pl.Id" data-type="1" class="btn btn-sm btn-success js-pay-force" style="display: none;">
+                            }
+                        </td>
+                        <td>
+                            @if (Model.MainIniCover.BankAccountObj != null && Model.MainIniCover.BankAccountObj.Active)
+                            {
+                                if (Model.User.Id.HasValue)
+                                {
+                                    <input type="button" value="Zobrazit QR" class="btn btn-sm btn-primary js-qr" data-id="@pl.Id" data-type="1">
+                                }
+                                else
+                                {
+                                    <span>Pro zobrazení QR kódu se přihlašte</span>
+                                }
+
+                            }
+                        </td>
+
+                    </tr>
+                }
+
+                @if (Model.PlatbyKredit.Where(d => d.Kategorie == 2).Count() > 0)
+                {
+
+                    <tr>
+                        <td><h6>Slevněné</h6> </td>
+                        <td colspan="4"></td>
+                    </tr>
+                    @foreach (var pl in Model.PlatbyKredit.Where(d => d.Kategorie == 2).OrderBy(d => d.Poradi))
+                    {
+                        <tr>
+                            <td>@pl.Popis</td>
+                            <td class="text-right">@pl.Kredity</td>
+                            <td class="text-right">@pl.Castka Kč</td>
+                            <td style="text-align: right;">
+                                @if (Model.MainIniCover.MainGatePaysObj.Pays_Active && Model.User.Id.HasValue && Model.User.MayCheaper)
+                                {
+                                    <input type="button" value="Zaplatit online" class="btn btn-sm btn-primary js-pay">
+                                    <input type="button" value="Provést platbu" data-id="@pl.Id" data-type="2" class="btn btn-sm btn-success js-pay-force" style="display: none;">
+                                }
+                            </td>
+                            <td>
+                                @if (Model.MainIniCover.BankAccountObj != null && Model.MainIniCover.BankAccountObj.Active)
+                                {
+                                    if (Model.User.Id.HasValue)
+                                    {
+                                        <input type="button" value="Zobrazit QR" class="btn btn-sm btn-primary js-qr" data-id="@pl.Id" data-type="1">
+                                    }
+                                    else
+                                    {
+                                        <span>Pro zobrazení QR kódu se přihlašte</span>
+                                    }
+
+                                }
+                            </td>
+
+                        </tr>
+                    }       }
+            </tbody>
+        </table>
+    }
+}
+
+
+@{
+
+    if (Model.PlatbyKreditCas != null && Model.PlatbyKreditCas.Count > 0)
+    {
+
+        <div style="margin-top: 50px"></div>
+        <h5>Kreditní platby s omezenou platností</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width: 40%"></th>
+                    <th>Počet měsíců</th>
+                    <th>Počet osob</th>
+                    <th>Kredity</th>
+                    <th>Částka</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var pl in Model.PlatbyKreditCas.Where(d => d.Kategorie == 1).OrderBy(d => d.Poradi))
+                {
+                    <tr>
+                        <td>@pl.Popis</td>
+                        <td>@pl.PocetMesicu</td>
+                        <td>@pl.PocetLidi</td>
+                        <td class="text-right">@pl.Kredity</td>
+                        <td class="text-right">@pl.Castka Kč</td>
+                        <td style="text-align: right;">
+                            @if (Model.MainIniCover.MainGatePaysObj.Pays_Active && Model.User.Id.HasValue)
+                            {
+                                <input type="button" value="Zaplatit online" class="btn btn-sm btn-primary js-pay">
+                                <input type="button" value="Provést platbu" data-id="@pl.Id" data-type="3" class="btn btn-sm btn-success js-pay-force" style="display: none;">
+                            }
+                        </td>
+                        <td>
+                            @if (Model.MainIniCover.BankAccountObj != null && Model.MainIniCover.BankAccountObj.Active)
+                            {
+                                if (Model.User.Id.HasValue)
+                                {
+                                    <input type="button" value="Zobrazit QR" class="btn btn-sm btn-primary js-qr" data-id="@pl.Id" data-type="2">
+                                }
+                                else
+                                {
+                                    <span>Pro zobrazení QR kódu se přihlašte</span>
+                                }
+
+                            }
+                        </td>
+
+                    </tr>
+                }
+
+                @if (Model.PlatbyKredit.Where(d => d.Kategorie == 2).Count() > 0)
+                {
+
+                    <tr>
+                        <td><h6>Slevněné</h6></td>
+                        <td colspan="4"></td>
+                    </tr>
+                    @foreach (var pl in Model.PlatbyKreditCas.Where(d => d.Kategorie == 2).OrderBy(d => d.Poradi))
+                    {
+                        <tr>
+                            <td>@pl.Popis</td>
+                            <td>@pl.PocetMesicu</td>
+                            <td>@pl.PocetLidi</td>
+                            <td class="text-right">@pl.Kredity</td>
+                            <td class="text-right">@pl.Castka Kč</td>
+                            <td style="text-align: right;">
+                                @if (Model.MainIniCover.MainGatePaysObj.Pays_Active && Model.User.Id.HasValue && Model.User.MayCheaper)
+                                {
+                                    <input type="button" value="Zaplatit online" class="btn btn-sm btn-primary js-pay">
+                                    <input type="button" value="Provést platbu" data-id="@pl.Id" data-type="4" class="btn btn-sm btn-success js-pay-force" style="display: none;">
+                                }
+                            </td>
+                            <td>
+                                @if (Model.MainIniCover.BankAccountObj != null && Model.MainIniCover.BankAccountObj.Active)
+                                {
+                                    if (Model.User.Id.HasValue)
+                                    {
+                                        <input type="button" value="Zobrazit QR" class="btn btn-sm btn-primary js-qr" data-id="@pl.Id" data-type="2">
+                                    }
+                                    else
+                                    {
+                                        <span>Pro zobrazení QR kódu se přihlašte</span>
+                                    }
+
+                                }
+                            </td>
+
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+}
+
+<div id="modal-placeholder"></div>
+
+
+@section Scripts{
+<script>
+    $(document).ready(function () {
+
+                var placeholderElement2 = $('#modal-placeholder');
+
+        $(".js-pay").on("click", function () {
+            $(this).hide(200).next().show(200);
+        });
+
+        $(".js-pay-force").on("click", function () {
+            var id = $(this).data('id');
+            var type = $(this).data('type');
+
+            $(this).val("Spojení...");
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Api/SavePayTry/",
+                data: { id: id, type: type },
+                cache: false
+            }).done(function (data) {
+                if (data.status == true) {
+                    $(this).val("Zobrazena pays.cz");
+                    window.location.href = data.meta;
+                }
+                else {
+                    $('#messages').html(writeMesssages(data.messages));
+                }
+            });
+        });
+
+
+         $(".js-qr").on("click", function () {
+
+             var img = $(this).next("img");
+             var payId = $(this).data('id');
+             var payTy = $(this).data('type');
+
+             var url = "/Admin/Setting/PaymentQr/";
+                $.ajax({
+                    method: "GET",
+                    url: url,
+                    data: { id: payId, ty: payTy }
+                })
+                .done(function (data) {
+                    placeholderElement2.html(data);
+                    placeholderElement2.find('.modal').modal('show');
+                });
+          });
+
+    });
+</script>
+}

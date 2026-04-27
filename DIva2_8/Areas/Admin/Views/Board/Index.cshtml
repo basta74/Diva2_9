@@ -1,0 +1,981 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2Web.Models.Lekces
+@using Diva2.Core.Main.Lessons;
+@using Diva2.Core.Extensions;
+@model AdminPageModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdminClear.cshtml";
+
+    List<Lekce> lekceDen = ViewBag.LekceDen as List<Lekce>;
+
+    LekceBoardModel lekce = Model.LekceOneBoard;
+
+    var minutyIni = Model.IniMinutes.Where(d => d.PobockaId == Model.Pobocka.Id && d.Visible == true);
+
+    int mezera = minutyIni.Count() + 1;
+
+    DateTime minusTyden = Model.CurrentDate.AddDays(-7);
+
+    List<string> pismena = new List<string>() { "A", "Á", "B", "C", "Č", "D", "Ď", "E", "É", "Ě", "F", "G", "H", "Ch" };
+    List<string> pismena1 = new List<string>() { "I", "Í", "J", "K", "L", "M", "N", "Ň", "O", "Ó", "P", "Q", "R", "Ř" };
+    List<string> pismena2 = new List<string>() { "S", "Š", "T", "Ť", "U", "Ú", "Ů", "V", "W", "X", "Y", "Ý", "Z", "Ž" };
+
+    string btnTypeText = "btn-outline-secondary";
+    if (lekce.Text != null && lekce.Text.Length > 0)
+    {
+        btnTypeText = "btn-secondary";
+    }
+    string btnTypeVideo = (lekce.Video != null && lekce.Video.Url.Length > 0) ? "btn-success" : "btn-outline-success";
+
+}
+
+<div class="row" style="margin-top: -20px; background: #0088D5">
+    <div class="col-2 col-lg-2 text-center">
+        <h5 style="color: whitesmoke; padding-top: 6px"> @Model.CurrentDate.ToString("dd.MM.yyyy")</h5>
+    </div>
+    <div class="col-10 col-lg-10">
+
+        <ul class="pagination" id="AdminBoardSetPob" style="margin: 2px 0 2px 0">
+            @foreach (var pob in Model.Pobocky.Where(d => d.Visible == true))
+            {
+                string ac = pob.Id == Model.Pobocka.Id ? "whitesmoke" : "#0088D5";
+                string co = pob.Id == Model.Pobocka.Id ? "black" : "white";
+
+                <li class="page-item"><a class="page-link" href="/Admin/Home/SetPob/@pob.Id" style=" background-color: @ac; color:@co ;">@pob.Name</a></li>
+            }
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col-2 col-lg-2 text-center">
+
+
+
+        @if (Model.GetIniPobBool("pobocka_vazba_na_datum"))
+        {
+            <div style="padding: 9px 0;">
+                <a href="/Admin/Home/SetDateBoard/@minusTyden.ToString("yyyy-MM-dd")" style="color: #4393E1; font-size: 0.9em">
+                    <b>&lt;&lt; Předchozí týden  @minusTyden.ToString("dd.MM.yyyy")</b>
+                </a>
+            </div>
+        }
+
+    </div>
+    <div class="col-10 col-lg-10">
+        <nav>
+            <ul class="pagination" id="AdminBoardSetLesson" style="">
+                @foreach (var lek in lekceDen.OrderBy(d => d.HodinaPoradi))
+                {
+                    var style = Model.Id == lek.Id ? "background-color: orange; color: white;" : "";
+                    string casLe = $"{lek.Cas.Hours.ToString().PadLeft(2, '0')}:{lek.Cas.Minutes.ToString().PadLeft(2, '0')}";
+                    string lekName = "";
+                    var lekt1 = Model.Lektori.FirstOrDefault(d => d.Id == lek.Lektor1);
+                    if (!Model.GetIniPobBool("pobocka_vazba_na_datum"))
+                    {
+                        var typHo = Model.TypyLekci.FirstOrDefault(d => d.Id == lek.TypHodiny);
+                        if (typHo != null)
+                        {
+                            casLe = "";
+                            lekName = typHo.Nazev;
+                        }
+                        else
+                        {
+
+                        }
+                    }
+                    else
+                    {
+                        if (lekt1 != null)
+                        {
+                            lekName = lekt1.Nick;
+                        }
+                        else
+                        {
+                            lekName = "?? id: " + lek.Lektor1;
+                        }
+
+                    }
+                    <li class="page-item"><a class="page-link" href="/Admin/Board/Index/@lek.Id" style="@style; font-size: 0.9em; padding: 0.4rem 1.5rem"><b>@casLe @lekName</b></a></li>
+                }
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<!-- rozvrh dny -->
+<div style="min-width: 280px; float: left;">
+
+    @{
+        string che3 = @Model.MainIniCover.MainIniObj.ShowRestPlacesOnBoard ? "checked" : "";
+    }
+
+
+    <div class="custom-control custom-switch js-switch" style="min-height: 0.5rem; margin: 4px 31px">
+        <input type="checkbox" class="custom-control-input" data-che="@che3" data-name="ShowRestPlacesOnBoard" @che3>
+        <label class="custom-control-label" for="ShowRestPlacesOnBoard">Zobrazovat počet objednaných</label>
+    </div>
+
+
+    <div style="background-color: rgb(237, 237, 237);">
+
+        <table class="table-hover" id="tableBoardAdmin" style="width:100% ;  border: silver solid 1px;" border="1">
+
+            @foreach (var tyd in Model.RozvrhyObj.Tydny)
+            {
+                @foreach (var den in tyd.Value.Dny)
+                {
+                    DateTime denDt = den.Value.Lekces.First().Value.Datum;
+                    int day = ((int)denDt.DayOfWeek == 0) ? 7 : (int)denDt.DayOfWeek;
+
+                    string bgClass = (denDt.Date == DateTime.Now.Date) ? "Dnes" : "";
+
+                    if (denDt.Date == Model.CurrentDate.Date)
+                    {
+                        bgClass = "Active";
+                    }
+                    bgClass = "datum" + bgClass;
+                    <tr>
+                        <td class="align-middle @bgClass" style="width: 58px">
+                            <a href="/Admin/Home/SetDateBoard/@denDt.ToString("yyyy-MM-dd")" style="color: white;">
+                                <b>@DateTimeExtensions.GetDayShrot(day) @denDt.ToString("dd.M")</b>
+                            </a>
+                        </td>
+
+                        @foreach (var cas in minutyIni)
+                        {
+                            Lekce le = new Lekce();
+                            if (den.Value.Lekces.TryGetValue(cas.Minute, out le))
+                            {
+                                int zb = le.PocetMist - le.PocetZakazniku;
+                                if (Model.MainIniCover.MainIniObj.ShowRestPlacesOnBoard)
+                                {
+                                    zb = le.PocetZakazniku;
+                                }
+                                string stClass = le.Zauctovano ? "zau" : "zaun";
+                                if (Model.Pobocka.PodbarvovatObsazene)
+                                {
+                                    stClass = (le.PocetZakazniku > 0) ? "obs" : stClass;
+                                }
+                                stClass = (le.Id == Model.Id) ? "akt" : stClass;
+                                <td class="@stClass js-o" style="cursor: pointer;" data-id="@le.Id">@zb</td>
+                            }
+                            else
+                            {
+                                <td>&nbsp;</td>
+                            }
+                        }
+                    </tr>
+
+                }
+
+                <tr>
+                    <td style="border-right-color: white; border-left-color: white; column-span:@mezera; height: 8px"></td>
+                </tr>
+
+            }
+
+
+
+        </table>
+
+        @if (Model.GetIniPobBool("pobocka_vazba_na_datum"))
+        {
+            <div class="container">
+                <div id="datepickerIn"></div>
+            </div>
+        }
+        else
+        {
+            <div style="margin-top: 10px">
+                <partial name="VazbaNaDatumNe" />
+            </div>
+
+        }
+
+    </div>
+</div>
+
+<!-- zakaznici na hodine  -->
+<div style="min-width: 480px; float: left;  padding: 0 10px 10px;">
+
+    @if (lekce.Id > 0)
+    {
+
+        <div id="divTableObjednani">
+            <partial name="LessonUsers" model="Model" />
+        </div>
+
+
+        <div id="messages">
+        </div>
+
+        @if (!lekce.Zauctovano)
+        {
+
+            Random ra = new Random();
+            int kontCislo = ra.Next(1000, 9999);
+
+            @if (lekce.DatumHodina < DateTime.Now)
+            {
+                <div id="buttons-under-table">
+                    <!-- showZauctovat() -->
+        <button id="btnRecognize" class="btn btn-success btn-sm" onclick="showZauctovat()">Zaúčtovat</button>
+                    <div id="lockClass" style="margin: 20px 0; display: none">
+                        <form id="jsFormUctuj" class="form-inline">
+                            <div class="form-group mb-2">
+                                Kont č: @kontCislo
+                            </div>
+                            <div class="form-group mx-sm-3 mb-2">
+                                <label for="inputPassword2" class="sr-only">Kontrolní číslo</label>
+                                <input type="text" class="form-control" name="kontCislo1" placeholder="napište: @kontCislo">
+                            </div>
+                            <input type="hidden" value="@kontCislo" name="kontCislo2" />
+                            <input type="hidden" value="@lekce.Id" name="lekceId" />
+                            <button type="submit" class="btn btn-primary mb-2">Zaúčtovat</button>
+                        </form>
+
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+
+            if (lekce.ZauctovanoDate.HasValue)
+            {
+                <span style="float: left; margin-left: 10px; color: gray"> Zaúčtováno @lekce.ZauctovanoDate.Value.ToString("dd.MM. HH:mm")</span>
+            }
+            if (lekce.ZauctovalUserName != null)
+            {
+                <span style="float: left; margin-left: 10px; color: gray"> uživatelem: @lekce.ZauctovalUserName</span>
+                <div style="clear: left"></div>
+            }
+
+        }
+
+        <div class="card" style="max-width: 500px; margin-top: 10px;">
+            <div class="card-header">
+                Pomocné funkce
+            </div>
+            <div class="card-body" style="padding: 7px 7px;">
+                <div class="btn-group" role="group" aria-label="Basic example" style="float: left">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" style="width: 80px">Zobraz:</button>
+                    <button type="button" class="btn btn-sm btn-outline-info" style="width: 140px" id="js-showLessonHistory">Historie hodiny</button>
+                    <button type="button" class="btn btn-sm btn-outline-info js-showLessonSetting" style="width: 140px">Nastavení hodiny</button>
+                </div>
+                <div class="btn-group" role="group" aria-label="Basic example" style="float: left">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" style="width: 80px">Tisk:</button>
+                    <button type="button" class="btn btn-sm btn-outline-info" style="width: 140px" onclick="$('#listZakazniku').print()">Zákazníci v hodině</button>
+                    <button type="button" class="btn btn-sm btn-outline-info" style="width: 140px" onclick="$('#listZakazniku').printDay()">Zákazníci dne </button>
+                    @if(Model.SubDomain == "localhost" || Model.SubDomain == "gymfit"){
+                        <button type="button" class="btn btn-sm btn-outline-info" style="width: 140px" onclick="excel()">Excel</button>
+                    }
+                </div>
+                <div class="btn-group" role="group" aria-label="Basic example" style="float: left">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" style="width: 80px">Emaily:</button>
+                    <button type="button" class="btn btn-sm btn-outline-info" style="width: 140px" onclick="showLessonEmails()">Zákazníci v hodině</button>
+                    <button type="button" class="btn btn-sm btn-outline-info" style="width: 140px" onclick="showDayEmails()">Zákazníci dne </button>
+                </div>
+                <div class="btn-group" role="group" aria-label="Basic example" style="float: left">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" style="width: 80px">SMS:</button>
+                    <button type="button" class="btn btn-sm btn-outline-info" style="width: 140px" onclick="showLessonSms()">Zákazníci v hodině</button>
+                    <button type="button" class="btn btn-sm btn-outline-info" style="width: 140px" onclick="showDaySms()">Zákazníci dne </button>
+                </div>
+                <div class="btn-group" role="group" aria-label="Basic example" style="float: left">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" style="width: 80px">Doplňky:</button>
+                    <button type="button" class="btn btn-sm @btnTypeText" style="width: 140px" data-toggle="ajax-modal" data-target="#lessontext-edit" data-url="@Url.Action("LessonTextEdit")/@lekce.Id">Poznámka</button>
+                    <button type="button" class="btn btn-sm @btnTypeVideo" style="width: 140px" data-toggle="ajax-modal" data-target="#lessonvideo-edit" data-url="@Url.Action("LessonVideoEdit")/@lekce.Id">Video</button>
+                </div>
+                @if (false)
+                {
+                    <div class="btn-group" role="group" aria-label="Basic example" style="float: left">
+                        <button type="button" class="btn btn-sm btn-outline-info" id="js-sendsms" style="width: 140px">Odeslání hromadné sms</button>
+                    </div>
+                }
+                <div style="clear: left"></div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- zakaznici na pravo -->
+<div style="min-width: 420px; max-width: 500px; float: left; padding: 0 10px">
+
+
+
+    <a href="/Admin/Customer" class="btn btn-primary btn-sm active" role="button" aria-pressed="true">Zákazníci</a>
+    <a href="#" class="btn btn-success btn-sm" role="button" aria-pressed="true">Nový zákazník</a>
+
+    <div class="card" style="margin-top: 5px" id="pismena">
+        <div class="card-body" style="padding-bottom: 6px;">
+
+            <div class="btn-group btn-group-sm" role="group" aria-label="..." style="margin-top: 0px">
+                @foreach (string p in pismena)
+                {
+                    <button class="btn btn-outline-secondary btn-xs js-zak" data-method="abc" data-hide="#js-pismena" data-value="@p" style="min-width: 30px">@p</button>
+                }
+            </div>
+            <div class="btn-group btn-group-sm" role="group" aria-label="..." style="margin-top: 0px">
+                @foreach (string p in pismena1)
+                {
+                    <button class="btn btn-outline-secondary btn-xs js-zak" data-method="abc" data-hide="#js-pismena" data-value="@p" style="min-width: 30px">@p</button>
+                }
+            </div>
+            <div class="btn-group btn-group-sm" role="group" aria-label="..." style="margin-top: 0px">
+                @foreach (string p in pismena2)
+                {
+                    <button class="btn btn-outline-secondary btn-xs js-zak" data-method="abc" data-hide="#js-pismena" data-value="@p" style="min-width: 30px">@p</button>
+                }
+            </div>
+            <button class="btn btn-outline-secondary btn-xs js-zak" data-method="000" data-hide="#js-pismena" data-value="@Model.Id" style="min-width: 30px;padding: 3px;margin: 2px 0px;">
+                Poslední hodina
+            </button>
+            <input id="abcAjax" type="text" class="form-control" style="margin: 10px 0 0 0; width: 89%" onkeyup="GetZakazniky(this.value)" placeholder="zadejte jméno zákazníka" />
+
+            <div class="btn-group btn-group-sm" role="group" aria-label="..." style="margin-top: 5px">
+                @foreach (var sk in Model.SkupinyZakaznika)
+                {
+                    <button class="btn btn-outline-secondary btn-xs js-zak" data-method="cat" data-hide="#js-cat" data-value="@sk.Id" style="padding: 2px 15px">@sk.Nazev</button>
+                }
+            </div>
+
+            <div id="messagesPismena" style="margin-top: 10px">
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+
+
+    <div id="js-zak-progress" class="progress" style="width: 450px; height: 2px; margin-bottom: 4px">
+        <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+            <span class="sr-only">0% Complete (success)</span>
+        </div>
+    </div>
+
+
+    <div style="width: 450px">
+        <table id="zakazniciAbc" class="table-hover sprava" style="cursor: pointer; width: 450px;" border="1">
+            <tbody id="zakazniciSeznamAjax">
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div style="clear: left"></div>
+
+
+<div id="modal-placeholder"></div>
+
+<div class="modal modal2" id="baseModal" tabindex="-2" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Zavřít</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="listZakazniku" style="display: none">
+    Div 2
+</div>
+
+@section Scripts{
+
+<script>
+
+        $.fn.extend({
+        print: function () {
+
+            var lessonId = $("#tableObjednani").data("id");
+
+            var saa = this;
+            var url = "/Admin/Board/ShowLessonUsers/" + lessonId;
+
+            $.ajax({
+                method: "POST",
+                url: url,
+            })
+                .done(function (data) {
+                    console.log(data);
+
+                if (data.status == true) {
+                    var count = data.zakaznici.length;
+                    var tab = "<table style='width: 500px; border-collapse: collapse; border: 1px solid gray' border='1' ><tr><th>Pořadí</th><th>Id</th><th>Jméno</th><th>Zpráva</th><th>Zbytek</th></tr>";
+                    for (var index1 = 0; index1 < count; index1++) {
+                        var row1 = data.zakaznici[index1];
+                        var zb = row1.zbytek;
+                        if (row1.zbytekTyp == 'kc') {
+                            zb = zb + "/" + row1.zbyvaDni;
+                        }
+                        tab += "<tr><td>" + row1.poradi + "</td><td>" + row1.userId + "</td><td>" + row1.userName + "</td><td>" + row1.message + "</td><td style='text-align: right;'>" + zb + "</td></tr>";
+                    }
+                    tab += "</table>";
+                }
+
+                $("#listZakazniku").html(tab);
+
+                var frameName = 'printIframe';
+                var doc = window.frames[frameName];
+                if (!doc) {
+                    $('<iframe>').hide().attr('name', frameName).appendTo(document.body);
+                    doc = window.frames[frameName];
+                }
+                doc.document.body.innerHTML = saa.html();
+                doc.window.print();
+                return saa;
+
+            });
+        }
+        ,
+        printDay: function () {
+
+            var sab = this;
+
+            var url = "/Admin/Board/ShowUserDay";
+
+            $.ajax({
+                type: 'GET',
+                url: url,
+                cache: false
+            }).done(function (data) {
+
+                $("#listZakazniku").html(data);
+
+            var frameName = 'printIframe';
+            var doc = window.frames[frameName];
+            if (!doc) {
+                $('<iframe>').hide().attr('name', frameName).appendTo(document.body);
+                doc = window.frames[frameName];
+            }
+            doc.document.body.innerHTML = sab.html();
+            doc.window.print();
+            return sab;
+
+            });
+        }
+    });
+
+
+    $(document).ready(function () {
+
+        var lessonId = $("#tableObjednani").data("id");
+
+        var placeholderElement = $('#modal-placeholder');
+
+        $("#tableBoardAdmin").on('click', 'td.js-o', function () {
+            var id = $(this).data("id");
+            if (id > 0) {
+                window.location = "/Admin/Board/Index/" + id;
+            }
+        });
+
+        $(document).on("click", ".js-zak", function () {
+            var that = $(this);
+            var meth = $(this).data("method");
+            var val = $(this).data("value");
+
+            writeZak(meth, val, that);
+        });
+
+        $("#divTableObjednani").on('click', 'td.jsFormModal', function (event) {
+            var hodId = $(this).closest("tr").data('user-id');
+            showZak(hodId);
+        });
+
+        $("#zakazniciAbc").on('click', 'tr.jsFormModal td.jmeno', function (event) {
+            var hodId = $(this).closest('tr').data('id');
+            showZak(hodId);
+        });
+
+        function showZak(zakId) {
+            $.ajax({
+                method: "GET",
+                url: "/Admin/Customer/DetailM",
+                data: { id: zakId }
+            }).done(function (data) {
+                placeholderElement.html(data);
+                placeholderElement.find('.modal').modal('show');
+            });
+        }
+
+        //-------------- zauctovat hodinu --------------
+        $('#jsFormUctuj').bind('submit', function () {
+            var that = $(this);
+
+            $("#buttons-under-table").hide();
+            $('#messages').html('<div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>');
+            $.ajax({
+                type: 'post',
+                url: '/Admin/Api/PostLesson',
+                data: $(this).serialize(),
+                cache: false
+            }).done(function (data) {
+                $('#messages').html(writeMesssages(data.messages));
+                if (data.status == true) {
+                    loadLessonUsers();
+                    that.fadeOut(800);
+                }
+                else {
+                    $("#buttons-under-table").show(200);
+                }
+            });
+            return false;
+        });
+
+         function loadLessonUsers() {
+            $.ajax({
+                method: "GET",
+                url: "/Admin/Board/LessonUsers",
+                data: { id: lessonId }
+            }).done(function (data) {
+                 $('#divTableObjednani').html(data);
+            });
+        }
+
+        // -------------- zprava pri objednavce --------
+        $("#divTableObjednani").on('click', 'span.jsObjMsg', function (event) {
+
+            var t = $(this).data("text");
+            $('#baseModal .modal-title').html("Vaše zpráva k objednávce");
+            $('#baseModal .modal-body').html(t);
+            $('#baseModal').modal('show');
+        });
+
+
+        // -------------- sms --------
+        $("#js-sendsms").on('click', function (event) {
+
+            var text = "testovaci zprava";
+
+            $.ajax({
+                method: "POST",
+                url: "/Admin/Api/SendSmsByLesson",
+                data: { id: lessonId, text: text }
+            }).done(function (data) {
+                console.log(data);
+                $('#messages').html(writeMesssages(data.messages));
+
+            });
+        });
+
+        //--------------- delete / nabidni -------------
+        $("#divTableObjednani").on('click', 'button.js-actions', function (event) {
+
+            var that = $(this);
+            var type = that.data('action');
+            var id = that.closest('tr').data("id");
+            var kont = that.closest('tr').data("kont");
+
+            if (type == "del") {
+                $.ajax({
+                    method: "POST",
+                    url: "/Admin/Api/LessonRemoveFrom",
+                    data: { Id: id, AktId: lessonId, KontCislo: kont, Akce: type }
+                }).done(function (data) {
+                     console.log(data);
+                    $('#messages').html(writeMesssages(data.messages));
+                    if (data.status == true) {
+                       loadLessonUsers();
+                    }
+                });
+            }
+
+            if (type == "ok") {
+                $.ajax({
+                    method: "POST",
+                    url: "/Admin/Api/SetOk",
+                    data: { Id: id, AktId: lessonId, KontCislo: kont, Akce: type }
+                }).done(function (data) {
+                    console.log(data);
+                    $('#messages').html(writeMesssages(data.messages));
+                    if (data.status == true) {
+                        loadLessonUsers();
+                    }
+                });
+            }
+
+            if (type == "pas") {
+                $.ajax({
+                    method: "POST",
+                    url: "/Admin/Api/SetPas",
+                    data: { Id: id, AktId: lessonId, KontCislo: kont, Akce: type }
+                }).done(function (data) {
+                    console.log(data);
+                    $('#messages').html(writeMesssages(data.messages));
+                    if (data.status == true) {
+                        loadLessonUsers();
+                    }
+                });
+            }
+        });
+
+        function writeZak(meth, val, that) {
+
+            $(".js-zak").removeClass('btn-primary')
+            that.addClass('btn-primary');
+
+            $("#js-zak-progress .progress-bar").show(100);
+            $("#js-zak-progress .progress-bar").animate({ width: "80%" }, 200);
+            $("#zakazniciSeznamAjax").html("");
+            $.ajax({
+                type: 'POST',
+                url: '/Admin/Customer/GetAjaxData',
+                data: { method: meth, value: val, meta : 1 },
+                cache: false
+            }).done(function (data) {
+                $('#messagesPismena').html(writeMesssages(data.messages));
+                if (data.status === true) {
+
+                    if (data.items.length > 0) {
+                        var table = WriteZakTable(data, meth)
+
+                        $("#zakazniciSeznamAjax").html(table);
+
+                        $("#js-zak-progress .progress-bar").animate({ width: "100%" }, 100, function () {
+                            $("#js-zak-progress .progress-bar").hide(200, function () {
+                                $("#js-zak-progress .progress-bar").animate({ width: "0%" }, 10);
+                            });
+                        });
+                    }
+                }
+
+            });
+
+        }
+
+        //---------------- add to lesson ---------------
+        $("#zakazniciSeznamAjax").on('click', '.js-add', function (event) {
+
+            var usId = $(this).data('id');
+
+            $.ajax({
+                method: "POST",
+                url: "/Admin/Api/LessonAdd",
+                data: { AktId: lessonId, UserId: usId, Administrace: true }
+            }).done(function (data) {
+                $('#messages').html(writeMesssages(data.messages));
+                if (data.status == true) {
+                    loadLessonUsers();
+                }
+            });
+        });
+
+        var page = "/Admin/Home/SetDate";
+        var parsedDate = new Date('@Model.CurrentDate.ToString("yyyy-MM-dd")');
+
+        $(document).on("click", ".js-switch", function () {
+            var that = $(this).children("input");
+            switchParam(that)
+        }); /**/
+
+        function switchParam(that) {
+
+            var val = that.data("che") == "checked" ? true : false;
+
+            $.ajax({
+                type: 'POST',
+                url: '/Admin/Setting/SetShowRestPlacesOnBoard',
+                data: {ShowRestPlacesOnBoard: val },
+                cache: false
+            }).done(function (data) {
+                if (data.status == true) {
+                 location.reload();
+                }
+            });
+        };
+
+
+        $(function () {
+            $("#datepickerIn").datepicker({
+                width: '12em',
+                dateFormat: "yy-mm-dd",
+                firstDay: 1,
+                dayNamesMin: ["Ne", "Po", "Út", "St", "Čt", "Pá", "So"],
+                monthNames: ["Leden", "Únor", "Březen", "Duben", "Květen", "Červen", "Červenec", "Srpen", "Září", "Říjen", "Listopad", "Prosinec"],
+                onSelect: function (dateText, inst) {
+                    window.location.href = page + '?dat=' + dateText;
+                }
+            }).datepicker("setDate", parsedDate);
+        }); /**/
+
+        $("#js-showLessonHistory").on('click', function (event) {
+
+               var url = "/Admin/Board/ShowLessonHistory/";
+
+                $.ajax({
+                    method: "GET",
+                    url: url,
+                    data: { id: lessonId }
+                })
+                    .done(function (data) {
+
+                        if (data.status == true) {
+                            var count = data.lekceUserChange.length;
+                            var tab = "<table style='width: 100%'>";
+                            for (var index1 = 0; index1 < count; index1++) {
+                                var row1 = data.lekceUserChange[index1];
+                                var name = row1.userName;
+                                var provedl = row1.provedlId;
+                                if (row1.userId == row1.provedlId) {
+                                    provedl = "<u>zákazník</u>";
+                                }
+
+                                tab += "<tr><td>"+ provedl +"</td><td>" + row1.status  + "</td><td>"+ name + "</td><td>"+row1.tsCz +"</td></tr>";
+                            }
+                            tab += "</table>";
+
+                              $('#baseModal .modal-title').html("Historie hodiny");
+                           $('#baseModal .modal-body').html(tab);
+                $('#baseModal').modal('show');
+                        }
+                    });
+            });
+
+        $(document).on("click", ".js-showLessonSetting", function () {
+                var url = "/Admin/Setting/WeakCopyEdit/";
+                $.ajax({
+                    method: "GET",
+                    url: url,
+                    data: { id: lessonId }
+                })
+                .done(function (data) {
+                    placeholderElement.html(data);
+                    placeholderElement.find('.modal').modal('show');
+                });
+
+          });
+
+
+        });
+
+        function excel() {
+            var lessonId = $("#tableObjednani").data("id");
+            var url2 = '/Admin/Board/Excel/' + lessonId;
+             window.open(url2, '_blank').focus();
+        
+        }   
+             
+
+        function showZauctovat() {
+
+            $("#btnRecognize").hide();
+            $("#lockClass").show();
+        }
+
+        function hideZauctovat() {
+            $("#btnRecognize").show();
+            $("#lockClass").hide();
+        }
+
+
+        function showLessonEmails() {
+
+                var lessonId = $("#tableObjednani").data("id");
+                var url = "/Admin/Board/ShowLessonUserEmails/";
+            $.ajax({
+                method: "GET",
+                url: url,
+                data: { id: lessonId }
+            })
+            .done(function (data) {
+
+                $('#baseModal .modal-title').html("Emaily v lekci");
+                $('#baseModal .modal-body').html(data.meta);
+                $('#baseModal').modal('show');
+            });
+        }
+
+        function showDayEmails() {
+
+            var url = "/Admin/Board/ShowUserDayEmails/";
+            $.ajax({
+                method: "GET",
+                url: url,
+            })
+            .done(function (data) {
+
+                $('#baseModal .modal-title').html("Emaily za den");
+                $('#baseModal .modal-body').html(data.meta);
+                $('#baseModal').modal('show');
+            });
+
+        }
+
+        function showLessonSms() {
+
+            var lessonId = $("#tableObjednani").data("id");
+            var url = "/Admin/Board/ShowLessonUserSms/";
+            $.ajax({
+                method: "GET",
+                url: url,
+                data: { id: lessonId }
+            })
+                .done(function (data) {
+
+                    $('#baseModal .modal-title').html("SMS v lekci");
+                    $('#baseModal .modal-body').html(data.meta);
+                    $('#baseModal').modal('show');
+                });
+        }
+
+        function showDaySms() {
+
+            var url = "/Admin/Board/ShowUserDaySms/";
+            $.ajax({
+                method: "GET",
+                url: url,
+            })
+                .done(function (data) {
+
+                    $('#baseModal .modal-title').html("SMS za den");
+                    $('#baseModal .modal-body').html(data.meta);
+                    $('#baseModal').modal('show');
+                });
+
+        }
+
+        var zakaznici = new Array();
+
+        function GetZakazniky(str) {
+
+            $("#zakazniciSeznamAjax").html("");
+            $("#js-zak-progress .progress-bar").width(100);
+
+            if (str.length === 0) {
+                document.getElementById("zakazniciSeznamAjax").innerHTML = "";
+                return;
+                }
+
+                var meth = "abc";
+            if (typeof zakaznici[str] === 'undefined') {
+                $("#js-zak-progress .progress-bar").show(100);
+                $("#js-zak-progress .progress-bar").animate({width: "100%"}, 400);
+                $.ajax({
+                    type: 'GET',
+                    url: '/Admin/Customer/GetAjaxData',
+                        data: { method: meth, value: str },
+                    cache: false
+                }).done(function (data) {
+
+
+                    console.log(data);
+
+
+                    zakaznici[str] = data;
+
+
+                    var table = WriteZakTable(data, meth);
+
+                    $("#zakazniciSeznamAjax").html(table);
+
+                    $("#js-zak-progress .progress-bar").animate({ width: "100%" }, 50, function () {
+                        $("#js-zak-progress .progress-bar").hide(100, function () {
+                            $("#js-zak-progress .progress-bar").animate({width: "0%"}, 10);
+                        });
+                    });
+                });
+            } else {
+
+                var table2 = WriteZakTable(zakaznici[str], meth);
+                $("#zakazniciSeznamAjax").html(table2);
+                $("#js-zak-progress .progress-bar").animate({width: "100%"}, 50, function () {
+                    $("#js-zak-progress .progress-bar").hide(100, function () {
+                        $("#js-zak-progress .progress-bar").animate({width: "0%"}, 10);
+                    });
+                });
+            }
+        }
+
+        function WriteZakTable(data, meth) {
+            var delkaPism = 1;
+
+            console.log(meth);
+
+            if (((meth === 'abc')) === true) {
+                delkaPism = 2;
+            }
+
+            var pisPism = meth;
+            var table = "";
+            var t = "";
+            var count = 0;
+            var prvPismOld = "";
+            if (data.ItemsCount === 0) {
+                table = 'Nalezeno 0 záznamů.'
+
+            } else {
+                count = data.items.length;
+                if (!(meth === 'email' || meth === 'cat-email')) {
+                    if (meth.startsWith('top')) {
+                        t += drawTR("Id", "Návštěvy");
+                    } else {
+                        t += drawTRdefault();
+                    }
+                }
+                var oddEm = '';
+                for (var index1 = 0; index1 < count; index1++) {
+
+                    var row1 = data.items[index1];
+                    if (meth != "000") {
+                        if (pisPism) {
+                            var prvPism = row1.nameClear.substring(0, delkaPism)
+                            if (prvPism !== prvPismOld) {
+                                t += '<tr><td  class="nadpis"><b>' + prvPism + '</b></td><td class="nadpis"></td><td class="nadpis" style="width: 70px"></td></tr>';
+                            }
+                        }
+                    }
+                    t += draw(row1);
+
+                    prvPismOld = prvPism;
+
+                }
+                table = t;
+            }
+            return table;
+        }
+
+
+        function draw(o) {
+            var ro = "";
+
+            console.log(o);
+
+            ro += '<tr class="jsFormModal" data-id="' + o.id + '"><td class="jmeno"><b style="color: #0B61A4; padding-left: 15px; ">' + o.name + '</b><br>&nbsp;<span style="color: gray; font-size:12px">' + o.id + ' > ' + o.street + ' ' + o.post + '</span></a></td>';
+            ro += '<td><div data-id="' + o.id + '" class="btn btn-outline-secondary btn-sm js-add">Přidat</div></td>';
+
+            if (o.kreditCas != null) {
+                ro += '<td class="kredit-' + o.color + '">' + o.kreditCasStr + '</td>'
+            }
+            else if (o.kredit != null) {
+                ro += '<td class="kredit-' + o.color + '">' + o.kredit + '</td>'
+            }
+            else {
+                ro += '<td></td>'
+            }
+
+            ro += '</tr>';
+            return ro;
+        }
+
+        function drawTRdefault() {
+        }
+
+</script>
+}
+

@@ -1,0 +1,75 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Lessons
+@using Diva2Web.Models.Videos;
+
+@model AdminPageModel
+@{
+    ViewData["Title"] = "Home Page";
+
+    IEnumerable<UserVideoModel> videos = ViewBag.UserVideos;
+    int count = videos.Count();
+
+}
+
+
+@section leftMenu{
+    <partial name="MenuLeftPublic" model="Model" />
+}
+
+
+@{
+    var data = Model.User.HistorieLekci;
+}
+
+@if (!Model.User.Id.HasValue)
+{
+    <div class="alert alert-warning">Nejste přihlášen</div>
+}
+else
+{
+
+    <h6>Seznam vašich videí</h6>
+
+    @if (count > 0)
+    {
+
+        <table class="table table-bordered table-hover js-td-odkaz" data-url="/video/myvideoview">
+
+            <tr>
+                <th>Video</th>
+                <th></th>
+                <th>Kredity</th>
+                <th>Zaplaceno</th>
+                <th>Shlédnuto</th>
+            </tr>
+
+            @foreach (var vi in videos.OrderByDescending(d => d.Id))
+            {
+        <tr class="jsVideo" data-id="@vi.Id">
+            <td>@vi.Video.Name</td>
+            <td><img src="@vi.Image" style="width: 200px" /></td>
+            <td>@vi.Kredity</td>
+            <td>@vi.ZaplacenoDt.ToString("dd.MM.yy HH:mm")</td>
+            <td>
+                @if (vi.Zobrazeno)
+                {
+                    @vi.ZobrazenoDt.ToString("dd.MM.yy HH:mm")
+                }
+                else
+                {
+                    <p>Nezobrazeno</p>
+                }
+            </td>
+        </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            Nemáte zakoupena žádná videa
+        </div>
+    }
+
+}
+

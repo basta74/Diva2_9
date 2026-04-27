@@ -1,0 +1,33 @@
+﻿@using Diva2.Core.Main.Trans;
+@{
+
+    ILookup<int, LekceUser> all = ViewBag.LookUp as ILookup<int, LekceUser>;
+
+    if (all != null)
+    {
+
+        foreach (var lek in all)
+        {
+            <table style="width: 400px;  border-collapse: collapse; border: 1px solid gray; margin-top: 15px" border="1">
+                <tr>
+                    <th>Pořadí</th>
+                    <th>Id</th>
+                    <th>Jméno</th>
+                    <th></th>
+                </tr>
+                @foreach (var b in lek.OrderBy(d => d.Poradi).ToList())
+                {
+
+                    <tr>
+                        <td>@b.Poradi</td>
+                        <td>@b.UserId</td>
+                        <td>@b.User.Prijmeni @b.User.Jmeno</td>
+                        <td></td>
+                    </tr>
+                }
+            </table>
+
+        }
+    }
+
+}

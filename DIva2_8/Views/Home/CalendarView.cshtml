@@ -1,0 +1,433 @@
+﻿@using Diva2Web.Models.Lekces
+@using Diva2Web.Models.Admin
+
+@model AdminPageModel
+
+@{ LekceBoardModel lekce = Model.LekceOneBoard;
+
+                bool showRight = true;
+                int widthMax = 900;
+                int widthPercent = 99;
+                int countColLeft = 6;
+
+                if (!Model.GetIniPobBool("public_lekce_ukaz_lektory"))
+                {
+
+                    if (!Model.GetIniPobBool("public_lekce_ukaz_typ"))
+                    {
+
+                        showRight = false;
+                        widthMax = 450;
+                        widthPercent = 50;
+                        countColLeft = 12;
+                    }
+                }
+
+                string textOdhlaseniPoLimitu = "";
+                string textKObjednani = "";
+
+                int ukazOd = Model.GetIniPobInt("lekceUkazLimitOd");
+
+                int pocMist = lekce.PocetMist - lekce.PocetZakazniku;
+                string zobrazPocetMist = pocMist.ToString();
+
+                if (pocMist > 0)
+                {
+                    if (pocMist > ukazOd)
+                    {
+                        if (ukazOd > 0)
+                        {
+                            zobrazPocetMist = $" {ukazOd} a více ";
+                        }
+                        else
+                        {
+                            zobrazPocetMist = $" ještě jsou volná místa ";
+                        }
+                    }
+                }
+                else
+                {
+                    if (!lekce.Obsazeno())
+                    {
+                        zobrazPocetMist = $" pro {lekce.PocetNahradniku + pocMist} náhradníků ";
+                    }
+                    else
+                    {
+                        zobrazPocetMist = "obsazeno";
+                    }
+                } }
+
+<div class="modal modal-lesson" tabindex="-1" role="dialog">
+    <div class="modal-dialog " role="document" style=" max-width: @Html.Raw(widthMax)px !important; width: @widthPercent%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detail lekce @lekce.Datum.ToString("dd.MM.yyyy") @lekce.HodinaZacatek</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div id="js-write-messages-modal"></div>
+
+                <button type="button" class="btn btn-secondary tooltip" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+                    Tooltip on top
+                </button>
+                <div class="row" style="padding: 0px 5px">
+
+                    <div class="col-sm-@countColLeft col-md-@countColLeft">
+
+
+                        @if (!Model.User.Id.HasValue)
+                        {
+            <div class="alert alert-warning">
+                Nejste přihlášen
+            </div> }
+                        else
+                        {
+            <div class="card" id="hodina-table" style="margin-top: 10px">
+                <div class="card-header">   Počet volných míst: @zobrazPocetMist  </div>
+                <div class="card-body" id="hodina-table" style="padding: 2px;">
+
+                    <partial name="LessonViewTable" model="Model" />
+
+
+
+                </div>
+                <div id="js-count-self" data-value="0" data-hod="{" id":"114","dayName":"Ut","time":"17:00","credit":"10","date":"28.1."}"></div>
+                <div class="card-footer text-muted">
+                    Hodina spotřebuje @lekce.Kredit kreditů.&nbsp;
+                </div>
+            </div>}
+
+                    </div>
+                    @if (showRight)
+                    {
+        <div class="col-sm-6 col-md-6">
+
+            @if (Model.GetIniPobBool("public_lekce_ukaz_lektory"))
+            {
+
+@if (lekce.Lektor1_O != null)
+{
+<div class="card" style="margin-top: 10px">
+    <div class="card-header">
+        Lektor @lekce.Lektor1_O.Nick;
+    </div>
+    <div class="card-body">
+        <table border="0" celspacing="0" celpading="0" style="padding:0px">
+            <tbody>
+                <tr>
+                    <td rowspan="3" style="width: 140px; height: 150px">
+                        <img src="" alt="" title="" border="0" width="120">
+                    </td>
+                    <td>
+                        <span class="motiv_hlavni"><b>@lekce.Lektor1_O.Nick</b></span><br>
+                        <span class="motiv_kontra"><b>@lekce.Lektor1_O.Jmeno</b></span><br>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        tel: @lekce.Lektor1_O.Tel<br><br>@lekce.Lektor1_O.Popis
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer text-muted">
+        @lekce.Lektor1_O.Email
+    </div>
+</div>}}
+
+            @if (Model.GetIniPobBool("public_lekce_ukaz_typ"))
+            {
+
+@if (lekce.TypHodiny_O != null)
+{
+<div class="card" margin-top: 10px>
+    <div class="card-header">
+        <b>@lekce.TypHodiny_O.Nazev</b>
+    </div>
+    <div class="card-body">
+        @lekce.TypHodiny_O.Popis
+    </div>
+
+</div>}}
+        </div>}
+                </div>
+
+                <div class="row" style="padding: 10px 5px">
+
+                    <div class="col-12">
+
+
+                        @if (lekce.Video != null && lekce.Video.Url.Length > 0)
+                        {
+                            string text = (lekce.Video.Text != null) ? lekce.Video.Text : "Připravili jsme pro vás speciální video k této lekci";
+            <div class="alert alert-success" role="alert">
+                <span>@text</span> <br />
+                @if (lekce.DatumHodina < DateTime.Now)
+                {
+                    string url = lekce.Video.Url;
+                    if (!lekce.Video.Url.StartsWith("http"))
+                    {
+                        url = "http://" + url;
+                    }
+
+                    var ss = Model.LekceOneBoard.Zakaznici.Where(d => d.UserId == Model.User.Id.Value);
+
+                    if (ss.Count() > 0)
+                    {
+<p> Klikněte na odkaz  <a href="@url">@lekce.Video.TextUrl</a></p> }
+                    else
+                    {
+<p> Nejste mezi objednanými.</p> }
+                }
+                else
+                {
+<p> Odkaz se zobrazí v @lekce.DatumHodina.ToString("dd.MM.yyyy HH:mm")</p>}
+            </div> }
+                        else
+                        {
+            <p>
+                Na tuto lekci se lze přihlásit do: @lekce.DatumProPrihlaseni(Model).ToString("dd.MM.yyyy HH:mm")<br />
+                Z této lekce se lze odhlásit do: @lekce.DatumProOdhlaseni(Model).ToString("dd.MM.yyyy HH:mm")
+            </p>}
+
+                        @if (textOdhlaseniPoLimitu != "")
+                        {
+            @textOdhlaseniPoLimitu <br /><br />}
+
+                        @if (textKObjednani != "")
+                        {
+            <div class="alert alert-warning">@textKObjednani</div>}
+
+                        @if (Model.GetIniPobBool("lekceOdhlasNabidniVolne"))
+                        {
+            <p>
+                Můžete nabídnout své místo, dalšímu zákazníkovi tím že stisknete tlačítko " Nabídnout ".Pokud se
+                přidá nový zákazník jako náhradník, tak využije Vaše místo a kredit Vám bude vrácen.
+            </p>}
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modal2" id="vzkaz" tabindex="-2" role="dialog" style="margin-top: -15px;">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Vaše zpráva k objednávce</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Zavřít</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('#addToHour').bind('submit', function () {
+            var that = $(this);
+            that.fadeOut(800);
+            $.ajax({
+                type: 'post',
+                url: '/Admin/Api/LessonAdd',
+                data: $('form').serialize()
+            }).done(function (data) {
+                console.log(data);
+                if (data.status === true) {
+
+                    loadHodinuTable(data.lekceId);
+
+                    afterReservation(data.lekceId, 1, data);
+                }
+                else {
+                    $("#js-write-messages-modal").html(writeMesssages(data.messages))
+                }
+            });
+            return false;
+        });
+
+        $('.frm-remove').bind('submit', function () {
+            var that = $(this);
+            that.fadeOut(800);
+            $.ajax({
+                type: 'post',
+                url: '/Admin/Api/LessonRemoveFrom',
+                data: $(this).serialize(),
+                cache: false
+            }).done(function (data) {
+
+                console.log(data);
+
+
+                if (data.status === true) {
+
+                    that.attr("disabled", false);
+                    if (data.sendMess === true) {
+                        that.closest("tr").hide();
+                        // sendMessage(data.message.userID, data.message.spinID);
+                    }
+                    that.attr("disabled", false);
+                    var id = $('.frm-remove :input[name="aktID"]').val();
+
+                    loadHodinuTable(data.lekceId);
+
+                    afterReservation(data.lekceId, 0, data);
+                }
+                else {
+                    that.fadeInt(800);
+                }
+            });
+            return false;
+        });
+    });
+
+    function sendMessage(userId, id) {
+
+        var send = userId + "-" + id;
+        $.ajax({
+            type: 'post',
+            url: '/Home/LessonSendMessage',
+            data: { id: send },
+            success: function (datajs) {
+                // akce kontrolujici odeslani sms
+            }
+        });
+
+
+
+    }
+
+
+    // po rezervaci nastavim hodnotu že bylo rezervovano
+    function afterReservation(id, action, data) {
+
+        if (id > 0) {
+            var imput = $('#main-rozvrh td[data-id=' + id + ']');
+            if (action == 0) {
+
+                if (data.zustaneVLekci == false) {
+                    imput.removeClass("reserved").removeClass("reserved-nahradnik");
+                }
+                $('#js-row-' + id).remove();
+            }
+            else {
+
+                var className = "reserved";
+                if (data.nahradnik == true) {
+                    className = "reserved-nahradnik";
+                }
+                imput.addClass(className);
+                var today = new Date(data.lekce.datum);
+
+
+
+
+                //$arr = array('dayName' => $hodina->GetDenVTydnu(), 'time' => $hodina->GetHodinaZacatek(), 'credit' => $hodina->kredit, 'date' => $hodina->GetDenMesic()  )
+                var aa = '<tr id="js-row-' + id + '" class="' + className + '"><td>&nbsp;' + days[today.getDay()] + '</td><td>' + dateToYMD(today) + '</td><td style="width: 30%">&nbsp;&nbsp;' + "" + '</td><td class="text-right">' + data.lekce.kredit + '&nbsp;kr.</td></tr>';
+                $('#js-reserved-item').append(aa);
+              
+            }
+           
+        }
+        location.reload();
+    }
+
+    function dateToYMD(date) {
+        var d = date.getDate();
+        var m = date.getMonth() + 1; //Month from 0 to 11
+        var y = date.getFullYear();
+        return (d <= 9 ? '0' + d : d) + '.' + (m <= 9 ? '0' + m : m) + '.';
+    }
+
+    function showObj1() {
+        $("#btnAdd").toggle('slow');
+        $('#objednavka').toggle('slow');
+    }
+
+    function showObj2(elem) {
+        $(elem).next(".frm-remove").toggle(200);
+    }
+
+
+    function showObj() {
+        $('#hodinaIn').modal('show');
+    }
+
+    $("button[data-number=close]").click(function () {
+        $('#hodinaIn').modal('hide');
+    });
+
+    $("button[data-number=closeVzkaz]").click(function () {
+        $('#vzkaz').modal('hide');
+    });
+
+    $("button[data-number=save]").click(function () {
+        $('#hodinaIn').modal('hide');
+    });
+
+    $('#hodinaIn').on('hidden.bs.modal', function () {
+        console.log('hide modal');
+    })
+
+    function validateForm(ele, text) {
+        return confirm(text);
+    }
+
+    function showVzkaz(that) {
+
+        var t = $(that).data("text");
+
+        $('#vzkaz .modal-body').html(t);
+        $('#vzkaz').modal('show');
+    }
+
+
+    function showTextArea() {
+        $("#textArea").toggle('slow');
+    }
+
+    function loadHodinuTable(hodId) {
+
+        $.ajax({
+            type: 'POST',
+            url: '/Home/LessonViewTable',
+            data: { id: hodId },
+            cache: false
+        }).done(function (data) {
+            $("#hodina-table").html(data);
+            var count = $('#js-count-self').data('value')
+            $('#js-reservation').data("count-self", count);
+        });
+    }
+
+
+    function hideModal2() {
+        $('#hodinaIn').modal('hide');
+
+    }
+
+</script>
+
+
+

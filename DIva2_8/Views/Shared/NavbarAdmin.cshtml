@@ -1,0 +1,98 @@
+﻿@using Diva2Web.Models.Admin
+@model AdminPageModel
+@{
+
+    string cont = this.ViewContext.RouteData.Values["controller"].ToString().ToLower();
+
+}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #04519d !important; background-image: linear-gradient(#04519b, #044687 60%, #033769);">
+    <a class="navbar-brand" href="/Home/Index">Veřejná část</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+
+            <li class="nav-item">
+                <div class="nav-link">Pokladna: @Model.Pobocka.PokladnaId </div>
+            </li>
+
+            <li class="nav-item active">
+                <a class="nav-link" href="/Admin/Home">Home <span class="sr-only">(current)</span></a>
+            </li>
+
+            @if (Model.User.HasRule("spin_view"))
+            {
+                string ac1 = cont == "board" ? "active" : "";
+
+                <li class="nav-item">
+                    <a class="nav-link @ac1" href="/Admin/Board"><b>Rozvrh</b> <span class="sr-only">(current)</span></a>
+                </li>
+
+                string ac2 = cont == "customer" ? "active" : "";
+                <li class="nav-item">
+                    <a class="nav-link @ac2" href="/Admin/Customer"><b>Zákazníci</b> <span class="sr-only">(current)</span></a>
+                </li>
+            }
+
+
+        </ul>
+        <div class="form-inline">
+            <ul class="navbar-nav mr-auto">
+
+                @foreach (var item in Model.AdminMenuItems.Where(d => d.Visible == true))
+                {
+
+                    string active = "";
+                    if (item.Url.StartsWith(cont))
+                    {
+                        active = "active";
+                    }
+
+                    if (item.Items == null)
+                    {
+
+                        <li class="nav-item @active">
+                            <a class="nav-link" href="/Admin/@item.Url">
+                                @item.Text
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @item.Text
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                @foreach (var item2 in item.Items.Where(d => d.Visible == true))
+                                {
+                                    <a class="dropdown-item" href="/Admin/@item.Url/@item2.Url">@item2.Text</a>
+                                }
+
+
+                            </div>
+                        </li>
+                    }
+                }
+
+            </ul>
+            <partial name="_LoginPartial" model="Model" />
+        </div>
+
+    </div>
+</nav>
+
+@{
+    string rules = "";
+}
+
+@foreach (var str in Model.User.Rules)
+{
+    rules += ", " + str;
+}
+<div> </div>
+
+
+

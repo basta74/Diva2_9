@@ -1,0 +1,43 @@
+﻿@using Diva2Web.Models.Admin
+@model AdminPageModel
+
+@{
+
+    Layout = "~/Views/Shared/_LayoutAdminBase.cshtml";
+}
+
+
+@section Head{
+    @RenderSection("Head", required: false)
+}
+
+<partial name="NavbarAdmin" />
+
+
+
+<div class="row">
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+        <partial name="MenuLeftAdmin" />
+    </nav>
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/Admin/Home">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">@Model.Title</a></li>
+
+            </ol>
+        </nav>
+
+        @RenderBody()
+    </main>
+
+</div>
+
+@section Scripts{
+    @RenderSection("Scripts", false)
+}
+@section ScriptsMenu{
+    @RenderSection("ScriptsMenu", false)
+}
+
+

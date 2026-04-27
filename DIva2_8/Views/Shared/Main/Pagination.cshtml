@@ -1,0 +1,18 @@
+﻿@using Diva2Web.Models.Admin;
+@using Diva2.Core.Main.Users
+
+@model AdminPageModel
+
+<nav>
+    <cs-pager cs-paging-pagesize="@Model.PageSize"
+              cs-paging-pagenumber="@Model.PageNumber"
+              cs-paging-totalitems="@Model.TotalItemCount"
+              cs-pagenumber-param="page"
+              asp-controller="@Model.ControllerName"
+              asp-action="@Model.ActionName"
+              cs-pager-li-current-class="page-item active"
+              cs-pager-li-other-class="page-item"
+              cs-pager-li-non-active-class="page-item disabled"
+              cs-pager-link-current-class="page-link"
+              cs-pager-link-other-class="page-link"></cs-pager>
+</nav>

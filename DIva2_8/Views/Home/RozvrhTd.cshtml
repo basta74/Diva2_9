@@ -1,0 +1,164 @@
+﻿@using Diva2.Core.Main.Lessons
+
+@model Diva2Web.Models.Rozvrh.RozvrhTd
+@{
+
+    Lekce le = Model.Lekce;
+
+
+    string lek1 = "";
+    var lek01 = Model.Lektori.Where(d => d.Id == le.Lektor1).FirstOrDefault();
+
+    if (lek01 != null)
+    {
+        lek1 = lek01.Nick;
+    }
+
+
+    string lek2 = "";
+    if (le.Lektor2 > 0)
+    {
+        var lek02 = @Model.Lektori.Where(d => d.Id == le.Lektor2).FirstOrDefault();
+
+        if (lek02 != null)
+        {
+            lek2 = lek02.Nick;
+        }
+
+    }
+    string typ = "";
+    if (le.TypHodiny > 0)
+    {
+        typ = "";
+        var typObj = Model.TypyLekci.Where(d => d.Id == le.TypHodiny).FirstOrDefault();
+        if (typObj != null)
+        {
+            typ = typObj.Nazev;
+        }
+    }
+
+    int zb = le.PocetMist - le.PocetZakazniku;
+    int zbN = (le.PocetMist + le.PocetNahradniku) - le.PocetZakazniku;
+
+    string zbText = "";
+    string tabContent = "";
+
+
+    string classReserveed = "";
+
+    if (Model.ObjednaneLekce != null)
+    {
+
+        var objAktIs = Model.ObjednaneLekce.Where(d => d.LekceId == le.Id).FirstOrDefault();
+
+        if (objAktIs != null)
+        {
+            if (objAktIs.Nahradnik)
+            {
+                classReserveed = "reserved-nahradnik";
+            }
+            else
+            {
+                classReserveed = "reserved";
+            }
+        }
+    }
+    if (DateTime.Now > le.DatumHodina)
+    {
+        classReserveed = "lekce-byla";
+    }
+
+
+}
+
+<td class="jsFormModal @classReserveed" data-id="@($"{@le.Id}")" style="cursor: pointer;" colspan="@Model.ColSpan">
+    <div data-row-id="@le.Lektor1">
+        @if (zb > 0)
+        {
+            int ukazOd = Model.UkazOd;
+
+
+            if (ukazOd >= zb)
+            {
+                zbText = zb.ToString();
+            }
+            else
+            {
+                if (ukazOd > 0)
+                {
+                    zbText = $"{ukazOd} a více";
+
+                }
+                else
+                {
+
+                }
+
+            }
+
+            tabContent = "Volné: " + zbText;
+
+
+            if (Model.UkazKapacitu == 1)
+            {
+                if (le.PocetMist > 0)
+                {
+                    tabContent += " z " + le.PocetMist;
+                }
+            }
+
+
+        }
+        else
+        {
+            if (Math.Abs(zbN) > 0)
+            {
+                tabContent = $"jako {le.PocetNahradniku - zbN + 1}. náhradník z {le.PocetNahradniku}";
+            }
+            else
+            {
+                tabContent = "Obsazeno";
+            }
+        }
+
+
+        @if (Model.UkazLektora == 1)
+        {
+            <b class="motiv-kontra">@lek1</b>
+
+            <br />
+            @if (Model.Lektor2 == 1 && lek2.Length > 0)
+            {
+                <p>@lek2</p>
+
+                <br />
+            }
+
+        }
+
+        @if (le.Nazev != "")
+        {
+            <b class="motiv-hlavni">@le.Nazev</b>
+
+            <br />
+        }
+
+        @if (Model.UkazTyp == 1 && le.TypHodiny > 0)
+        {
+            <b class="motiv-hlavni">@typ</b>
+
+            <br />
+        }
+
+        <span>@tabContent</span>
+
+        @if (Model.Cas != null && le.Cas != Model.Cas.Time)
+        {
+            <br />
+            <br />
+            <b>od @le.Cas.ToString(@"hh\:mm")</b>
+        }
+
+    </div>
+</td>
+

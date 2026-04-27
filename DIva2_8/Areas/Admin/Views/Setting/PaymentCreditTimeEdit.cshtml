@@ -1,0 +1,113 @@
+﻿@using Diva2Web.Models.Platby
+@using Diva2.Core.Main.Lessons
+@model PlatbaKreditCasCiselnikModel
+
+
+
+<div class="modal fade" id="paymentcredittime-edit" tabindex="-1" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContactLabel">Editace kreditní časové platby</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form asp-action="PaymentCreditTimeEdit">
+                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                    <input type="hidden" name="PokladnaId" id="PokladnaId" value="@Model.PokladnaId" />
+                    <input type="hidden" name="Kategorie" id="Kategorie" value="@Model.Kategorie" />
+                    <input type="hidden" name="AutorID" id="AutorID" value="@Model.AutorID" />
+                    <input type="hidden" name="Id" id="Id" value="@Model.Id" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="form-group">
+                                <label asp-for="Popis" class="control-label"></label>
+                                <input asp-for="Popis" class="form-control" />
+                                <span asp-validation-for="Popis" class="text-danger"></span>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Kredity" class="control-label"></label>
+                                <input asp-for="Kredity" class="form-control" />
+                                <span asp-validation-for="Kredity" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Castka" class="control-label"></label>
+                                <input asp-for="Castka" class="form-control" />
+                                <span asp-validation-for="Castka" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="Poradi" class="control-label"></label>
+                                <input asp-for="Poradi" class="form-control" />
+                                <span asp-validation-for="Poradi" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="PocetMesicu" class="control-label"></label>
+                                <input asp-for="PocetMesicu" class="form-control" />
+                                <span asp-validation-for="PocetMesicu" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label asp-for="PocetLidi" class="control-label"></label>
+                                <input asp-for="PocetLidi" class="form-control" />
+                                <span asp-validation-for="PocetLidi" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3">
+                            <div class="form-group form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="Platnost" /> @Html.DisplayNameFor(model => model.Platnost)
+                                </label>
+                            </div>
+                            <div class="form-group form-check" style="margin-top: 5px">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="Visible" /> @Html.DisplayNameFor(model => model.Visible)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group form-check" style="">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="Slevnena" /> @Html.DisplayNameFor(model => model.Slevnena)
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-primary" data-save="modal">Save</button>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>

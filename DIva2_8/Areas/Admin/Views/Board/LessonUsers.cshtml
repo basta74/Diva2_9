@@ -1,0 +1,151 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2Web.Models.Lekces
+@using Diva2.Core.Main.Lessons;
+@using Diva2.Core.Extensions;
+@model AdminPageModel
+
+@{
+
+    List<Lekce> lekceDen = ViewBag.LekceDen as List<Lekce>;
+
+    LekceBoardModel lekce = Model.LekceOneBoard;
+}
+
+<table class="table-hover" id="tableObjednani" data-id="@Model.Id" style="width: 480px; border: silver solid 1px;" border="1">
+    <tbody>
+
+        @{
+            int i = 0;
+        }
+        @foreach (Diva2Web.Models.Lekces.LekceUserModel obj in lekce.Zakaznici.OrderBy(d => d.Poradi))
+        {
+            i++;
+            string zbClass = "zb";
+            string nahrClass = "";
+            string pasivClass = "";
+
+            if (obj.ZbytekTyp == "kb")
+            {
+                zbClass = "zbB";    
+
+            }
+            else
+            {
+                if (obj.Zbytek > 0)
+                {
+                    zbClass = "zbA";
+                }
+                else if (obj.Zbytek < 0)
+                {
+                    zbClass = "zbN";
+                }
+            }
+            string zbText = obj.Zbytek.ToString();
+            if (obj.ZbytekTyp == "kc")
+            {
+                string zbyva = (obj.ZbyvaDni > 1000) ? " - " : obj.ZbyvaDni.ToString();
+                zbyva = obj.ZbyvaDni == 888 ? " + " : zbyva;
+                zbText = $"{zbText}/{zbyva}";
+            }
+            else if (obj.ZbytekTyp == "kb")
+            {
+                zbText = $"{zbText}/ st";
+            }
+
+
+            if (obj.Nahradnik)
+            {
+                nahrClass = "nahradnik";
+            }
+            if (!obj.Aktivni)
+            {
+                pasivClass = "pasivni";
+            }
+
+            string porClass = obj.Premiera ? "poradiPrve" : "poradi";
+
+            string btnOk = obj.BylTam ? "btn-success" : "btn-outline-success";
+            string bylTam = obj.BylTam ? "Byl" : "";
+            string btnAkt = obj.Aktivni ? "btn-outline-secondary" : "btn-secondary";
+            var msg = Model.Messages.Where(d => d.KontrolniCislo == obj.KontCislo).FirstOrDefault();
+
+
+
+            <tr style="height: 26px; cursor: pointer;" data-user-id="@obj.User.Id" data-id="@obj.Id">
+
+
+
+                @if (msg != null)
+                {
+                    <td class="text-center @porClass " style="width: 30px">
+                        @obj.Poradi <span class="badge badge-pill badge-info jsObjMsg" data-text="@msg.Text">msg</span>
+                    </td>
+                }
+                else
+                {
+                    <td class="text-center @porClass " style="width: 30px">
+                        @obj.Poradi
+                    </td>
+                }
+
+                @if (!lekce.Zauctovano)
+                {
+                    <td class="jsFormModal @nahrClass @pasivClass">
+                        <b>@obj.User.Prijmeni @obj.User.Jmeno</b><br />
+                        <div>@obj.User.Id > @obj.User.Ulice @obj.User.Posta </div>
+                    </td>
+                    <td class="tdAction">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button class="btn btn-sm js-actions @btnOk" data-action="ok">OK</button>
+                            <button class="btn btn-sm js-actions btn-outline-secondary" data-action="del">Del</button>
+                            <button class="btn btn-sm js-actions  @btnAkt" data-action="pas">Pas</button>
+                        </div>
+                    </td>
+                }
+                else
+                {
+                    <td class="jsFormModal  @nahrClass" style="width: 65%">
+                        <b>@obj.User.Prijmeni @obj.User.Jmeno</b><br />
+                        <div>@obj.User.Id > @obj.User.Ulice @obj.User.Posta </div>
+                    </td>
+                    <td class="text-center" style="width:30px">@bylTam</td>
+                }
+
+                <td class="@zbClass text-right" style="width: 55px">@zbText&nbsp;</td>
+            </tr>
+            @if (i == lekce.PocetMist)
+            {
+                <tr><td colspan="6" style="height: 5px"><hr id="hr" /></td></tr>
+            }
+        }
+    </tbody>
+</table>
+
+<table class="table" style="margin-bottom: -8px;">
+    <tbody>
+        <tr>
+            @{
+
+                string styleKred = "color: gray";
+                if (Model.Pobocka.Kredity != lekce.Kredit)
+                {
+                    styleKred = "color: red";
+                }
+
+                string strZbyva = "lekce už proběhla";
+                if (lekce.DatumHodina > DateTime.Now)
+                {
+                    TimeSpan difference = DateTime.Now - lekce.DatumHodina; //create TimeSpan object
+                    strZbyva = $"zbývá {difference.Days} {difference.Hours}";
+                }
+            }
+            <td>Kredity: <b><span style="@styleKred">@lekce.Kredit</span></b></td>
+            <td>Obsazenost: <b>@lekce.PocetZakazniku/@lekce.PocetMist<span style="color: silver">(@lekce.PocetNahradniku)</span></b></td>
+            <td>@strZbyva </td>
+            @if (!lekce.Zauctovano)
+            {
+                <td><button type="button" class="btn btn-sm btn-outline-info js-showLessonSetting" style="width: 140px">Nastavení hodiny</button></td>
+            }
+        </tr>
+    </tbody>
+</table>

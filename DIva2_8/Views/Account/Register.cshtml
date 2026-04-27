@@ -1,0 +1,123 @@
+﻿@using Diva2Web.Models.Users
+@model UserModelRegister
+@{
+    ViewData["Title"] = "LogIn";
+    Layout = "~/Views/Shared/_LayoutAccount.cshtml";
+}
+
+
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div style="max-width: 740px">
+        <ul class="nav justify-content-center">
+            <li class="nav-item"><a href="/Account/Login" class="nav-link">Přihlášení</a></li>
+            <li class="nav-item"><a href="/Account/Register" class="nav-link active">Registrace</a></li>
+            <li class="nav-item"><a href="/Home/Help" class="nav-link active">Nápověda</a></li>
+        </ul>
+        <div class="card" style="">
+            <div class="card-body">
+                <h5 class="card-title">Registrace</h5>
+                <div class="form-horizontal">
+
+                    <form asp-action="DetailEdit">
+                        <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-6">
+                                <div class="form-group">
+                                    <label asp-for="Jmeno" class="control-label"></label>
+                                    <input asp-for="Jmeno" class="form-control" />
+                                    <span asp-validation-for="Jmeno" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-sm-6">
+                                <div class="form-group">
+                                    <label asp-for="Prijmeni" class="control-label"></label>
+                                    <input asp-for="Prijmeni" class="form-control" />
+                                    <span asp-validation-for="Prijmeni" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-6">
+                                <div class="form-group">
+                                    <label asp-for="Email" class="control-label"></label>
+                                    <input asp-for="Email" class="form-control" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-sm-6">
+                                <div class="form-group">
+                                    <label asp-for="Telefon" class="control-label"></label>
+                                    <input asp-for="Telefon" class="form-control" />
+                                    <span asp-validation-for="Telefon" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-6">
+
+                                <div class="form-group">
+                                    <label asp-for="Ulice" class="control-label"></label>
+                                    <input asp-for="Ulice" class="form-control" />
+                                    <span asp-validation-for="Ulice" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 col-sm-6">
+                                <div class="form-group">
+                                    <label asp-for="Posta" class="control-label"></label>
+                                    <input asp-for="Posta" class="form-control" />
+                                    <span asp-validation-for="Posta" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label asp-for="NewPass" class="control-label"></label>
+                                    <input asp-for="NewPass" class="form-control" />
+                                    <span asp-validation-for="NewPass" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label asp-for="NewPass2" class="control-label"></label>
+                                    <input asp-for="NewPass2" class="form-control" />
+                                    <span asp-validation-for="NewPass2" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="row">
+                            <div class="col-6">
+                                <a href="/Home/Index" class="btn btn-outline-secondary">Zpět na rozvrh</a>
+                            </div>
+                            <div class="col-6" style="text-align: right;">
+                                <input type="submit" value="Registrace" class="btn btn-primary" />
+
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+}
+
+

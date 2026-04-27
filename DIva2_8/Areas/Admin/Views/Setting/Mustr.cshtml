@@ -1,0 +1,504 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2Web.Models.Lekces
+@using Diva2.Core.Main.Lessons
+@using Diva2.Core.Main.Calendar
+@model AdminPageModel
+
+@{
+    int countSab = (Model.LekceMustrTypy != null && Model.LekceMustrTypy.Count > 0) ? Model.LekceMustrTypy.Count : 0;
+
+    IEnumerable<int> minuty = Model.LekceMustr.Select(d => d.Minuty);
+    var zacatky = Model.IniMinutes.Where(d => d.PobockaId == Model.Pobocka.Id);
+    var minutyIni = zacatky.Where(d => d.Visible == true);
+}
+
+<!-- Modal placeholder -->
+<div id="modal-placeholder"></div>
+
+<div id="messages"> </div>
+
+<a href="/Admin/Help/Rozvrh" class="badge badge-info">Nápověda</a>
+<a href="#" id="js-edit-times" class="badge badge-primary">Editace časů</a>
+
+<table id="jsModalMain" class="table table-hover table-bordered jsRozvrh " data-count-sab="@countSab">
+
+
+    <tr>
+        <th></th>
+
+        @foreach (var min in minutyIni)
+        {
+            <th class="align-middle">@min.Time.ToString(@"hh\:mm")</th>
+        }
+    </tr>
+
+    @{
+
+        var minutyNo = Model.LekceMustr.Where(d => d.Aktivni == true && !minutyIni.Select(d => d.Minute).Contains(d.MinutaKey)).Select(d => d.MinutaKey).Distinct().OrderBy(d => d);
+        if (minutyNo.Count() > 0)
+        {
+            <tr>
+                <td></td>
+                <td colspan="@minutyIni.Count()">
+                    <div class="alert alert-danger" role="alert">
+                        V hlavní šabloně máte aktivní lekce s čas(y), které se nezobrazí.
+
+                        @foreach (var min in minutyNo)
+                        {
+                            TimeSpan ts = new TimeSpan(0, min, 0);
+                            <span style="color: white; background-color: red">&nbsp; @ts.ToString(@"hh\:mm") &nbsp;</span>
+                        }
+
+                        Tyto lekce deaktivujte nebo nastavte hlavní časy jako aktivní.
+
+                    </div>
+                </td>
+            </tr>
+        }
+
+    }
+
+    @for (int i = 1; i <= 7; i++)
+    {
+        <tr>
+            <td class="align-middle">
+                @Model.Days[i].Substring(0, 2)
+            </td>
+
+            @foreach (var min in minutyIni)
+            {
+                string tdBg = "#ECE9D8";
+                LekceMustrModel lm = Model.LekceMustr.Where(d => d.Den == i && d.MinutaKey == min.Minute).FirstOrDefault();
+                if (lm != null)
+                {
+                    tdBg = (lm.Aktivni == true) ? "white" : "#ECE9D8";
+                    TimeSpan ts = TimeSpan.Parse(lm.Cas);
+
+                    <td class="jsFormModal" style="background-color:@tdBg; cursor: pointer;" data-toggle="ajax-modal" data-target="#mustr-edit" data-url="@Url.Action("MustrEdit")" data-id="@($"{@lm.Id}")">
+                        @{
+                            string a = $"obs:{@lm.PocetMist}+{@lm.PocetNahradniku}";
+                        }
+
+                        @if (Model.Pobocka.PocetMist != lm.PocetMist)
+                        {
+                            a = $"obs:<b>{@lm.PocetMist}</b>+{@lm.PocetNahradniku}";
+                        }
+                        <span>@Html.Raw(a)</span><br />
+                        <span>
+                            min:
+                            @if (Model.Pobocka.Minuty != lm.Minuty)
+                            {
+                                <b>@lm.Minuty</b>
+                            }
+                            else
+                            {
+                                @lm.Minuty
+                            }
+                            / kr:
+                            @if (Model.Pobocka.Kredity != lm.Kredit)
+                            {
+                                <b>@lm.Kredit</b>
+                            }
+                            else
+                            {
+                                @lm.Kredit
+                            }
+                        </span>
+                        @if (ts.TotalMinutes != lm.MinutaKey)
+                        {
+                            <br /><b style="color: orangered">@lm.Cas</b>
+                        }
+                        else
+                        {
+                            <br />
+                        }
+
+
+
+                        <br /><b>@lm.LektorString</b>
+
+                        @if (lm.Lektor2 > 0)
+                        {
+                            <br /><b>@lm.Lektor2String</b>
+                        }
+
+                        @if (lm.Nazev != null && lm.Nazev.Length > 0)
+                        {
+                            <br />@lm.Nazev
+                        }
+                        @if (lm.Typ > 0)
+                        {
+                            <br /><b>@lm.TypString</b>
+                        }
+
+
+                    </td>
+                }
+                else
+                {
+                    <td class="jsFormModal-create" style="background-color:@tdBg; cursor: pointer;" data-d="@i" data-m="@min.Minute" data-z="1"></td>
+                }
+            }
+
+
+        </tr>
+
+    }
+
+
+
+</table>
+
+
+<!-- Modal -->
+<div class="modal fade" id="modal2" data-id="" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Kopírování lekce</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <button type="button" id="js-edit-mustr" class="btn btn-primary btn-lg btn-block" style="margin: 5px" data-id="">Uprav položku</button>
+                </div>
+                <div class="row">
+                    <div class="card" style="margin: 5px; width: 100%">
+                        <div class="card-header">
+                            Zkopíruj lekci z šablon typů hodiny
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group">
+                                @if (Model.LekceMustrTypy != null && Model.LekceMustrTypy.Count > 0)
+                                {
+                                    @foreach (var t in Model.LekceMustrTypy)
+                                    {
+                                        <a href="#" class="list-group-item list-group-item-action js-mustr-copy-sab" data-id="@t.Id">@t.NazevTyp</a>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="alert alert-info" role="alert">
+                                        Nemáte vytvořeny šablony. viz <a href="MusterTypes">Šablony</a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modal3" data-id="" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Kopírování lekce</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <button type="button" id="js-create-mustr" class="btn btn-success btn-lg btn-block" style="margin: 5px" data-m="0" data-d="0">Vytvořit novou položku</button>
+                </div>
+                <div class="row">
+                    <div class="card" style="margin: 5px; width: 100%">
+                        <div class="card-header">
+                            Vytvoř lekci z šablon typů hodiny
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group">
+                                @if (Model.LekceMustrTypy != null && Model.LekceMustrTypy.Count > 0)
+                                {
+                                    @foreach (var t in Model.LekceMustrTypy)
+                                    {
+                                        <a href="#" class="list-group-item list-group-item-action js-mustr-create-sab" data-id="@t.Id">@t.NazevTyp</a>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="alert alert-info" role="alert">
+                                        Nemáte vytvořeny šablony. viz <a href="MusterTypes">Šablony</a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modal4" data-id="" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"> Editace časů v tabulkách</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="messages-modal-times"> </div>
+
+                <div class="row">
+                    <div class="col-6">
+
+
+                        @{
+
+                            double div = zacatky.Count() / 4;
+                            Dictionary<int, List<CalIniMinute>> di = new Dictionary<int, List<CalIniMinute>>();
+                            int ii = 0;
+                            int dii = 1;
+                            foreach (var calMin in zacatky)
+                            {
+                                ii++;
+                                if (!(ii < div))
+                                {
+                                    if ((calMin.Minute % 60) == 0)
+                                    {
+                                        dii++;
+                                        ii = 0;
+                                    }
+                                }
+                                List<CalIniMinute> list;
+                                if (!di.TryGetValue(dii, out list))
+                                {
+                                    list = new List<CalIniMinute>();
+                                    di.Add(dii, list);
+                                }
+                                list.Add(calMin);
+                            }
+                        }
+
+                        <div id="js-minutes" data-pob="@Model.Pobocka.Id">
+
+                            @foreach (var list in di)
+                            {
+                                <ol class="draha" style="list-style-type: none; padding: 1px; margin: 2px; width: 48px; float: left;">
+
+                                    @foreach (var calMin in list.Value)
+                                    {
+
+                                        var css = "";
+                                        var active = 0;
+                                        string marginTop = "";
+                                        if (calMin.Visible)
+                                        {
+                                            css = "hour-setting-active";
+                                            active = 1;
+                                        }
+                                        if ((calMin.Minute % 60) == 0)
+                                        {
+                                            marginTop = "margin-top: 3px";
+                                        }
+                                        <li class="js-hour ui-widget-content select-able @css" style="cursor: pointer; text-align: center; @marginTop" data-m="@calMin.Minute" data-active="@active"> @calMin.Time.ToString(@"hh\:mm") </li>
+                                    }
+                                </ol>
+                            }
+                        </div>
+                        <div style="clear: left"></div>
+                    </div>
+                    <div class="col-6">
+
+                        <p>
+                            <b>Nastavení hlavních časů, které lze zobrazovat v systému</b><br />
+                            Zapínání a vypínání časů používejte velmi obezřetně. Může dojít k situaci kdy budou zveřejněné lekce, ale nezobrazí se, protože bude zakázán hlavní čas.
+                        </p>
+                        <div>
+                            Kliknutím na <span style="color: white; background-color: green"> zelenou </span> položku, nastavíte čas jako neaktivní. Kliknutím na nepodbarvenou položku čas aktivujete.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            var countSab = $("#jsModalMain").data("count-sab");
+            var placeholderElement = $('#modal-placeholder');
+
+            //td-edit
+            $("td.jsFormModal").on("click", function () {
+
+                var hodId = $(this).data('id');
+                if (countSab == 0) {
+                    showEditForm(hodId);
+                }
+                else {
+                    $("#js-edit-mustr").data("id", hodId);
+                    $("#modal2").modal('toggle');
+                }
+            });
+
+            //td-create
+            $("td.jsFormModal-create").on("click", function () {
+
+                var min = $(this).data('m');
+                var day = $(this).data('d');
+                var zdroj = $(this).data('z');
+                if (countSab == 0) {
+                    showCreateForm(min, day, zdroj);
+                }
+                else {
+                    $("#js-create-mustr").data("m", min);
+                    $("#js-create-mustr").data("d", day);
+                    $("#js-create-mustr").data("z", zdroj);
+                    $("#modal3").modal('toggle');
+                }
+            });
+
+            //#js-edit-mustr
+            $(document).on('click', '#js-edit-mustr', function (event) {
+                var hodId = $(this).data('id');
+                $("#modal2").modal('toggle');
+                showEditForm(hodId);
+            });
+
+            //#js-create-mustr
+            $(document).on('click', '#js-create-mustr', function (event) {
+                var min = $(this).data('m');
+                var day = $(this).data('d');
+                var zdroj = $(this).data('z');
+                $("#modal3").modal('toggle');
+                showCreateForm(min, day, zdroj);
+            });
+
+
+            $(".js-mustr-copy-sab").on("click", function () {
+                var hodId = $("#js-edit-mustr").data("id");
+                var typId = $(this).data('id');
+                CopyFromSab(hodId, typId);
+            });
+
+            $(".js-mustr-create-sab").on("click", function () {
+                var min = $("#js-create-mustr").data("m");
+                var day = $("#js-create-mustr").data("d");
+                var typId = $(this).data('id');
+                CreateFromSab(min, day, typId);
+            });
+
+
+            function CopyFromSab(hodId, typId) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/Setting/MustrFromSab/",
+                    data: { id: hodId, sabId: typId },
+                    cache: false
+                }).done(function (data) {
+                    if (data.status == true) {
+                        location.reload();
+                    }
+                    else {
+                        $('#messages').html(writeMesssages(data.messages));
+                    }
+                });
+            }
+
+
+            function CreateFromSab(min, day, typId) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/Setting/MustrFromSabCreate/",
+                    data: { min: min, day: day, sabId: typId, dr: 1 },
+                    cache: false
+                }).done(function (data) {
+                    if (data.status == true) {
+                        location.reload();
+                    }
+                    else {
+                        $('#messages').html(writeMesssages(data.messages));
+                    }
+                });
+            }
+
+            function showEditForm(hodId) {
+
+                var url = "/Admin/Setting/MustrEdit/";
+                $.ajax({
+                    method: "GET",
+                    url: url,
+                    data: { id: hodId }
+                })
+                    .done(function (data) {
+                        placeholderElement.html(data);
+                        placeholderElement.find('.modal').modal('show');
+                    });
+            }
+
+            function showCreateForm(min, day, dr) {
+
+                var url = "/Admin/Setting/MustrCreate/";
+                $.ajax({
+                    method: "GET",
+                    url: url,
+                    data: { min: min, day: day, dr: dr }
+                })
+                    .done(function (data) {
+                        placeholderElement.html(data);
+                        placeholderElement.find('.modal').modal('show');
+                    });
+            }
+
+            //td-edit
+            $("#js-edit-times").on("click", function () {
+
+                $("#modal4").modal('toggle');
+
+            });
+
+            // editace casu
+            $(".js-hour").on("click", function () {
+
+                var min = $(this).data("m");
+                var ol = $(this).closest("#js-minutes");
+                var pobId = ol.data("pob");
+                ol.hide(200);
+
+
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/Setting/TimeActive/",
+                    data: { pob: pobId, min: min },
+                    cache: false
+                }).done(function (data) {
+                    if (data.status == true) {
+
+                        $('#messages-modal-times').html(writeMesssages(data.messages));
+
+                        setTimeout(function () {
+                            location.reload(true);
+                        }, 1500);
+
+                    }
+                    else {
+                        $('#messages-modal-times').html(writeMesssages(data.messages));
+                    }
+                });
+
+            });
+
+        });
+    </script>
+}

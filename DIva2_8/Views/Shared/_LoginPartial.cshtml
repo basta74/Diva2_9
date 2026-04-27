@@ -1,0 +1,48 @@
+﻿@using Diva2Web.Models.Admin
+@model AdminPageModel
+
+<ul class="navbar-nav mr-auto">
+    @if (Model.User.Id.HasValue)
+    {
+        <li class="list-inline-item dropdown notif">
+            <a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                @Model.User.CeleJmeno
+            </a>
+            <div class="dropdown-menu dropdown-menu-right profile-dropdown">
+
+                <!-- item-->
+                <a href="/Account/Detail" class="dropdown-item notify-item">
+                    <i class="fa fa-power-off"></i> <span>Detail</span>
+                </a>
+
+                <!-- item-->
+                <a href="/Account/Logout" class="dropdown-item notify-item">
+                    <i class="fa fa-user-circle"></i> <span>Odhlásit</span>
+                </a>
+            </div>
+        </li>
+
+    }
+    else
+    {
+
+    <li class="list-inline-item dropdown nav-item">
+        <a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+            Nepřihlášen
+        </a>
+        <div class="dropdown-menu dropdown-menu-right profile-dropdown">
+
+            <!-- item-->
+            <a href="/Account/Login" class="dropdown-item notify-item">
+                <i class="fa fa-power-off"></i> <span>Log in</span>
+            </a>
+
+            <!-- item-->
+            <a href="/Account/Register" class="dropdown-item notify-item">
+                <i class="fa fa-user-circle"></i> <span>Registrace</span>
+            </a>
+        </div>
+    </li>
+
+    }
+</ul>

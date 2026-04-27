@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 public class ApplicationDbContext : IdentityDbContext<User8, Role8, int, IdentityUserClaim<int>, UserRoles8, IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>
-//public class ApplicationDbContext : DbContext
 {
     public string SubDomain { get; private set; } = "";
     private SubDomain domain;
@@ -28,21 +27,6 @@ public class ApplicationDbContext : IdentityDbContext<User8, Role8, int, Identit
         }
 
         //SubDomain = domain.name;
-    }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        base.OnConfiguring(optionsBuilder);
-#if DEBUG
-        domain = new SubDomain();
-        domain.user = "root";
-        domain.pass = "komoryAA1/";
-        domain.db = "diva2_gymfit";
-#endif
-
-
-        string sql = $"server=localhost;user id={domain.user};password={domain.pass};persist security info=True;database={domain.db};Allow Zero Datetime=True; convert zero datetime=True;CharSet=utf8; SslMode=None";
-       //optionsBuilder.UseMySql(sql);
     }
 
 

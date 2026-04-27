@@ -1,0 +1,81 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Users
+@model AdminPageModel
+<!-- Modal placeholder -->
+<div id="modal-placeholder"></div>
+
+@{
+
+    List<Role8> list = ViewBag.Roles as List<Role8>;
+}
+
+<p>users_role_view, users_role_edit</p>
+
+<nav aria-label="">
+    <ul class="pagination">
+        @foreach (var le in list.Where(d => d.PublicAble == true))
+        {
+            string act = le.Id == Model.Id ? "active" : "";
+            <li class="page-item @act"><a class="page-link" href="/Admin/Rules/Accounts/@le.Id">@le.Name</a></li>
+        }
+    </ul>
+</nav>
+
+
+@if (Model.Id.HasValue)
+{
+
+    <table class="table-hover" id="main-table" data-id="@Model.User.Id" style="cursor: pointer">
+        <tr>
+            <th width="10">Titul</th>
+            <th width="100">Jméno</th>
+            <th width="120">Příjmení</th>
+            <th style="width: 120px; background-color: #ECF5FD">Přihl.jméno</th>
+            <th width="60">Počet rolí</th>
+            <th width="120">Telefon</th>
+            <th>E-mail</th>
+            <th>ID v systému</th>
+            @foreach (var u in Model.Users)
+            {
+
+            <tr class="jsFormModal" data-id="@u.Id">
+                <td>@u.Titul</td>
+                <td>@u.Jmeno</td>
+                <td>@u.Prijmeni</td>
+                <td style="background-color: #ECF5FD">@u.UserName</td>
+                <td>1</td>
+                <td></td>
+                <td>@u.Email</td>
+                <td>@u.InternalNumber</td>
+
+            </tr>
+        }
+
+        </table>
+
+    }
+<!-- Modal placeholder -->
+<div id="hodina"></div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+
+            var placeholderElement = $('#hodina');
+
+            $(document).on('click', 'tr.jsFormModal', function (event) {
+
+                var hodId = $(this).data('id');
+                $.ajax({
+                    method: "GET",
+                    url: "/Admin/Rules/AccountEdit",
+                    data: { id: hodId }
+                }).done(function (data) {
+                    placeholderElement.html(data);
+                    placeholderElement.find('.modal').modal('show');
+                });
+            });
+
+        });
+    </script>
+}

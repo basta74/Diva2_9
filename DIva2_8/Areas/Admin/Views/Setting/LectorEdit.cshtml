@@ -1,0 +1,130 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main.Lessons
+@model LektorModel
+
+
+
+<div class="modal fade" id="lector-edit" tabindex="-1" role="dialog" aria-labelledby="addContactLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addContactLabel">Editace lektora</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form asp-action="LectorEdit">
+                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label asp-for="Nick" class="control-label"></label>
+                                <input asp-for="Nick" class="form-control" />
+                                <span asp-validation-for="Nick" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-8">
+                            <div class="form-group">
+                                <label asp-for="Jmeno" class="control-label"></label>
+                                <input asp-for="Jmeno" class="form-control" />
+                                <span asp-validation-for="Jmeno" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label asp-for="Email" class="control-label"></label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label asp-for="Tel" class="control-label"></label>
+                                <input asp-for="Tel" class="form-control" />
+                                <span asp-validation-for="Tel" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="Platnost" /> @Html.DisplayNameFor(model => model.Platnost)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group form-check">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" asp-for="Viditelnost" /> @Html.DisplayNameFor(model => model.Viditelnost)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="Poradi" class="control-label"></label>
+                                <input asp-for="Poradi" class="form-control" />
+                                <span asp-validation-for="Poradi" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label asp-for="UserId" class="control-label"></label>
+                                <input asp-for="UserId" class="form-control" />
+                                <span asp-validation-for="UserId" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Popis" class="control-label"></label>
+                        <textarea asp-for="Popis" class="form-control"></textarea>
+                        <span asp-validation-for="Popis" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label asp-for="Titul" class="control-label"></label>
+                                <input asp-for="Titul" class="form-control" />
+                                <span asp-validation-for="Titul" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label asp-for="Kredity" class="control-label"></label>
+                                <input asp-for="Kredity" class="form-control" />
+                                <span asp-validation-for="Kredity" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label asp-for="Koeficient" class="control-label"></label>
+                                <input asp-for="Koeficient" class="form-control" />
+                                <span asp-validation-for="Koeficient" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                    <div class="col-lg-6">
+                        <button type="button" class="btn btn-primary" data-save="modal">Save</button>
+                    </div>
+
+                </div>
+               
+             
+            </div>
+        </div>
+    </div>
+</div>

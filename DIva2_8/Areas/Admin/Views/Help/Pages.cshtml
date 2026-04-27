@@ -1,0 +1,66 @@
+﻿@using Diva2Web.Models.Admin
+@model AdminPageModel
+
+
+
+<h2>Vlastní obsah</h2>
+
+
+
+<h4>Stránky</h4>
+
+V systému si můžete umístit 3 stránky s vlastním obsahem. <a href="/Admin/Content/Pages" class="badge badge-info">Do nastavení obsahu</a>
+<br />
+
+První se jmenuje <b>Info</b> druhá <b>O nás</b> a třetí <b>Videa</b>.
+<br />
+Můžete si do nich vložit jakýkoliv obsah.   Měly by sloužit k informacím, které jsou specifické jen pro váš web. Pokud nemáte svoje webové stránky, můžete ke své prezentaci využít právě obsah těchto dvou stránek.
+Například si u stránky <b>Info</b> nastavíte, že se bude v menu zobrazovat jako <b>Připravujeme</b> a do obsahu stránky si už umístíte co potřebujete.
+<br />
+
+<br /> 
+<b>Nepoužívejte prosím barvy, protože by neodopovídaly barvám webu.</b>
+
+
+<table class="table" style="width: 600px">
+    <tr>
+        <td>Url</td>
+        <td></td>
+        <td>Text, který se zobrazí v menu. Interně se bude pužívat Info a About</td>
+    </tr>
+    <tr>
+        <td>Pořadí</td>
+        <td></td>
+        <td>
+            V hlavním menu mají tyto položky <b>pevné pořadí</b>. Můžete si tedy nastavit 3 vlastních stránek, vložit číselnou hodnotu pořadí jakou potřebujete z vsunete se díky tomu mezi existující položky menu.
+            <div class="list-group" style="margin-top: 5px; width: 160px">
+                <a href="#" class="list-group-item list-group-item-action "><b>10</b> Ceník</a>
+                <a href="#" class="list-group-item list-group-item-action "><b>20</b> Lektoři</a>
+                <a href="#" class="list-group-item list-group-item-action "><b>30</b> Pomoc</a>
+                <a href="#" class="list-group-item list-group-item-action "><b>40</b> Gdpr</a>
+                <a href="#" class="list-group-item list-group-item-action "><b>50</b> Moje data</a>
+                <a href="#" class="list-group-item list-group-item-action "><b>60</b> Moje videa *</a>
+            </div>
+            Pokud tedy vytvoříte stránku "Info k platbám" a chcete ji mít v menu mezi položkami "<b>10</b> Ceník " a "<b>20</b> Lektoři", nastavte ji pořadí <b>15</b>.
+        </td>
+    </tr>
+    <tr>
+        <td>Aktivní</td>
+        <td></td>
+        <td>Zda se položka v menu zobrazí</td>
+    </tr>
+    <tr>
+        <td>Titulek</td>
+        <td></td>
+        <td>Titulek stránky</td>
+    </tr>
+    <tr>
+        <td>Obsah</td>
+        <td></td>
+        <td>Vlastní obsah stránky</td>
+    </tr>
+</table>
+
+
+
+

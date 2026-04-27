@@ -1,0 +1,194 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2.Core.Main
+@using Diva2.Core.Main.Lessons;
+
+@model AdminPageModel
+
+@{ Layout = "~/Views/Shared/_LayoutBase.cshtml";
+
+    int countDay = 4;
+    CalendarSetting sett = Model.Pobocka.CalendarSettingObj;
+    int minutes = sett.HourEnd * 60;
+
+    string styleContainer = "";
+    if (Model.MainIniCover.MainStyleObj.BackgroundContainer != "")
+    {
+        styleContainer = $"background-color: {Model.MainIniCover.MainStyleObj.BackgroundContainer}";
+    }
+    DateTime date = Model.CurrentDate.Date; }
+
+<div class="container" style="@styleContainer;">
+    <partial name="Navbar" model="Model" />
+
+    <!-- Pobocky -->
+
+    <ul class="nav nav-tabs">
+        @foreach (var pob in Model.Pobocky.Where(d => d.Visible == true))
+        {
+            <li class="nav-item">
+                @if (pob.Id == Model.Pobocka.Id)
+                {
+                    <a href="/Home/Index" class="nav-link active">@pob.Name</a> }
+                else
+                {
+                    <a href="/Home/SetPob/@pob.Id" class="nav-link">@pob.Name</a>}
+            </li>
+}
+
+    </ul>
+
+    <table class="table table-bordered text-center" style="cursor: pointer">
+        <tr>
+            <td rowspan="2" style="width: 50px"></td>
+            @for (int day = 0; day <= countDay; day++)
+            {
+                var dateLoop = date.AddDays(day);
+                <td colspan="@sett.Drahy">@dateLoop.ToString("dd.MM.")</td>
+            }
+        </tr>
+        <tr>
+            @for (int d = 0; d <= countDay; d++)
+            {
+                if (sett.Drahy > 1)
+                {
+                    @for (int dr = 1; dr <= sett.Drahy; dr++)
+                    {
+                        <td> dráha @dr</td>
+}}
+            }
+        </tr>
+        <tr>
+            <td style="padding: inherit;">
+                @{ int m = (sett.HourStart * 60);
+
+                    TimeSpan ts = new TimeSpan(sett.HourStart, 0, 0);
+                    var tsm = TimeSpan.FromMinutes(sett.Minutes); }
+                <ul id="selectable" style="list-style-type: none; padding: 1px">
+
+                    @do
+                    {
+                        <li class="ui-widget-content">@ts.ToString(@"hh\:mm")</li>
+ts = ts.Add(tsm);
+                        m = m + sett.Minutes;
+
+                    } while (m < minutes);
+                </ul>
+            </td>
+
+            <!-- vypis dat ve sloupci den -->
+            @for (int day = 0; day <= countDay; day++)
+            {
+                var dateLoop = date.AddDays(day);
+
+                Diva2.Core.Main.Lessons.LekceDen3 lekceDen = new Diva2.Core.Main.Lessons.LekceDen3();
+                Model.Rozvrhy3Obj.Dny.TryGetValue(dateLoop, out lekceDen);<!-- vypis dat ve sloupci draha -->
+                @for (int dr = 1; dr <= sett.Drahy; dr++)
+                {
+                    Dictionary<int, Lekce> lekceDr = new Dictionary<int, Lekce>();
+                    if (lekceDen != null)
+                    {
+                        lekceDen.LekcesDraha.TryGetValue(dr, out lekceDr);
+                    }
+
+                    <td style="padding: inherit;" data-id="@day">
+
+                        @{ m = (sett.HourStart * 60);
+                            int zbyvaMinut = 0;
+                            int height = 21; }
+
+                        <ol class=" draha" style="list-style-type: none; padding: 1px" data-id="@dr">
+
+                            @do
+                            {
+                                Lekce lek = null;
+                                if (lekceDr != null)
+                                {
+                                    lekceDr.TryGetValue(m, out lek);
+                                }
+
+                                if (lek != null)
+                                {
+                                    zbyvaMinut = lek.Minuty - sett.Minutes;
+                                    double dd = (lek.Minuty / sett.Minutes);
+                                    double vyska = Math.Floor(dd);
+                                    string vyskacelkem = $"{height * vyska}px";
+
+                                    <li class="ui-widget-content select-able" style="background-color: floralwhite; height: @vyskacelkem;" data-m="@m" data-id="@lek.Id">@m</li>
+
+                                }
+                                else
+                                {
+                                    if (!(zbyvaMinut > 0))
+                                    {
+                                        <li class="ui-widget-content select-able" data-m="@m" data-id="0">&nbsp;</li>
+                                    }
+                                    else
+                                    {
+                                        zbyvaMinut = zbyvaMinut - sett.Minutes;
+                                    }
+
+                                }
+                                m = m + sett.Minutes;
+
+                            } while (m < minutes);
+                        </ol>
+
+
+                    </td>
+}}
+        </tr>
+
+
+    </table>
+
+
+</div>
+
+
+<!-- Modal placeholder -->
+<div id="hodina"></div>
+
+
+@section Scripts{
+    <script>
+
+        var placeholderElement = $('#hodina');
+
+        $(document).on('click', '.select-able', function (event) {
+
+            var id = $(this).data('id');
+            var minKey = $(this).data('m');
+            var draha = $(this).closest(".draha").data("id");
+            var den = $(this).closest("td").data("id");
+
+
+
+            if (id > 0) {
+                var url = "/home/calendarView/";
+                $.ajax({
+                    method: "GET",
+                    url: url,
+                    data: { m: minKey, dr: draha, d: den, id: id }
+                })
+                    .done(function (data) {
+
+                        placeholderElement.html(data);
+                        placeholderElement.find('.modal-lesson').modal('show');
+                    });
+            }
+            else {
+                var url = "/home/calendarCreate/";
+                $.ajax({
+                    method: "GET",
+                    url: url,
+                    data: { m: minKey, dr: draha, d: den }
+                })
+                    .done(function (data) {
+
+                        placeholderElement.html(data);
+                        placeholderElement.find('.modal-lesson').modal('show');
+                    });
+            }
+        });
+    </script>
+}

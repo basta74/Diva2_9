@@ -1,0 +1,25 @@
+﻿@using Diva2Web.Models.Admin
+@using Diva2Web.Models.Export
+@model AdminPageModel
+
+@{
+    List<Excel> list = ViewBag.Excel as List<Excel>;
+}
+
+<table>
+    @foreach (var Excel in list)
+    {
+        <tr>
+            <td>@Excel.Col_01</td>
+            <td>@Excel.Col_02</td>
+            <td>@Excel.Col_03</td>
+            <td>@Excel.Col_04</td>
+            <td>@Excel.Col_05</td>
+            <td>@Excel.Col_06</td>
+            <td>@Excel.Col_07</td>
+
+        </tr>
+
+    }
+</table>
+

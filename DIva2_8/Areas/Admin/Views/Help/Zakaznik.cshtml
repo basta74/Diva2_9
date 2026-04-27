@@ -1,0 +1,227 @@
+﻿@using Diva2Web.Models.Admin
+@model AdminPageModel
+
+<h3>Zákazník detail</h3>
+<p>
+    Na detail zákazníka se dostanete buď v záložce zákazníci, nebo záložce rozvrh.
+    V obou případech, pokud kliknete na řádek se záznamem, zobrazí se modální okno s detailními informacenmi o zákazníkovi.
+</p>
+<hr />
+<div class="row">
+    <div class="col-7">
+
+
+        <h4>Platby a lekce</h4>
+
+
+
+        <div class="card">
+            <div class="card-header">
+
+            </div>
+            <div class="card-body">
+
+                <div class="card">
+                    <div class="card-header">
+                        Vkládání kreditu
+                    </div>
+                    <div class="card-body">
+                        Kredity vložíte tím, že vyberete kategorii. Kredit (neomezený) a slevněný nebo Kredit časový (časem omezená platnost) a jeho slevněná verze.
+                        Následně zadáte kontrolní číslo. U Časově omezených kreditů lze nastavit, jestli se má zadávat platnost od nebo platnost do.
+                        Pokud žádnou z těchto položek nezadáte, kredity zůstanou neaktivní a platnost se nastaví s prvním použití zakoupeného kreditu.
+                    </div>
+                </div>
+                <br />
+                <div class="card">
+                    <div class="card-header">
+                        Zbytek kreditů
+                    </div>
+                    <div class="card-body">
+                        Zobrazí se součet neomezeých kreditů a nebo seznam zbývajících aktivních kreditů zákazníka.
+                        <br />
+                        Ty můžou být s platností nebo ještě platnost nemají, protože nebyly použity.
+                        U časových kreditů s nastavenou platností lze platnost prodloužit. Klikne se na počet dní a nastaví se, o jakou časovou délku chcete platnost prodloužit.
+                        <br />
+                        <h6>Odebrání časových kreditů</h6>
+                        Pokud omylem přidáte zákazníkovi časové kredity a ještě nebudou aktivovány, lze je odebrat tlačítkem "odebrat" napravo od textu "Neaktivováno". Pokladní doklad pro příjem zůstane a nově se zaúčtuje doklad pro vrácení částky.
+                    </div>
+                </div>
+                <br />
+                <div class="card">
+                    <div class="card-header">
+                        Pohyby na účtu
+                    </div>
+                    <div class="card-body">
+                        Seznam všech pohybů. Kdy došlo k pohybu na účtu ať už příjem nebo odebrání kreditů z lekce.
+                        Seznam navštívených lekcí a seznam všech pohybů kde došlo k platbě zákazníkem.
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="col-5">
+
+
+        <h4>Detail zákazníka</h4>
+        <div class="card">
+            <div class="card-header">
+
+            </div>
+            <div class="card-body">
+                <div class="card">
+                    <div class="card-header">
+
+                    </div>
+                    <div class="card-body">
+                        Na detailu vidíte jeho jméno, telefon a emailovou adresu.
+                        <br />
+                        Dále jestli a kdy souhlasil s pravidly GDPR a jestli a kdy souhlasil s možností zasílat hromadné (reklamní, upoutávkové) emaily.
+                        <br />
+                        Nasleduje přepínač, zdali může zákazník nakupovat kredity v sekci slevněné (jesli je student nebo důchodce).
+                    </div>
+                </div>
+
+
+                <br />
+
+                <div class="card">
+                    <div class="card-header">
+                        Skupina zákazníků
+                    </div>
+                    <div class="card-body">
+                        V administraci si můžete nastavit neomezené množstí skupin, do kterých může zákazník patřit.
+                        V této sekci přiřadíte zákazníkovi kategorie dle vašeho uvážení a potřeb.
+                    </div>
+                </div>
+                <br />
+
+                <div class="card">
+                    <div class="card-header">
+                        Poznámka
+                    </div>
+                    <div class="card-body">
+                        Zde si můžete k zákazníkovi zapsat jakoukoliv poznámku.
+                    </div>
+                </div>
+
+
+
+
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+<hr />
+
+<h3>Zákazník detail - editace</h3>
+
+<div class="row">
+    <div class="col-7">
+
+        <div class="card">
+            <div class="card-header">
+
+            </div>
+            <div class="card-body">
+
+            </div>
+        </div>
+
+
+
+    </div>
+    <div class="col-5">
+
+        <div class="card">
+            <div class="card-header">
+                Změna hesla
+            </div>
+            <div class="card-body">
+                Změníte zákazníkovi heslo.
+            </div>
+        </div>
+        <br />
+        <div class="card">
+            <div class="card-header">
+                Vkládání kreditu
+            </div>
+            <div class="card-body">
+                Zde se vkládají kredity, které neprojdou přes evidenci pokladny. Primárně je to určeno pro okamžik, kdy přecházíte na systém diva2 a chctete zákazníkovi připsat kredity, které měl zákazník doposud.
+                <br />
+                Někteří majitelé systému přidávají zákazníkům kredity stále. Tím se připravují o evidenci v pokladně, výpočtu tržeb a výpočtu mezd lektorům.
+            </div>
+        </div>
+        <br />
+        <div class="card">
+            <div class="card-header">
+                Převod kreditů
+            </div>
+            <div class="card-body">
+                Převedete všechny kredity na ůčet jiného zákazníka.
+            </div>
+        </div>
+        <br />
+        <div class="card">
+            <div class="card-header">
+                Vyrovnání kreditů
+            </div>
+            <div class="card-body">
+                Pokud má zákazník neomezené kredity v mínusu a časově omezené v plusu, tak lze kredity spárovat do nuloveého stavu
+            </div>
+        </div>
+        <br />
+        <div class="card">
+            <div class="card-header">
+                Smazat zákazníka
+            </div>
+            <div class="card-body">
+                Zde můžete smazat zákazníka ze standardní evidence. Pokud zákazník systém používal a má v něm záznamy o spotřebovaných lekcích nebo proplacených kreditech, zákazníkovi se zneplatní email a vyřadí se ze standardní práce v systému. Zobrazí se následně ve smazaých zákaznících.
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+<br />
+
+
+<h3>Zákazníci</h3>
+        Seznam je rozdělen do následujících sekcí.
+
+<table class="table">
+    <tr>
+        <td>Dle jména</td>
+        <td></td>
+        <td>Dle pořadí kdy se registroval (id), Dle interního číslování (které můž€ majitel interné pou6ívat), Dle poslední návštěvy (posleního přihlášení)</td>
+    </tr>
+    <tr>
+        <td>Dle nejvyšší návštěvnosti</td>
+        <td></td>
+        <td>Dle nastavených časových intervalů. (V nové verzi zatím nefunkční).</td>
+    </tr>
+    <tr>
+        <td>Dle počátečních písmen</td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Dle kategorií</td>
+        <td></td>
+        <td>Dle kategorií kterým je přiřazen.</td>
+    </tr>
+</table>
+
+
+        Pokud se zákazník zaregistroval pod špatným emailem a nebo je v systému 2x pod jiným emailem a systém doposud nevyužil, tak se vymaže na trvalo a v systému se již nedá nijak zobrazit.
