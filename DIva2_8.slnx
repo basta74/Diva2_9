@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Diva2_8.Data/Diva2_8.Data.csproj" />
+  <Project Path="DIva2_8/Diva2_8.Web.csproj" />
+  <Project Path="Web.Core/Diva2_8.Core.csproj" />
+</Solution>

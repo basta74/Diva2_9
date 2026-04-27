@@ -1,0 +1,5 @@
+﻿13.2. objednani
+14.2. odesalni sms pri odhlaseni
+16.2. registrace, zapomenute heslo
+18.2. administrace rozvrhy - leva strana, zaklad tabulka
+19.2. administrace rozvrhy - pismena, nacteni zakazniku
