@@ -1,2 +1,0 @@
-ALTER TABLE `spin_user_zbytek_kredit_casovy`
-	CHANGE COLUMN `ID` `ID` INT(11) NOT NULL AUTO_INCREMENT FIRST;
