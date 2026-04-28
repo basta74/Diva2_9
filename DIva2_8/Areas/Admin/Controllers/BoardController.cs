@@ -27,7 +27,7 @@ using Microsoft.Extensions.Logging;
 namespace Diva2Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [AuthorizeActionFilter]
+    [AuthorizeActionFilterAttribute]
     public class BoardController : BaseAdminController
     {
         private ILekceAddonsService lekceAddServ;

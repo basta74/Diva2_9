@@ -1,4 +1,5 @@
-﻿using Diva2.Data.Infrastructure;
+﻿using Diva2.Core.Main.Users;
+using Diva2.Data.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
@@ -30,7 +31,8 @@ namespace Diva2Web.Areas.Admin
             {
                 var session = context.HttpContext.Session;
                 var domain = domainService.Domain.name;
-                bool nameOK = session.TryGetValue($"{domain}-userId", out var sessionName);
+                string key = $"{domain}-userId";
+                bool nameOK = session.TryGetValue(key, out var sessionName);
 
                 if (!nameOK)
                 {

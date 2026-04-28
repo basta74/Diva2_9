@@ -2,8 +2,8 @@
 <!-- https://go.microsoft.com/fwlink/?LinkID=208121. -->
 <Project>
   <PropertyGroup>
-    <_PublishTargetUrl>C:\dev\spin\Diva2Web\bin\Release\net5.0\publish\</_PublishTargetUrl>
-    <History>True|2025-08-02T09:59:07.1497723Z||;</History>
+    <_PublishTargetUrl>C:\dev\DIva2_8\DIva2_8\bin\Release\net9.0\publish\</_PublishTargetUrl>
+    <History>True|2026-04-28T18:45:18.8033750Z||;True|2026-04-28T19:54:44.7230200+02:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>

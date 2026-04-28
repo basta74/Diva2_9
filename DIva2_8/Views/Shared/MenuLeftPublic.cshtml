@@ -53,11 +53,8 @@
     <div class="list-group  d-none d-md-block" style="margin-top: 5px">
         @foreach (var item in menu.Items.OrderBy(d => d.Order))
         {
-            string ac = "";
-            if (@item.Method == @action && (@item.Controller == @cont))
-            {
-                ac = "active";
-            }
+            string ac = (item.Method == @action && @item.Controller == @cont) ? "active" : "";
+            
             <a href="@item.Url" class="list-group-item list-group-item-action @ac">@item.Text</a>
         }
     </div>

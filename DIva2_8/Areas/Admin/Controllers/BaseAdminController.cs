@@ -68,6 +68,16 @@ namespace Diva2Web.Areas.Admin.Controllers
         {
             this.dbContext = context;
             this.subDomain = dbContext.SubDomain;
+
+            var host = httpContextAcc.HttpContext.Request.Host.Host;
+
+            if (host.Contains("localhost")) {
+                host = "localhost";
+            }
+   
+
+            this.subDomain = host.Split('.')[0];
+
             this.httpContextAccessor = httpContextAcc;
             this.cache = new CacheHelper(memoryCache, dbContext.SubDomain);
             this.pobServ = pobSer;
@@ -77,6 +87,7 @@ namespace Diva2Web.Areas.Admin.Controllers
             this.aa = new AdminPageModel();
 
         }
+
 
         protected void SetMainPageValues()
         {
