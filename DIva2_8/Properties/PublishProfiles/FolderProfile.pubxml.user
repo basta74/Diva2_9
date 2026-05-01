@@ -3,7 +3,7 @@
 <Project>
   <PropertyGroup>
     <_PublishTargetUrl>C:\dev\DIva2_8\DIva2_8\bin\Release\net9.0\publish\</_PublishTargetUrl>
-    <History>True|2026-04-28T18:45:18.8033750Z||;True|2026-04-28T19:54:44.7230200+02:00||;</History>
+    <History>True|2026-05-01T17:53:16.8133336Z||;True|2026-05-01T19:28:45.8556848+02:00||;True|2026-05-01T19:00:10.3612091+02:00||;True|2026-04-28T20:45:18.8033750+02:00||;True|2026-04-28T19:54:44.7230200+02:00||;</History>
     <LastFailureDetails />
   </PropertyGroup>
 </Project>

@@ -1,6 +1,7 @@
 ﻿using Diva2.Core.Main.Domains;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 
 
@@ -12,7 +13,7 @@ namespace Diva2.Data.Infrastructure
         public static IList<SubDomain> domains;
         public SubDomain Domain { get; private set; }
 
-        public DomainService(IHttpContextAccessor accessor, IConfiguration configuration)
+        public DomainService(IHttpContextAccessor accessor, IConfiguration configuration, ILogger<ApplicationDbContext> logger)
         {
             if (domains == null)
             {
@@ -21,7 +22,21 @@ namespace Diva2.Data.Infrastructure
 
             var host = accessor.HttpContext?.Request?.Host.Host;
 
-            Domain = FindDomain(host) ?? throw new Exception("Domain not found");
+            logger.Log(LogLevel.Information, "domain is:" + host);
+
+            string? subdomain = null;
+            string dom = ".diva2.cz";
+            if (host != null && host.EndsWith(dom))
+            {
+                subdomain = host.Replace(dom, "");
+                logger.Log(LogLevel.Information, "subdomain is:" + subdomain);
+            }
+
+            if (subdomain is null) {
+                subdomain = "localhost";
+            }
+
+            Domain = FindDomain(subdomain) ?? throw new Exception("Domain not found");
         }
 
         private void LoadDomains(IConfiguration configuration)
@@ -33,7 +48,7 @@ namespace Diva2.Data.Infrastructure
 
         private SubDomain FindDomain(string host)
         {
-            var domain = domains.FirstOrDefault(t => t.name.ToLower() == host.ToLower());
+            var domain = domains.FirstOrDefault(t => t.name == host.ToLower());
 
             if (domain == null)
             {

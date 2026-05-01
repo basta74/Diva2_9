@@ -10,7 +10,7 @@ using System.Reflection;
 public class ApplicationDbContext : IdentityDbContext<User8, Role8, int, IdentityUserClaim<int>, UserRoles8, IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>
 {
     public string SubDomain { get; private set; } = "";
-    private SubDomain domain;
+
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IDomainService domainService) : base(options)
     {
@@ -19,14 +19,14 @@ public class ApplicationDbContext : IdentityDbContext<User8, Role8, int, Identit
             throw new ArgumentNullException(nameof(domainService));
         }
 
-        domain = domainService.Domain;
+        SubDomain domain = domainService.Domain;
 
         if (domain == null)
         {
             // throw new NullReferenceException("Subdomain is null");
         }
 
-        //SubDomain = domain.name;
+        SubDomain = domain.name;
     }
 
 

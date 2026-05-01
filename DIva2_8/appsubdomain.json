@@ -2,183 +2,90 @@
   "Domains": [
     {
       "name": "localhost",
-      "db": "diva2_yoga",
-      "user": "diva2",
-      "pass": "root"
-    },
-    {
-      "name": "akt",
       "db": "diva2_akt",
-      "user": "root",
+      "user": "diva2",
       "pass": "root"
     },
     {
 
       "name": "yoga",
       "db": "diva2_yoga",
-      "user": "diva2_yoga",
-      "pass": "yoga123A"
+      "user": "diva2",
+      "pass": "root"
     },
     {
 
       "name": "nym",
       "db": "diva2_nym",
-      "user": "diva2_nym",
-      "pass": "asdfghjkl"
-    },
-    {
-
-      "name": "astroyoga",
-      "db": "diva2_astro",
-      "user": "diva2_astro",
-      "pass": "jana81"
+      "user": "diva2",
+      "pass": "root"
     },
     {
 
       "name": "nirvanajoga",
       "db": "diva2_nirvana",
-      "user": "diva2_nirvana",
-      "pass": "tyryna"
+      "user": "diva2",
+      "pass": "root"
     },
     {
-
-      "name": "kojetin",
-      "db": "diva2_kojetin",
-      "user": "diva2_kojetin",
-      "pass": "macek14"
-    },
-    {
-
       "name": "lv",
       "db": "diva2_lv",
-      "user": "diva2_lv",
-      "pass": "lv123A"
-    },
-    {
-
-      "name": "sarka",
-      "db": "diva2_asketa",
-      "user": "diva2_asketa",
-      "pass": "asketa123A"
-    },
-    {
-
-      "name": "rpilates",
-      "db": "diva2_rpilates",
-      "user": "diva2_rpilates",
-      "pass": "martina12"
+      "user": "diva2",
+      "pass": "root"
     },
     {
 
       "name": "ms",
       "db": "diva2_ms",
-      "user": "diva2_ms",
-      "pass": "ms123A"
+      "user": "diva2",
+      "pass": "root"
     },
     {
 
       "name": "martinfajka",
       "db": "diva2_mf",
-      "user": "diva2_mf",
-      "pass": "mf123A"
-    },
-    {
-
-      "name": "fyzio",
-      "db": "diva2_fyzio",
-      "user": "diva2_fyzio",
-      "pass": "fyzio123A"
+      "user": "diva2",
+      "pass": "root"
     },
     {
 
       "name": "havirov",
       "db": "diva2_havirov",
-      "user": "diva2_havirov",
-      "pass": "havirov123A"
+      "user": "diva2",
+      "pass": "root"
     },
     {
 
       "name": "fittrenink",
       "db": "diva2_fittrenink",
-      "user": "diva2_fittrenink",
-      "pass": "fittrenink123A"
+      "user": "diva2",
+      "pass": "root"
     },
-    {
-
-      "name": "duhovezvonky",
-      "db": "diva2_duha",
-      "user": "diva2_duha",
-      "pass": "duha123A"
-    },
-
     {
 
       "name": "yofyz",
       "db": "diva2_yofyz",
-      "user": "diva2_yofyz",
-      "pass": "yofyz123A"
-    },
-    {
-
-      "name": "jogabph",
-      "db": "diva2_yogabph",
-      "user": "diva2_jogabph",
-      "pass": "bystrice"
+      "user": "diva2",
+      "pass": "root"
     },
     {
       "name": "krasonymburk",
       "db": "diva2_kraso",
-      "user": "diva2_kraso",
-      "pass": "kraso123A"
+      "user": "diva2",
+      "pass": "root"
     },
     {
 
       "name": "krasoskolicka",
       "db": "diva2_kraso",
-      "user": "diva2_kraso",
-      "pass": "kraso123A"
-    },
-    {
-      "name": "rfpodebrady",
-      "db": "diva2_rfpodebrady",
-      "user": "diva2_rfpodebrady",
-      "pass": "klesloR"
-    },
-    {
-      "name": "tambik",
-      "db": "diva2_tambik",
-      "user": "diva2_tambik",
-      "pass": "paddleBo1"
-    },
-    {
-      "name": "demo",
-      "db": "diva2_demo",
-      "user": "diva2_demo",
-      "pass": "demo1"
-    },
-    {
-      "name": "simhayoga",
-      "db": "diva2_simhayoga",
-      "user": "diva2_core",
-      "pass": "joklop"
-    },
-    {
-      "name": "tkchropyne",
-      "db": "diva2_tk_chropyne",
-      "user": "diva2_core",
-      "pass": "joklop"
+      "user": "diva2",
+      "pass": "root"
     },
     {
       "name": "gymfit",
       "db": "diva2_gymfit",
-      "user": "diva2_core",
-      "pass": "joklop"
-    },
-    {
-      "name": "yq",
-      "db": "diva2_yq",
-      "user": "diva2_core",
-      "pass": "joklop"
+      "user": "diva2",
+      "pass": "root"
     }
   ]
 }

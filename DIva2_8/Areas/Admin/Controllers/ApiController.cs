@@ -60,7 +60,7 @@ namespace Diva2Web.Areas.Admin.Controllers
            ISkupinaZakaznikaService skupZakServ, IPobockaService pobSer, IUser8Service userSer,
            ILekceTypService ltService, ILekceMustrService lmuService, ILekceService lekceService,
             ILektorService lkService, IPlatbaService plService, ILogs8Service logSer, ICalendarService calSe,
-            IObjednavkyService objSer, IComunicationService emailServ, IVideoService viSe) : base(dbContext, httpContextAccessor, memoryCache, userSer, pobSer, logSer, objSer)
+            IObjednavkyService objSer, IComunicationService emailServ, IVideoService viSe) : base(dbContext,  httpContextAccessor, memoryCache, userSer, pobSer, logSer, objSer)
         {
             //cache = new Diva2.Services.CacheHelper(memoryCache, dbContext.SubDomain);
 
