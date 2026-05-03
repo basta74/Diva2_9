@@ -78,7 +78,19 @@
                 }
 
             </ul>
-            <partial name="_LoginPartial" model="Model" />
+            <div class="dropdown">
+                <a href="#" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true"
+                       style="text-decoration: none; font-size: large; color: white">
+                    @Model.User.CeleJmeno
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/Account/Detail">Detail</a>
+                    <hr class="dropdown-divider">
+                    <a class="dropdown-item" href="/Account/Logout">Odhlásit</a>
+
+                </div>
+              
+            </div>
         </div>
 
     </div>

@@ -1,48 +1,65 @@
-﻿@using Diva2Web.Models.Admin
+﻿@using Diva2.Core.Main.Trans
+@using Diva2Web.Models.Admin
 @model AdminPageModel
 
-<ul class="navbar-nav mr-auto">
+
     @if (Model.User.Id.HasValue)
-    {
-        <li class="list-inline-item dropdown notif">
-            <a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                @Model.User.CeleJmeno
-            </a>
-            <div class="dropdown-menu dropdown-menu-right profile-dropdown">
+{
 
-                <!-- item-->
-                <a href="/Account/Detail" class="dropdown-item notify-item">
-                    <i class="fa fa-power-off"></i> <span>Detail</span>
-                </a>
+     
+    int kr = 0;
 
-                <!-- item-->
-                <a href="/Account/Logout" class="dropdown-item notify-item">
-                    <i class="fa fa-user-circle"></i> <span>Odhlásit</span>
-                </a>
-            </div>
-        </li>
 
-    }
-    else
-    {
+    Model.User.Zbytek.Kredity.TryGetValue(Model.Pobocka.PokladnaId, out kr);
 
-    <li class="list-inline-item dropdown nav-item">
-        <a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-            Nepřihlášen
+                            
+
+      
+    <div class="dropdown">
+        <a href="#" class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="true"
+               style="text-decoration: none; font-size: large">
+            @Model.User.CeleJmeno
         </a>
-        <div class="dropdown-menu dropdown-menu-right profile-dropdown">
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="moje-data">Moje data</a>
+            <a class="dropdown-item" href="/Account/Detail">Detail</a>
+            <hr class="dropdown-divider">
+            <a class="dropdown-item" href="/Account/Logout">Odhlásit</a>
 
-            <!-- item-->
-            <a href="/Account/Login" class="dropdown-item notify-item">
-                <i class="fa fa-power-off"></i> <span>Log in</span>
-            </a>
-
-            <!-- item-->
-            <a href="/Account/Register" class="dropdown-item notify-item">
-                <i class="fa fa-user-circle"></i> <span>Registrace</span>
-            </a>
         </div>
-    </li>
+              
+    </div>
 
+    <span>
+        kredit neomezený: @kr
+    </span>
+    @if (Model.GetIniPobBool("kreditCasovy"))
+    {
+        long unixTime = ((DateTimeOffset)DateTime.Now).ToUnixTimeSeconds();
+
+
+        var krCas = Model.User.Zbytek.KredityCas.Where(d => d.PokladnaId == Model.Pobocka.PokladnaId && d.PlatnostDoUnix > unixTime);
+
+        if (krCas != null)
+        {
+            int co = @krCas.Sum(d => d.Kredit);
+            if (co > 0)
+            {
+                <span> časový @co </span>
+            }
+        }
     }
-</ul>
+
+        
+                        
+
+
+
+
+  
+}
+else
+{
+    <a class="btn btn-outline-primary" href="/Account/Login">Log in</a>
+    <a class="btn btn-outline-primary" href="/Account/Register">Registrace</a>
+}

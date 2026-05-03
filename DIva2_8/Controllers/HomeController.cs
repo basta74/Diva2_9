@@ -82,7 +82,7 @@ namespace Diva2.Controllers
         {
             SetMainPageValues();
             LoadUserProperty(base.objServ);
-            
+
             var api = lekceServ.GetWeaksApi(id);
 
             return Json(api);
@@ -102,6 +102,12 @@ namespace Diva2.Controllers
 
 
             string view = "Rozvrh";
+
+            if (aa.Pobocka.Typ == 1)
+            {
+               // aa.Pobocka.Typ = 2;
+            }
+
 
             if (aa.Pobocka.Typ == 1)
             {

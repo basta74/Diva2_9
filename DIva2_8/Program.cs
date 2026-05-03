@@ -16,6 +16,7 @@ using Diva2.Services.Managers.Users;
 using Diva2.Services.Managers.Videa;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -127,8 +128,7 @@ app.MapControllerRoute("mojevidea", "moje-videa", new { controller = "Video", ac
 app.MapControllerRoute("help", "pomoc", new { controller = "Home", action = "Help" });
 app.MapControllerRoute("gdpr", "gdpr", new { controller = "Home", action = "Gdpr" });
 app.MapControllerRoute("lektori", "lektori", new { controller = "Home", action = "Lectors" });
-app.MapControllerRoute("video", "video", new { controller = "Video", action = "Index" });
-app.MapControllerRoute("video2", "home/video", new { controller = "Video", action = "Index" });
+app.MapControllerRoute("video", "/home/video", new { controller = "Video", action = "Index" });
 app.MapControllerRoute("info", "info", new { controller = "Home", action = "Info" });
 app.MapControllerRoute("about", "about", new { controller = "Home", action = "About" });
 

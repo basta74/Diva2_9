@@ -13,29 +13,33 @@
     }
 }
 
-<div class="container" style="@styleContainer">
-    <partial name="Navbar" model="Model" />
+
+<partial name="Navbar" model="Model" />
+
+
+<div class="container-xl" style="margin-top: 1rem; @styleContainer">
 
     <div class="row">
-        <nav class="col-sm-12 col-md-3">
+        <nav class="col-sm-12 col-lg-3">
             @RenderSection("leftMenu", false)
         </nav>
-        <main role="main" class="col-sm-12 col-md-9">
-            <partial name="BreadCrumb" />
+        <main role="main" class="col-12 col-lg-9">
+            @* <partial name="BreadCrumb" /> *@
             @RenderBody()
         </main>
 
     </div>
 </div>
 
-@section Head{
+@section Head {
     @RenderSection("Head", false)
 }
 
-@section Scripts{
+@section Scripts {
     @RenderSection("Scripts", false)
 }
-@section ScriptsMenu{
+
+@section ScriptsMenu {
     @RenderSection("ScriptsMenu", false)
 }
 

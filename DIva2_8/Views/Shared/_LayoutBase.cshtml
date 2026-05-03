@@ -2,7 +2,7 @@
 @model AdminPageModel
 
 @{ 
-    string style = Model.MainIniCover.MainStyleObj.File + ".css";
+    string style = "default53.css";
     string dt = @DateTime.Now.ToString("yymmdd");
 }
 
@@ -47,7 +47,7 @@
     </footer>
 
    
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/bootstrap.bundle.js"></script>
     <script src="~/js/jquery-ui.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 

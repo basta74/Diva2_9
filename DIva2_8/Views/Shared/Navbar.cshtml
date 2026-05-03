@@ -1,4 +1,6 @@
-﻿@using Diva2Web.Models.Admin
+﻿@using Diva2.Core.Main.Content
+@using Diva2.Core.Models
+@using Diva2Web.Models.Admin
 @model AdminPageModel
 
 @{
@@ -25,53 +27,139 @@
     string cont = this.ViewContext.RouteData.Values["controller"].ToString();
     string action = ViewContext.RouteData.Values["action"].ToString();
     var menu = Model.PublicMenuItems.Where(d => d.Area == cont).FirstOrDefault();
+    if (menu is null)
+    {
+        menu = new MenuItem();
+        menu.Items = new List<MenuItem>();
+
+    }
 
 }
 
-<nav class="navbar navbar-expand-lg @Model.MainIniCover.MainStyleObj.NavbarThemeFore @Model.MainIniCover.MainStyleObj.NavbarThemeBg" style="@styleNavbar; padding: 5px 20px;">
-    <a class="navbar-brand" href="http://@Model.MainIniCover.MainIniObj.MasterUrl">@Model.MainIniCover.MainIniObj.MasterUrlText</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
 
-    <div class="collapse navbar-collapse" id="navbarColor03">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
 
-                @if (false || userId.HasValue && spinView)
-                {
-                    <a class="nav-link" href="/Admin/Home">
-                        Administrace
+
+<header class=" py-3 border-bottom" style="padding: 0px 1rem;background-color: #f8f8f8 !important;">
+  
+    <div class="row">
+        <div class="col-sm-6 col-lg-4">
+            <div class="row">
+
+                <div class="col-10">
+                    <a href="http://@Model.MainIniCover.MainIniObj.MasterUrl" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                        <span class="fs-4">@Model.MainIniCover.MainIniObj.MasterUrlText</span>
                     </a>
-                }
-            </li>
-        </ul>
-        <div class="form-inline">
-
-            @if (menu != null && menu.Items != null && menu.Items.Count > 0)
-            {
-
-                <ul class="navbar-nav mr-auto">
-                    <li class="list-inline-item dropdown nav-item">
-                        <a class="nav-link dropdown-toggle nav-user" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                            Menu
+                </div>
+                <div class="col-2" style="text-align: end;">
+                    @if (false || userId.HasValue && spinView)
+                    {
+                        <a class="btn btn-success" href="/Admin/Home">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-columns-gap" viewBox="0 0 16 16">
+                                <path d="M6 1v3H1V1zM1 0a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1zm14 12v3h-5v-3zm-5-1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1zM6 8v7H1V8zM1 7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zm14-6v7h-5V1zm-5-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h5a1 1 0 0 0 1-1V1a1 1 0 0 0-1-1z" />
+                            </svg>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right profile-dropdown">
+                    }
+                </div>
 
-                            @foreach (var item in menu.Items.OrderBy(d => d.Order))
-                            {
-                                <a href="@item.Url" class="dropdown-item notify-item">
-                                    <span>@item.Text</span>
-                                </a>
-                            }
-                        </div>
-                    </li>
-                </ul>
-            }
+            </div>
 
-
-            <partial name="_LoginPartial" model="Model" />
         </div>
-    </div>
-</nav>
+        <div class="col-sm-6 col-lg-8">
 
+            <div class="d-flex justify-content-between">
+                <div>
+                    @if (userId.HasValue)
+                    {
+                        <div class="d-none d-lg-block">
+
+                            <ul class="nav nav-pills">
+                                <li class="nav-item">
+                                    <a class="btn btn-outline-primary" href="/Home/Index">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                                            <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z" />
+                                        </svg>
+                                    </a>
+                                </li>
+
+                                <!-- Pages fill menu -->
+                                @if (Model.Pages != null && Model.Pages.Count() > 0)
+                                {
+                                    foreach (Page p in Model.Pages)
+                                    {
+                                        string ac = p.Type.ToString() == @action ? "active" : "";
+                                        menu.Items.Add(new Diva2.Core.Models.MenuItem() { Url = p.Type.ToString(), Controller = p.Controller, Method = p.Method, Text = p.UrlName, Order = p.Order });
+                                    }
+                                }
+
+
+                                @foreach (var item in menu.Items.OrderBy(d => d.Order))
+                                {
+                                    string ac = (item.Method == @action && @item.Controller == @cont) ? "active" : "";
+                                    <li class="nav-item">
+                                        <a href="@item.Url" class="nav-link @ac">@item.Text</a>
+                                    </li>
+
+                                }
+
+
+
+          
+                            </ul>
+                        </div>
+                        <div class="dropdown d-lg-none">
+
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
+                                </svg>
+                            </button>
+                            <div class="dropdown-menu">
+
+
+
+                                @foreach (var item in menu.Items.OrderBy(d => d.Order))
+                                {
+                                    string ac = (item.Method == @action && @item.Controller == @cont) ? "active" : "";
+                                    <a class="dropdown-item @ac" href="@item.Url">@item.Text</a>
+                                }
+
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+
+                        <ul class="nav nav-pills">
+                            <li class="nav-item">
+                                <a class="btn btn-outline-primary" href="/Home/Index">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                                        <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z" />
+                                    </svg>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/cenik" class="nav-link ">Ceník</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/lektori" class="nav-link ">Lektoři</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/pomoc" class="nav-link ">Pomoc</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/gdpr" class="nav-link ">Gdpr</a>
+                            </li>
+         
+                        </ul>
+
+
+                    }
+               
+                </div>
+                <div>
+                    <partial name="_LoginPartial" model="Model" />
+                </div>
+            </div>
+         </div>
+     </div>
+</header>

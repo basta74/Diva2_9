@@ -303,7 +303,7 @@ namespace Diva2Web.Models.Admin
             }
             mnBoard.Items.Add(new MenuItem() { Text = "Pomoc", Url = urlHeper.RouteUrl("help"), Method = "Help", Order = 30 });
             mnBoard.Items.Add(new MenuItem() { Text = "Gdpr", Url = urlHeper.RouteUrl("gdpr"), Method = "Gdpr", Order = 40 });
-            mnBoard.Items.Add(new MenuItem() { Text = "Moje data", Url = urlHeper.RouteUrl("mojedata"), Method = "MyData", Order = 50 });
+
             if (MainIniCover.UseVideo)
             {
                 mnBoard.Items.Add(new MenuItem() { Text = "Moje videa", Url = urlHeper.RouteUrl("mojevidea"), Method = "MyVideos", Order = 60, Area = "Video", Controller = "Video" });

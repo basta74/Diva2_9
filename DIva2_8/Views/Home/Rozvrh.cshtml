@@ -162,9 +162,24 @@
             ro.ObjednaneLekce = objednaneLekce;
 
             <tr>
-                <td class="align-middle" style="width: 87px">
-                    @denDt.ToString("dddd")<br />
-                    @denDt.ToString("dd.MM.")
+                <td class="align-middle align-items-center" style="padding: 1rem">
+                    
+                    <div class="d-none d-lg-block">
+                        @denDt.ToString("dddd")
+                    </div>
+                    <div class="d-lg-none">
+                        @denDt.ToString("ddd")
+                    </div>
+
+                    <div class="d-none d-lg-block">
+                        @denDt.ToString("dd.MM.")
+                    </div>
+                    <div class="d-lg-none">
+                        @denDt.ToString("dd.")
+                        
+                        @denDt.ToString("MM.")
+                    </div>
+                
                 </td>
 
                 @if (den.Value.Lekces.Count() == 1 && den.Value.Lekces.First().Value.CelyDen == true)
