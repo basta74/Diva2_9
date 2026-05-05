@@ -236,7 +236,7 @@
   var DATA_API_KEY = '.data-api';
   var JQUERY_NO_CONFLICT = $.fn[NAME];
   var Selector = {
-    DISMISS: '[data-dismiss="alert"]'
+    DISMISS: '[data-bs-dismiss="alert"]'
   };
   var Event = {
     CLOSE: "close" + EVENT_KEY,
@@ -2079,7 +2079,7 @@
     DIALOG: '.modal-dialog',
     MODAL_BODY: '.modal-body',
     DATA_TOGGLE: '[data-toggle="modal"]',
-    DATA_DISMISS: '[data-dismiss="modal"]',
+    DATA_DISMISS: '[data-bs-dismiss="modal"]',
     FIXED_CONTENT: '.fixed-top, .fixed-bottom, .is-fixed, .sticky-top',
     STICKY_CONTENT: '.sticky-top'
     /**
@@ -4212,7 +4212,7 @@
     delay: 500
   };
   var Selector$a = {
-    DATA_DISMISS: '[data-dismiss="toast"]'
+    DATA_DISMISS: '[data-bs-dismiss="toast"]'
     /**
      * ------------------------------------------------------------------------
      * Class Definition

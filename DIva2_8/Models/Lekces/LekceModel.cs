@@ -39,7 +39,7 @@ namespace Diva2Web.Models.Lekces
         [Required]
         public TimeSpan Cas { get; set; }
 
-        public string Nazev { get; set; }
+        public string? Nazev { get; set; }
         
         [Range(0, Int32.MaxValue)]
         [Display(Name = "Počet kreditů")]

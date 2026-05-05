@@ -72,7 +72,7 @@
     }
 }
 
-@section leftMenu{
+@section leftMenu {
     <partial name="MenuLeftPublic" model="Model" />
 }
 
@@ -96,7 +96,8 @@
     {
         dop = doplnit;
         <tr>
-            @if(Model.GetIniPobBool("public_rozvrh_ukaz_casy")){
+            @if (Model.GetIniPobBool("public_rozvrh_ukaz_casy"))
+            {
                 <th></th>
             }
             @foreach (var cas in minutyIni)
@@ -251,7 +252,7 @@
 <!-- Modal placeholder -->
 <div id="hodina"></div>
 
-@section Scripts{
+@section Scripts {
     <script>
         $(document).ready(function () {
 
