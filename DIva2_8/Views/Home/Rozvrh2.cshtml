@@ -43,7 +43,7 @@
     {
         DateTime dayAkt = tyd.Value.Monday;
         <tr>
-            <th style="width: 8%"></th>
+            <th style=""></th>
             @for (int d = 1; d < 8; d++)
             {
                 if (d > 1)
@@ -52,7 +52,14 @@
                 }
                 <th style="width: 13%">
                     @dayAkt.ToString("dd.MM.")<br />
-                    @dayAkt.ToString("dddd")
+
+                    <div class="d-none d-lg-block" style="padding: 6px;">
+                        @dayAkt.ToString("dddd")
+                    </div>
+                    <div class="d-lg-none">
+                        @dayAkt.ToString("ddd")
+                    </div>
+
                 </th>
             }
         </tr>
@@ -61,7 +68,20 @@
         {
 
             <tr>
-                <td style="background-color: silver">@casKey.Time.ToString(@"hh\:mm")</td>
+                <td style="background-color: silver">
+                    
+                    <div class="d-none d-lg-block" style="padding: 6px;">
+                        @casKey.Time.ToString(@"hh\:mm")
+                    </div>
+                    <div class="d-lg-none">
+                        @casKey.Time.ToString(@"hh") <br/>
+                        @casKey.Time.ToString(@"\:mm")
+                    </div>
+
+                    
+                    
+                
+                </td>
 
                 @for (int d = 1; d < 8; d++)
                 {
