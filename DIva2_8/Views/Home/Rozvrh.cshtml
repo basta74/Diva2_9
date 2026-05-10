@@ -163,9 +163,9 @@
             ro.ObjednaneLekce = objednaneLekce;
 
             <tr>
-                <td class="align-middle align-items-center" style="padding: 1rem">
+                <td class="align-middle align-items-center" style="padding: 0.1rem">
                     
-                    <div class="d-none d-lg-block">
+                    <div class="d-none d-lg-block" style="padding: 6px;">
                         @denDt.ToString("dddd")
                     </div>
                     <div class="d-lg-none">
@@ -176,8 +176,7 @@
                         @denDt.ToString("dd.MM.")
                     </div>
                     <div class="d-lg-none">
-                        @denDt.ToString("dd.")
-                        
+                        @denDt.ToString("dd.")<br/>
                         @denDt.ToString("MM.")
                     </div>
                 

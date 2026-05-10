@@ -53,7 +53,7 @@
                 <div class="col-1" style="text-align: end; padding: 8px 0px">
                     @if (false || userId.HasValue && spinView)
                     {
-                        <a class="" href="/Admin/Home" title="Administrace" >
+                        <a class="" href="/Admin/Home" title="Administrace">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar2-week-fill" viewBox="0 0 16 16" style="
                                 fill: #15a715;
                                 ">
@@ -66,13 +66,13 @@
             </div>
 
         </div>
-        <div class="col-sm-7 col-lg-8">
+        <div class="col-sm-7 col-lg-8" style="">
 
             <div class="d-flex justify-content-between">
                 <div>
                     @if (userId.HasValue)
                     {
-                        <div class="d-none d-lg-block">
+                        <div class="d-none d-lg-block" style="">
 
                             <ul class="nav nav-pills">
                                 <li class="nav-item" style="padding: 8px;">
@@ -110,26 +110,39 @@
                         </div>
 
 
+                        <div class="d-lg-none" style="">
+
+                            <table style="margin-top: 2px">
+                                <tr>
+                                    <td>
+                                        <a class="" href="/Home/Index" title="Rozvrh" style="padding: 1rem">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                                                <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z" />
+                                            </svg>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+
+                                            <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Menu
+                                            </button>
+                                            <div class="dropdown-menu">
 
 
-                        <div class="dropdown d-lg-none">
 
-                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
-                                </svg>
-                            </button>
-                            <div class="dropdown-menu">
+                                                @foreach (var item in menu.Items.OrderBy(d => d.Order))
+                                                {
+                                                    string ac = (item.Method == @action && @item.Controller == @cont) ? "active" : "";
+                                                    <a class="dropdown-item @ac" href="@item.Url">@item.Text</a>
+                                                }
 
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
 
-
-                                @foreach (var item in menu.Items.OrderBy(d => d.Order))
-                                {
-                                    string ac = (item.Method == @action && @item.Controller == @cont) ? "active" : "";
-                                    <a class="dropdown-item @ac" href="@item.Url">@item.Text</a>
-                                }
-
-                            </div>
                         </div>
                     }
                     else
@@ -166,6 +179,6 @@
                     <partial name="_LoginPartial" model="Model" />
                 </div>
             </div>
-         </div>
-     </div>
+        </div>
+    </div>
 </header>
