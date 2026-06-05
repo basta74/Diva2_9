@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-using Diva2.Core.Extensions;
+﻿using Diva2.Core.Extensions;
 using Diva2.Core.Main.Lessons;
 using Diva2.Core.Main.Trans;
 using Diva2.Core.Main.Users;
 using Diva2.Core.Model.Json;
 using Diva2Web.Models.Responses;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace Diva2Web.Models.Users
 {
@@ -25,8 +26,10 @@ namespace Diva2Web.Models.Users
 
         public int? Id { get; set; }
 
+        [ValidateNever]
         public string Nick { get; set; }
 
+        [ValidateNever]
         public string Heslo { get; set; }
 
         public bool MayCheaper { get; set; }
@@ -39,6 +42,7 @@ namespace Diva2Web.Models.Users
         [Display(Name = "Příjmení")]
         public string Prijmeni { get; set; }
 
+        [ValidateNever]
         public string CeleJmeno { get; set; }
 
         [Required]
@@ -49,11 +53,14 @@ namespace Diva2Web.Models.Users
 
         public string Telefon { get; set; }
 
+        [ValidateNever]
         public string Ulice { get; set; }
 
+        [ValidateNever]
         [Display(Name = "Psč")]
         public string Psc { get; set; }
 
+        [ValidateNever]
         [Display(Name = "Pošta")]
         public string Posta { get; set; }
 
@@ -63,7 +70,10 @@ namespace Diva2Web.Models.Users
 
         public List<string> Rules { get; set; } = new List<string>();
 
+        [ValidateNever]
         public IList<LekceUser> _objednaneLekce { get; set; }
+
+        [ValidateNever]
         public IList<LekceUser> ObjednaneLekce
         {
             get { return _objednaneLekce; }
@@ -80,16 +90,16 @@ namespace Diva2Web.Models.Users
             }
         }
 
-        public IList<UserTransakce> HistorieLekci { get; set; }
+        public IList<UserTransakce> HistorieLekci { get; set; } = new List<UserTransakce>();
 
-        public IEnumerable<int> HistorieLekciYears { get; set; }
+        public IEnumerable<int> HistorieLekciYears { get; set; } = Enumerable.Empty<int>();
         /// <summary>
         /// Celkovy pocet objednavek
         /// </summary>
         public int PocetObjednavek { get; set; }
 
         public int ObjednaneKredity { get; private set; } = 0;
-        public UserZbytek Zbytek { get; internal set; }
+        public UserZbytek Zbytek { get;  set; } = new UserZbytek();
 
         public bool HasRule(string key)
         {
