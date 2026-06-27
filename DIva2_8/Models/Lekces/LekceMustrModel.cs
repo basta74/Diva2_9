@@ -1,4 +1,5 @@
 ﻿using Diva2.Core.Main.Lessons;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -23,7 +24,8 @@ namespace Diva2Web.Models.Lekces
 
         [DataType(DataType.Text)]
         [Display(Name = "Název")]
-        public string Nazev { get; set; }
+        [ValidateNever]
+        public string Nazev { get; set; } = string.Empty;
 
 
         [Display(Name = "Počet kreditů")]
@@ -38,16 +40,23 @@ namespace Diva2Web.Models.Lekces
         
         [Display(Name = "Lektor")]
         public List<ListItem> Lektori { get; set; } = new List<ListItem>();
-        public string LektorString { get; set; }
+
+        [ValidateNever]
+        public string LektorString { get; set; }    = string.Empty;
+
         public int Lektor2 { get; set; }
-        public string Lektor2String { get; set; }
+
+        [ValidateNever]
+        public string Lektor2String { get; set; } = string.Empty;
 
         [Display(Name = "Typ")]
         public List<ListItem> Typy { get; set; } = new List<ListItem>();
 
         [Display(Name = "Typ")]
         public int Typ { get; set; }
-        public string TypString { get; set; }
+
+        [ValidateNever]
+        public string TypString { get; set; } = string.Empty;
 
         [Display(Name = "Počet míst")]
         public int PocetMist { get; set; }
