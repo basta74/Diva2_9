@@ -125,7 +125,7 @@ namespace Diva2.Controllers
             }
             else if (aa.Pobocka.Typ == 4)
             {
-                DateTime dt = new DateTime(2025, 8, 31);
+                DateTime dt = new DateTime(2026, 8, 31);
                 aa.Rozvrhy2Obj = lekceServ.GetWeaksFuture2(aa.Pobocka.Id, dt);
                 view = "Rozvrh2Krouzek";
             }

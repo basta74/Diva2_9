@@ -122,6 +122,7 @@ namespace Diva2Web.Models.Admin
                 if (_weaks == null)
                 {
                     _weaks = new List<DateTime>();
+                    _weaks.Add(DateTime.Parse("2026-09-01"));
                     _weaks.Add(DateTime.Parse("2025-09-01"));
                     _weaks.Add(DateTime.Parse("2025-01-27"));
                     _weaks.Add(DateTime.Parse("2024-09-02"));
