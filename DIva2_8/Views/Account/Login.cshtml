@@ -1,136 +1,89 @@
 ﻿@using Diva2Web.Models.Users
 @model UserModelLogin
 @{
-    ViewData["Title"] = "LogIn";
+    ViewData["Title"] = "Přihlášení";
     Layout = "~/Views/Shared/_LayoutAccount.cshtml";
 }
-
-
 
 @using (Html.BeginForm("Login", "Account", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
+    <section class="login-card" aria-labelledby="login-title">
+        <header class="login-header">
+            <a class="login-brand" href="/Home/Index" aria-label="Zpět na úvodní stránku">Diva2</a>
+            <h1 id="login-title">Vítejte zpět</h1>
+            <p>Přihlaste se ke svému účtu.</p>
+        </header>
 
-    <div style="max-width: 700px; min-width: 350px">
-        <ul class="nav justify-content-center">
-            <li class="nav-item"><a href="/Account/Login" class="nav-link active">Přihlášení</a></li>
-            <li class="nav-item"><a href="/Account/Register" class="nav-link ">Registrace</a></li>
-            <li class="nav-item"><a href="/Home/Help" class="nav-link active">Nápověda</a></li>
-        </ul>
+        <div class="login-body">
+            <div asp-validation-summary="ModelOnly" class="login-validation" role="alert"></div>
 
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Přihlášení</h5>
+            @if (Model.Messages.Count > 0)
+            {
+                <div class="login-messages" role="alert">@Html.Raw(Model.MsgToString())</div>
+            }
 
-                <div class="form-horizontal">
-                    @Html.ValidationSummary(true)
+            @await Html.PartialAsync("~/Views/Shared/Account/_LoginFields.cshtml", Model)
 
-                    <div class="form-group">
-                        <div class="form-group">
-                            <label asp-for="Nick" class="control-label"></label>
-                            <input asp-for="Nick" class="form-control" />
-                            <span asp-validation-for="Nick" class="text-danger"></span>
-                        </div>
-                    </div>
+            <button type="submit" class="login-submit">Přihlásit se</button>
 
-                    <div class="form-group">
-                        <div class="form-group">
-                            <label asp-for="Heslo" class="control-label"></label>
-                            <input asp-for="Heslo" class="form-control" />
-                            <span asp-validation-for="Heslo" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
+            <button type="button" class="login-forgot-toggle" id="forgotPasswordToggle"
+                    aria-expanded="false" aria-controls="forgotPasswordPanel">
+                Zapomněli jste heslo?
+            </button>
 
-                        @if (Model.Messages.Count > 0)
-                        {
-                            @Html.Raw(Model.MsgToString());
-                        }
-
-                    </div>
-                    <div class="form-group">
-                        <div class="row">
-
-                            <div class="col-6">
-                                <a href="/Home/Index" class="btn btn-outline-secondary">Zpět</a>
-                            </div>
-                            <div class="col-6" style="text-align: right; padding-right: 10px">
-                                <input type="submit" value="Přihlásit" class="btn btn-primary" />
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="form-row align-items-center" id="jsSendEmail" style="display: none">
-
-                        <div class="col-auto" style="margin: 20px 0; width: 65%">
-                            <label class="sr-only" for="inlineFormInputGroup">Zagejte email</label>
-                            <div class="input-group mb-2">
-                                <div class="input-group-prepend">
-                                    <div class="input-group-text">@@</div>
-                                </div>
-                                <input type="text" class="form-control" id="forgotEmail" placeholder="email">
-                            </div>
-                        </div>
-                        <div class="col-auto">
-                            <div class="btn btn-success btn" id="jsSendEmailBtn" style=" margin-top: -7px;">Odeslat</div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-12">
-                            <div id="messages">
-                                @if (Model.Messages.Count > 0)
-                                {
-                                    Model.MsgToString();
-                                }
-                            </div>
-                        </div>
-                    </div>
-                    <div style="margin-top: 30px ;">
-                        <div class="btn btn-outline-success mb-2" onclick="showEmail()">Odeslat nové heslo</div>
-                    </div>
-
+            <div class="login-forgot" id="forgotPasswordPanel" hidden>
+                <label for="forgotEmail">E-mail pro obnovení hesla</label>
+                <div class="login-forgot-row">
+                    <input type="email" class="form-control login-input" id="forgotEmail"
+                           placeholder="vas@email.cz" autocomplete="email" />
+                    <button type="button" class="login-secondary-button" id="jsSendEmailBtn">Odeslat</button>
                 </div>
             </div>
+
+            <div id="messages" class="login-async-messages" aria-live="polite"></div>
         </div>
-    </div>
+
+        <footer class="login-footer">
+            <a href="/Home/Index">Zpět na úvod</a>
+            <span aria-hidden="true">•</span>
+            <a href="/Account/Register">Vytvořit účet</a>
+            <span aria-hidden="true">•</span>
+            <a href="/Home/Help">Nápověda</a>
+        </footer>
+    </section>
 }
 @section Scripts{
     <script>
-
-        function showEmail() {
-
-            $('#jsSendEmail').toggle('slow');
-
-        }
-
         $(document).ready(function () {
+            $('#forgotPasswordToggle').on('click', function () {
+                const panel = document.getElementById('forgotPasswordPanel');
+                const willOpen = panel.hidden;
+
+                panel.hidden = !willOpen;
+                this.setAttribute('aria-expanded', willOpen.toString());
+
+                if (willOpen) {
+                    document.getElementById('forgotEmail').focus();
+                }
+            });
 
             $(document).on('click', '#jsSendEmailBtn', function (event) {
-
                 var email = $("#forgotEmail").val();
 
-                console.log(email);
+                if (!email) {
+                    $('#messages').html('<div class="login-inline-error">Zadejte e-mailovou adresu.</div>');
+                    return;
+                }
 
                 $.ajax({
                     method: "GET",
-                    url: "/Account/SendForgotEmail/" + email,
+                    url: "/Account/SendForgotEmail/" + encodeURIComponent(email),
                 }).done(function (data) {
                     $('#messages').html(writeMesssages(data.messages));
                 });
             });
-
-
-
-
         });
-
-
-
-
     </script>
 }
 

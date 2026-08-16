@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Přístup odepřen";
+    Layout = "~/Views/Shared/_LayoutAccount.cshtml";
+}
+
+<section class="card" aria-labelledby="access-denied-title">
+    <div class="card-body">
+        <h1 class="card-title" id="access-denied-title">Přístup odepřen</h1>
+        <p class="card-subtitle">Pro zobrazení této stránky nemáte potřebné oprávnění.</p>
+        <div class="alert alert-warning" role="alert">
+            Pokud se domníváte, že byste přístup měli mít, obraťte se na správce systému.
+        </div>
+        <a href="/Home/Index" class="btn btn-primary">Zpět na úvod</a>
+    </div>
+</section>

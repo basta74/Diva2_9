@@ -2,7 +2,7 @@
 @model AdminPageModel
 
 @{
-    ViewData["Title"] = "Logout";
+    ViewData["Title"] = "Registrace dokončena";
     Layout = "~/Views/Shared/_LayoutAccount.cshtml";
 }
 
@@ -14,13 +14,13 @@
         @if (Model.MainIniCover.MainIniObj.RegisterEmail)
         {
             <div class="alert alert-success" role="alert">
-                Na Vaši emailovou adresu byl odeslána výzva pro potvrzení registrace
+                Na vaši e-mailovou adresu byla odeslána výzva k potvrzení registrace.
             </div>
         }
         else
         {
             <div class="alert alert-success" role="alert">
-                Registrace proběhla úspěšně :)
+                Registrace proběhla úspěšně.
                 Můžete se přihlásit a začít používat systém.
             </div>
         }

@@ -531,39 +531,30 @@ namespace Web.Controllers
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult DetailEdit(UserModel model)
         {
+            if (!aa.User.Id.HasValue)
+            {
+                return Unauthorized();
+            }
+
+            var user = userServ.GetById(aa.User.Id.Value);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Identita účtu se nesmí měnit přes běžnou editaci profilu.
+            model.Id = user.Id;
+            model.Email = user.Email;
+            ModelState.Remove(nameof(UserModel.Id));
+            ModelState.Remove(nameof(UserModel.Email));
+
             if (ModelState.IsValid)
             {
-                do
-                {
-                    var user = userServ.GetById(model.Id.Value);
-                    if (user != null)
-                    {
-                        if (user.Email != model.Email)
-                        {
-                            var usrs = userServ.GetByEmail(model.Email);
-                            if (usrs.Count > 1)
-                            {
-                                ModelState.AddModelError("Email", "Email se už používá ve více případech");
-                                continue;
-                            }
-                            else if (usrs.Count == 1)
-                            {
-                                if (usrs.FirstOrDefault().Id != model.Id)
-                                {
-                                    ModelState.AddModelError("Email", $"Email {model.Email} se už používá u jiného uživatele");
-                                    continue;
-                                }
-                            }
-                            user.NormalizedEmail = model.Email.ToUpperInvariant();
-                            user.NormalizedUserName = model.Email.ToUpperInvariant();
-                        }
-
-                        model.CopyToDb(user);
-                        userServ.Update(user);
-                    }
-                } while (false);
+                model.CopyToDb(user);
+                userServ.Update(user);
             }
             return PartialView("DetailEdit", model);
         }

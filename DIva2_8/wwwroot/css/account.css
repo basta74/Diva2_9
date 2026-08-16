@@ -1,0 +1,316 @@
+:root {
+    --account-primary: #315b9d;
+    --account-primary-hover: #24477e;
+    --account-text: #1d2939;
+    --account-muted: #667085;
+    --account-border: #d7dfeb;
+    --account-surface: #ffffff;
+    --account-danger: #b42318;
+}
+
+html,
+body.account-page {
+    min-height: 100%;
+}
+
+body.account-page {
+    margin: 0;
+    color: var(--account-text);
+    background:
+        radial-gradient(circle at 10% 15%, rgba(95, 139, 205, .2), transparent 32rem),
+        radial-gradient(circle at 90% 85%, rgba(83, 177, 148, .16), transparent 30rem),
+        #f3f6fa;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.account-shell {
+    box-sizing: border-box;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 2rem 1rem;
+}
+
+.login-card {
+    width: min(100%, 29rem);
+    overflow: hidden;
+    border: 1px solid rgba(49, 91, 157, .14);
+    border-radius: 1.25rem;
+    background: var(--account-surface);
+    box-shadow: 0 1.5rem 4rem rgba(25, 45, 75, .14);
+}
+
+.login-header {
+    padding: 2rem 2.25rem 1.5rem;
+    text-align: center;
+}
+
+.login-brand {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 4.5rem;
+    height: 2.25rem;
+    margin-bottom: 1.25rem;
+    padding: 0 .8rem;
+    border-radius: .7rem;
+    color: #fff;
+    background: var(--account-primary);
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-decoration: none;
+}
+
+.login-brand:hover,
+.login-brand:focus {
+    color: #fff;
+    background: var(--account-primary-hover);
+    text-decoration: none;
+}
+
+.login-header h1 {
+    margin: 0;
+    font-size: clamp(1.65rem, 5vw, 2rem);
+    line-height: 1.2;
+}
+
+.login-header p {
+    margin: .55rem 0 0;
+    color: var(--account-muted);
+}
+
+.login-body {
+    padding: 0 2.25rem 2rem;
+}
+
+.login-field {
+    margin-bottom: 1.15rem;
+}
+
+.login-field label,
+.login-forgot label {
+    display: block;
+    margin-bottom: .45rem;
+    font-size: .92rem;
+    font-weight: 650;
+}
+
+.login-input.form-control {
+    box-sizing: border-box;
+    width: 100%;
+    height: 3rem;
+    padding: .7rem .85rem;
+    border: 1px solid var(--account-border);
+    border-radius: .65rem;
+    background: #fff;
+    font-size: 1rem;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.login-input.form-control:focus {
+    border-color: var(--account-primary);
+    box-shadow: 0 0 0 .2rem rgba(49, 91, 157, .15);
+    outline: 0;
+}
+
+.login-submit,
+.login-secondary-button {
+    min-height: 3rem;
+    border: 0;
+    border-radius: .65rem;
+    color: #fff;
+    background: var(--account-primary);
+    font-weight: 650;
+    cursor: pointer;
+    transition: background-color .15s ease, transform .15s ease;
+}
+
+.login-submit {
+    width: 100%;
+    margin-top: .35rem;
+    font-size: 1rem;
+}
+
+.login-submit:hover,
+.login-secondary-button:hover {
+    background: var(--account-primary-hover);
+}
+
+.login-submit:active,
+.login-secondary-button:active {
+    transform: translateY(1px);
+}
+
+.login-submit:focus-visible,
+.login-secondary-button:focus-visible,
+.login-forgot-toggle:focus-visible,
+.login-footer a:focus-visible {
+    outline: .2rem solid rgba(49, 91, 157, .3);
+    outline-offset: .15rem;
+}
+
+.login-forgot-toggle {
+    display: block;
+    margin: 1rem auto 0;
+    padding: .35rem;
+    border: 0;
+    color: var(--account-primary);
+    background: transparent;
+    cursor: pointer;
+}
+
+.login-forgot-toggle:hover {
+    text-decoration: underline;
+}
+
+.login-forgot {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: .75rem;
+    background: #f6f8fb;
+}
+
+.login-forgot[hidden] {
+    display: none;
+}
+
+.login-forgot-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: .65rem;
+}
+
+.login-secondary-button {
+    padding: .6rem 1rem;
+}
+
+.login-validation:empty,
+.login-field-error:empty,
+.login-async-messages:empty {
+    display: none;
+}
+
+.login-validation,
+.login-field-error,
+.login-inline-error {
+    color: var(--account-danger);
+}
+
+.login-validation ul {
+    margin: 0 0 1rem;
+    padding: .75rem 1rem .75rem 2rem;
+    border-radius: .65rem;
+    background: #fef3f2;
+}
+
+.login-field-error {
+    display: block;
+    margin-top: .35rem;
+    font-size: .84rem;
+}
+
+.login-messages,
+.login-async-messages {
+    margin-bottom: 1rem;
+}
+
+.login-inline-error {
+    padding: .75rem;
+    border-radius: .65rem;
+    background: #fef3f2;
+}
+
+.login-footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: .55rem;
+    padding: 1.1rem 1.5rem;
+    border-top: 1px solid #e8edf4;
+    color: var(--account-muted);
+    background: #fbfcfe;
+    font-size: .88rem;
+}
+
+.login-footer a {
+    color: var(--account-primary);
+    text-decoration: none;
+}
+
+.login-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Shared account views: registration, profile, activation and password flows. */
+.account-page .card {
+    width: min(100%, 42rem) !important;
+    min-width: 0 !important;
+    overflow: hidden;
+    border: 1px solid rgba(49, 91, 157, .14);
+    border-radius: 1.25rem;
+    background: var(--account-surface);
+    box-shadow: 0 1.5rem 4rem rgba(25, 45, 75, .14);
+}
+
+.account-page .card-body { padding: 2rem; }
+.account-page .card-title { margin: 0 0 .45rem; color: var(--account-text); font-size: 1.65rem; font-weight: 700; }
+.account-page .card-subtitle { margin-bottom: 1.5rem !important; color: var(--account-muted) !important; }
+.account-page .form-group { margin-bottom: 1rem; }
+.account-page .form-group label { display: block; margin-bottom: .4rem; color: var(--account-text); font-size: .92rem; font-weight: 650; }
+.account-page .form-control { min-height: 2.85rem; border: 1px solid var(--account-border); border-radius: .65rem; }
+.account-page .form-control:focus { border-color: var(--account-primary); box-shadow: 0 0 0 .2rem rgba(49, 91, 157, .15); }
+.account-page .text-danger,
+.account-page .field-validation-error { display: block; margin-top: .3rem; color: var(--account-danger) !important; font-size: .84rem; }
+.account-page .validation-summary-errors { margin-bottom: 1rem; padding: .75rem 1rem; border-radius: .65rem; color: var(--account-danger); background: #fef3f2; }
+.account-page .validation-summary-errors ul { margin: 0; padding-left: 1.25rem; }
+.account-page .alert { border: 0; border-radius: .75rem; }
+.account-page .btn { min-height: 2.65rem; padding: .55rem 1rem; border-radius: .6rem; font-weight: 600; }
+.account-page .nav { margin-bottom: 1rem; }
+.account-page .table { width: 100% !important; margin-bottom: 1.25rem; }
+.account-page .table td { padding: .65rem .75rem; border-top: 1px solid #edf0f5; }
+.account-page .modal-content { border: 0; border-radius: 1rem; box-shadow: 0 1.25rem 3rem rgba(25, 45, 75, .2); }
+
+.account-form-card {
+    width: min(100%, 46rem);
+    overflow: hidden;
+    border: 1px solid rgba(49, 91, 157, .14);
+    border-radius: 1.25rem;
+    background: var(--account-surface);
+    box-shadow: 0 1.5rem 4rem rgba(25, 45, 75, .14);
+}
+
+.account-form-header { padding: 1.75rem 2rem 1rem; }
+.account-form-header h1 { margin: 0; font-size: 1.7rem; }
+.account-form-header p { margin: .45rem 0 0; color: var(--account-muted); }
+.account-form-body { padding: 1rem 2rem 2rem; }
+.account-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 1.25rem; }
+.account-form-actions { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: 1.5rem; }
+.account-form-actions .login-submit { width: auto; min-width: 10rem; margin: 0; padding: .65rem 1.25rem; }
+
+@media (max-width: 480px) {
+    .account-shell {
+        place-items: start center;
+        padding: 1rem .75rem;
+    }
+
+    .login-header {
+        padding: 1.5rem 1.25rem 1.25rem;
+    }
+
+    .login-body {
+        padding: 0 1.25rem 1.5rem;
+    }
+
+    .login-forgot-row {
+        grid-template-columns: 1fr;
+    }
+
+    .account-page .card-body,
+    .account-form-header,
+    .account-form-body { padding-left: 1.25rem; padding-right: 1.25rem; }
+
+    .account-form-grid { grid-template-columns: 1fr; }
+    .account-form-actions { align-items: stretch; flex-direction: column-reverse; }
+    .account-form-actions .btn,
+    .account-form-actions .login-submit { width: 100%; text-align: center; }
+}

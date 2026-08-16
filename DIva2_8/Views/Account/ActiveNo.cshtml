@@ -1,6 +1,6 @@
 ﻿@model int;
 @{
-    ViewData["Title"] = "Logout";
+    ViewData["Title"] = "Neaktivní účet";
     Layout = "~/Views/Shared/_LayoutAccount.cshtml";
 }
 
@@ -8,7 +8,7 @@
         <ul class="nav justify-content-center">
             <li class="nav-item"><a href="/Account/Login" class="nav-link">Přihlášení</a></li>
             <li class="nav-item"><a href="/Account/Register" class="nav-link active">Registrace</a></li>
-            <li class="nav-item"><a href="//Help" class="nav-link active">Nápověda</a></li>
+            <li class="nav-item"><a href="/Home/Help" class="nav-link">Nápověda</a></li>
         </ul>
         <div class="card" >
             <div class="card-body">
@@ -20,10 +20,10 @@
 
                 <div class="row">
                     <div class="col-7">
-                        <a href="/Index" class="btn btn-outline-secondary">Zpět na úvod</a>
+                        <a href="/Home/Index" class="btn btn-outline-secondary">Zpět na úvod</a>
                     </div>
                     <div class="col-5" style="text-align: right; padding-right: 10px">
-                        <a href="#" class="btn btn-primary" data-id="@Model" id="jsSend">Odeslat email</a>
+                        <button type="button" class="btn btn-primary" data-id="@Model" id="jsSend">Odeslat e-mail</button>
                     </div>
                 </div>
 

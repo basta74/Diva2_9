@@ -1,0 +1,14 @@
+@using Diva2Web.Models.Users
+@model UserModelLogin
+
+<div class="login-field form-group">
+    <label asp-for="Nick"></label>
+    <input asp-for="Nick" class="form-control login-input" autocomplete="username" inputmode="email" />
+    <span asp-validation-for="Nick" class="login-field-error text-danger"></span>
+</div>
+
+<div class="login-field form-group">
+    <label asp-for="Heslo">Heslo</label>
+    <input asp-for="Heslo" class="form-control login-input" autocomplete="current-password" />
+    <span asp-validation-for="Heslo" class="login-field-error text-danger"></span>
+</div>
