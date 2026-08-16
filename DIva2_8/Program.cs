@@ -1,19 +1,7 @@
 using Diva2.Core;
 using Diva2.Core.Main.Users;
-using Diva2.Data;
 using Diva2.Data.Infrastructure;
-using Diva2.Services;
-using Diva2.Services.Emailing;
-using Diva2.Services.Managers.Calendar;
-using Diva2.Services.Managers.Content;
-using Diva2.Services.Managers.Customers;
-using Diva2.Services.Managers.Emails;
-using Diva2.Services.Managers.Mains;
-using Diva2.Services.Managers.Platby;
-using Diva2.Services.Managers.Pobocky;
-using Diva2.Services.Managers.Setting;
-using Diva2.Services.Managers.Users;
-using Diva2.Services.Managers.Videa;
+using Diva2.Services.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -62,27 +50,12 @@ builder.Services.ConfigureApplicationCookie(options =>
 // password hasher (jen jednou!)
 builder.Services.AddScoped<IPasswordHasher<User8>, SHA1PasswordHasher>();
 
-// další služby
-builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-builder.Services.AddScoped<ICacheHelper, CacheHelper>();
+// společný základ a rezervační doména
+builder.Services.AddDiva2PlatformServices();
+builder.Services.AddDiva2ReservationServices();
+
+// webová implementace kontextu zůstává ve webové aplikaci
 builder.Services.AddScoped<IWorkContext, WebWorkContext>();
-builder.Services.AddScoped<IPobockaService, PobockaService>();
-builder.Services.AddScoped<ILekceService, LekceService>();
-builder.Services.AddScoped<ILekceTypService, LekceTypService>();
-builder.Services.AddScoped<ILekceMustrService, LekceMustrService>();
-builder.Services.AddScoped<ISkupinaZakaznikaService, SkupinaZakaznikaService>();
-builder.Services.AddScoped<ILektorService, LektorService>();
-builder.Services.AddScoped<IPlatbaService, PlatbaService>();
-builder.Services.AddScoped<IObjednavkyService, ObjednavkyService>();
-builder.Services.AddScoped<IEmailSenderService, FakeEmailSenderService>();
-builder.Services.AddScoped<IUser8Service, User8Service>();
-builder.Services.AddScoped<IRuleService, RuleService>();
-builder.Services.AddScoped<IComunicationService, ComunicationService>();
-builder.Services.AddScoped<ILogs8Service, Logs8Service>();
-builder.Services.AddScoped<ILekceAddonsService, LekceAddonsService>();
-builder.Services.AddScoped<IPageService, PageService>();
-builder.Services.AddScoped<IVideoService, VideoService>();
-builder.Services.AddScoped<ICalendarService, CalendarService>();
 
 // session
 builder.Services.AddDistributedMemoryCache();

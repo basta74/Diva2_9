@@ -13,4 +13,8 @@
     <ProjectReference Include="..\Web.Core\Diva2_8.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
 </Project>
