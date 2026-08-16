@@ -1,7 +1,5 @@
 ﻿using Diva2.Core.Main.Users;
-using Diva2.Core.Main.Zakaznik;
 using Diva2.Data;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
@@ -19,13 +17,11 @@ namespace Diva2.Services.Managers.Users
         private readonly IRepository<Rule8> repRule;
         private readonly IRepository<User8> repUsers;
         private readonly IRepository<UserRoles8> repUserRole;
-        private readonly IRepository<User8Group> repUserGroup;
-        private readonly IRepository<User8GroupUser> repUserGroupUser;
 
         protected static CacheHelper cache;
         public User8Service(ApplicationDbContext dbContext, IMemoryCache memoryCache,
-            IRepository<RoleRule8> repRoleRule, IRepository<Rule8> repRule, IRepository<User8> repUsers, IRepository<UserRoles8> repUserRole,
-            IRepository<User8Group> repUserGroup, IRepository<User8GroupUser> repUserGroupU)
+            IRepository<RoleRule8> repRoleRule, IRepository<Rule8> repRule,
+            IRepository<User8> repUsers, IRepository<UserRoles8> repUserRole)
         {
             cache = new CacheHelper(memoryCache, dbContext.SubDomain);
 
@@ -33,8 +29,6 @@ namespace Diva2.Services.Managers.Users
             this.repRule = repRule;
             this.repUsers = repUsers;
             this.repUserRole = repUserRole;
-            this.repUserGroup = repUserGroup;
-            this.repUserGroupUser = repUserGroupU;
         }
 
         public User8 GetById(int id)
@@ -114,40 +108,6 @@ namespace Diva2.Services.Managers.Users
 
         }
 
-        public IQueryable<User8> GetCustomers(bool incl = false)
-        {
-
-            if (incl)
-            {
-                var data = repUsers.TableUntracked.Include(d => d.Kredity).Include(d => d.KredityCas).OrderBy(d => d.Prijmeni).ThenBy(d => d.Jmeno);
-                return data;
-            }
-            else
-            {
-                var data = repUsers.TableUntracked.OrderBy(d => d.Prijmeni).ThenBy(d => d.Jmeno);
-                return data;
-            }
-
-
-        }
-
-        public IQueryable<User8> GetCustomers(IEnumerable<int> ids, bool incl = false)
-        {
-
-            if (incl)
-            {
-                var data = repUsers.TableUntracked.Where(d => ids.Contains(d.Id)).Include(d => d.Kredity).Include(d => d.KredityCas).OrderBy(d => d.Prijmeni).ThenBy(d => d.Jmeno);
-                return data;
-            }
-            else
-            {
-                var data = repUsers.TableUntracked.Where(d => ids.Contains(d.Id)).OrderBy(d => d.Prijmeni).ThenBy(d => d.Jmeno);
-                return data;
-            }
-
-
-        }
-
         readonly string cikGetUsers = $"GetUsers";
         public void ClearUsers()
         {
@@ -175,53 +135,6 @@ namespace Diva2.Services.Managers.Users
                         select u).OrderBy(d => d.Prijmeni).ThenBy(d => d.Jmeno).ToList();
 
             return data;
-        }
-
-        public IList<User8> GetAllByGroup(int id, bool incl = false)
-        {
-            if (incl != true)
-            {
-                var data = (from u in repUsers.TableUntracked
-                            join r in repUserGroupUser.TableUntracked on u.Id equals r.UserId
-                            where r.GroupId == id
-                            && u.Deleted == false
-                            select u).OrderBy(d => d.Prijmeni).ThenBy(d => d.Jmeno).ToList();
-                return data;
-            }
-            else
-            {
-                var data = (from u in repUsers.TableUntracked.Include(d => d.Kredity).Include(d => d.KredityCas)
-                            join r in repUserGroupUser.TableUntracked on u.Id equals r.UserId
-                            where r.GroupId == id
-                            && u.Deleted == false
-                            select u).OrderBy(d => d.Prijmeni).ThenBy(d => d.Jmeno).ToList();
-                return data;
-            }
-
-        }
-
-        public IList<User8GroupUser> GetUsersGroup(int id)
-        {
-            var data = repUserGroupUser.TableUntracked.Where(d => d.UserId == id).ToList();
-
-            return data;
-        }
-
-        public void AddUserGroup(User8GroupUser ug)
-        {
-            repUserGroupUser.Insert(ug);
-        }
-
-        public bool RemoveUserGroup(User8GroupUser ug)
-        {
-            bool ret = false;
-            var aa = repUserGroupUser.Table.Where(d => d.UserId == ug.UserId && d.GroupId == ug.GroupId).FirstOrDefault();
-            if (aa != null)
-            {
-                repUserGroupUser.Delete(aa);
-                ret = true;
-            }
-            return ret;
         }
 
         public IList<User8> GetByIds(IEnumerable<int> id)

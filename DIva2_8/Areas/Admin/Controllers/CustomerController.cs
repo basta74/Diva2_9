@@ -37,13 +37,17 @@ namespace Diva2Web.Areas.Admin.Controllers
     [AuthorizeActionFilterAttribute]
     public class CustomerController : BaseAdminController
     {
+        private readonly IReservationCustomerService customerService;
+
         public CustomerController(ApplicationDbContext dbContext,
                    IMemoryCache memoryCache, ILogger<HomeController> logger, IUser8Service userSer,
                    IHttpContextAccessor httpContextAccessor, IPobockaService pobSer,
-                   ISkupinaZakaznikaService skupZakServ, IObjednavkyService objSer, ILogs8Service logSer, ILekceService lekSer
+                   ISkupinaZakaznikaService skupZakServ, IReservationCustomerService customerService,
+                   IObjednavkyService objSer, ILogs8Service logSer, ILekceService lekSer
                    ) : base(dbContext, httpContextAccessor, memoryCache, userSer, pobSer, logSer, objSer)
         {
             this.skupZakServ = skupZakServ;
+            this.customerService = customerService;
             this.lekceServ = lekSer;
         }
 
@@ -104,7 +108,7 @@ namespace Diva2Web.Areas.Admin.Controllers
 
                     model.SkupinyZakaznika = skupZakServ.GetAll();
 
-                    model.Zakaznik.Groups = userServ.GetUsersGroup(id);
+                    model.Zakaznik.Groups = customerService.GetUsersGroup(id);
 
                     model.IniDict = new Dictionary<string, bool>();
                     model.IniDict.Add("kreditCasovy", aa.GetIniPobBool("kreditCasovy"));
@@ -166,12 +170,12 @@ namespace Diva2Web.Areas.Admin.Controllers
 
                 if (mo.method == "id")
                 {
-                    data = userServ.GetCustomers().Where(d => d.Deleted == false).OrderByDescending(d => d.Id);
+                    data = customerService.GetCustomers().Where(d => d.Deleted == false).OrderByDescending(d => d.Id);
                     resp.Status = true;
                 }
                 else if (mo.method == "email")
                 {
-                    data = userServ.GetCustomers().Where(d => d.Platnost == true && d.Deleted == false && d.GdprNewsDT.HasValue && d.GdprNews == true);
+                    data = customerService.GetCustomers().Where(d => d.Platnost == true && d.Deleted == false && d.GdprNewsDT.HasValue && d.GdprNews == true);
                     resp.Status = true;
                 }
                 else if (mo.method == "number")
@@ -181,13 +185,13 @@ namespace Diva2Web.Areas.Admin.Controllers
                 }
                 else if (mo.method == "last")
                 {
-                    data = userServ.GetCustomers(included).Where(d => d.Deleted == false).OrderByDescending(d => d.LastLogin);
+                    data = customerService.GetCustomers(included).Where(d => d.Deleted == false).OrderByDescending(d => d.LastLogin);
                     resp.Status = true;
                 }
                 else if (mo.method == "abc")
                 {
                     included = true;
-                    data = userServ.GetCustomers(included).Where(d => d.Deleted == false && d.Prijmeni.ToLower().StartsWith(mo.Value.ToLower()));
+                    data = customerService.GetCustomers(included).Where(d => d.Deleted == false && d.Prijmeni.ToLower().StartsWith(mo.Value.ToLower()));
                     resp.Status = true;
                 }
                 // posledni hodina
@@ -213,7 +217,7 @@ namespace Diva2Web.Areas.Admin.Controllers
                                 var ids = objServ.GetByLekce(lek2.Id).Select(d => d.User.Id).ToList();
                                 if (ids.Count > 0)
                                 {
-                                    data = userServ.GetCustomers(ids, included);
+                                    data = customerService.GetCustomers(ids, included);
                                 }
 
                                 resp.Status = true;
@@ -233,7 +237,7 @@ namespace Diva2Web.Areas.Admin.Controllers
                 {
                     if (id > 0)
                     {
-                        data = userServ.GetAllByGroup(id, included).Where(d => d.Deleted == false);
+                        data = customerService.GetAllByGroup(id, included).Where(d => d.Deleted == false);
                         resp.Status = true;
                     }
                     else
@@ -429,13 +433,13 @@ namespace Diva2Web.Areas.Admin.Controllers
                 if (m.Value)
                 {
                     User8GroupUser ug = new User8GroupUser() { GroupId = m.GroupId, UserId = m.UserId };
-                    userServ.AddUserGroup(ug);
+                    customerService.AddUserGroup(ug);
                     resp.Status = true;
                 }
                 else
                 {
                     User8GroupUser ug = new User8GroupUser() { GroupId = m.GroupId, UserId = m.UserId };
-                    resp.Status = userServ.RemoveUserGroup(ug);
+                    resp.Status = customerService.RemoveUserGroup(ug);
                 }
 
                 if (resp.Status)

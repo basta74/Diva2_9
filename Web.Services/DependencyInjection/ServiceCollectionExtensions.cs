@@ -44,6 +44,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ILekceTypService, LekceTypService>();
         services.AddScoped<ILekceMustrService, LekceMustrService>();
         services.AddScoped<ISkupinaZakaznikaService, SkupinaZakaznikaService>();
+        services.AddScoped<IReservationCustomerService, ReservationCustomerService>();
         services.AddScoped<ILektorService, LektorService>();
         services.AddScoped<IPlatbaService, PlatbaService>();
         services.AddScoped<IObjednavkyService, ObjednavkyService>();

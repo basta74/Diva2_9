@@ -14,10 +14,6 @@ namespace Diva2.Services.Managers.Users
         List<string> GetRules(int id);
         User8 GetByNamePassword(string nick, string heslo);
 
-        IQueryable<User8> GetCustomers(bool include = false);
-
-        IQueryable<User8> GetCustomers(IEnumerable<int> ids, bool include = false);
-
         IList<User8> GetAll();
 
         IList<User8> GetByIds(IEnumerable<int> id);
@@ -35,10 +31,5 @@ namespace Diva2.Services.Managers.Users
         
         void Delete(User8 user);
 
-        IList<User8> GetAllByGroup(int id, bool incl = false);
-        IList<User8GroupUser> GetUsersGroup(int id);
-        void AddUserGroup(User8GroupUser ug);
-        bool RemoveUserGroup(User8GroupUser ug);
-        
     }
 }
