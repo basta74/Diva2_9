@@ -17,14 +17,13 @@ builder.Configuration.AddJsonFile("appsubdomain.json", optional: false, reloadOn
 // services
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IDomainService, DomainService>();
+builder.Services.AddScoped<IConnectionStringProvider, DomainConnectionStringProvider>();
 
 // DB (per domain)
 builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
 {
-    var domainService = sp.GetRequiredService<IDomainService>();
-    var d = domainService.Domain;
-
-    var conn = $"server=localhost;database={d.db};user={d.user};password={d.pass};";
+    var connectionStringProvider = sp.GetRequiredService<IConnectionStringProvider>();
+    var conn = connectionStringProvider.GetConnectionString();
 
     options.UseMySql(conn, ServerVersion.AutoDetect(conn));
 });
