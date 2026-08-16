@@ -763,6 +763,7 @@ namespace Diva2.Services.Managers.Platby
             }
 
             repUserCreditsTime.Insert(zbkc);
+            ClearZbytekUzivatele(tran.UserId);
         }
 
         public UserZbytekKreditCas GetUserCreditsTimeById(int id)
