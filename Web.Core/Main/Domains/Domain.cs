@@ -16,5 +16,22 @@ namespace Diva2.Core.Main.Domains
         public string user { get; set; }
         public string pass { get; set; }
 
+        /// <summary>
+        /// Optional public name shown in client applications.
+        /// </summary>
+        public string publicName { get; set; }
+
+        /// <summary>
+        /// Allows hiding a tenant from the public catalog without disabling the web.
+        /// </summary>
+        public bool? publicEnabled { get; set; }
+
+    }
+
+    public class TenantPublicInfo
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string BaseUrl { get; set; }
     }
 }

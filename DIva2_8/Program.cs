@@ -3,7 +3,9 @@ using Diva2.Core.Main.Users;
 using Diva2.Data.Infrastructure;
 using Diva2.Services.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
+using Diva2Web.Infrastructure;
 using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +20,8 @@ builder.Configuration.AddJsonFile("appsubdomain.json", optional: false, reloadOn
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<IDomainService, DomainService>();
 builder.Services.AddScoped<IConnectionStringProvider, DomainConnectionStringProvider>();
+builder.Services.AddSingleton<ITenantCatalog, ConfigurationTenantCatalog>();
+builder.Services.AddScoped<IApiTokenService, ApiTokenService>();
 
 // DB (per domain)
 builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
@@ -32,6 +36,11 @@ builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
 builder.Services.AddIdentity<User8, Role8>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication()
+    .AddScheme<AuthenticationSchemeOptions, ApiTokenAuthenticationHandler>(
+        ApiTokenAuthenticationHandler.AuthenticationScheme,
+        _ => { });
 
 // cookie config (DŮLEŽITÉ)
 builder.Services.ConfigureApplicationCookie(options =>
