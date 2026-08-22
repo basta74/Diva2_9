@@ -10,6 +10,7 @@ using Diva2.Services.Managers.Pobocky;
 using Diva2.Services.Managers.Setting;
 using Diva2.Services.Managers.Users;
 using Diva2.Services.Managers.Videa;
+using Diva2.Services.Managers.Notifications;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Diva2.Services.DependencyInjection;
@@ -28,6 +29,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUser8Service, User8Service>();
         services.AddScoped<IRuleService, RuleService>();
         services.AddScoped<IComunicationService, ComunicationService>();
+        services.AddScoped<INotificationService, NotificationService>();
+        services.AddSingleton<IPushNotificationProvider, NullPushNotificationProvider>();
         services.AddScoped<ILogs8Service, Logs8Service>();
 
         return services;

@@ -488,11 +488,6 @@ namespace Diva2Web.Areas.Admin.Controllers
                         chl.SmsUserId = nextZak.UserId;
                         if (nextZak.UserId != obj1.UserId)
                         {
-                            if(nextZak.Nahradnik){
-                                nextZak.NahradnikJa = false;
-                                objServ.Update(nextZak);
-                            }
-
                             if (aa.MainIniCover.MainIniObj.SmsActive)
                             {
                                 chl.SmsActive = aa.MainIniCover.MainIniObj.SmsActive;
@@ -590,6 +585,11 @@ namespace Diva2Web.Areas.Admin.Controllers
                     obj1.Aktivni = false;
                     objServ.Update(obj1);
                     objServ.Delete(msg);
+                }
+
+                if (chl.JePlatny)
+                {
+                    objServ.PromoteFirstWaitingListCustomer(lek.Id);
                 }
 
 

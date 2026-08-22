@@ -61,6 +61,7 @@ builder.Services.AddScoped<IPasswordHasher<User8>, SHA1PasswordHasher>();
 // společný základ a rezervační doména
 builder.Services.AddDiva2PlatformServices();
 builder.Services.AddDiva2ReservationServices();
+builder.Services.AddHostedService<NotificationDispatchWorker>();
 
 // webová implementace kontextu zůstává ve webové aplikaci
 builder.Services.AddScoped<IWorkContext, WebWorkContext>();
@@ -70,6 +71,13 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 
 var app = builder.Build();
+
+if (args.Any(x => string.Equals(x, "migrate-tenants", StringComparison.OrdinalIgnoreCase)))
+{
+    var logger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("TenantMigration");
+    Environment.ExitCode = await TenantMigrationRunner.RunAsync(app.Configuration, logger);
+    return;
+}
 
 // pipeline
 if (!app.Environment.IsDevelopment())

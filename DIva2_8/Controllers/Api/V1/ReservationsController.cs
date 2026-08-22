@@ -167,6 +167,7 @@ public sealed class ReservationsController : ControllerBase
         }
 
         var logoutTime = DateTime.Now;
+        var removedWasValid = reservation.Poradi <= lesson.PocetMist;
         var logoutLog = new UserLekceLogOut
         {
             ProvedlId = userId,
@@ -192,10 +193,6 @@ public sealed class ReservationsController : ControllerBase
             foreach (var remainingReservation in reservations.Where(item => item.Poradi > reservation.Poradi))
             {
                 remainingReservation.Poradi--;
-                if (remainingReservation.Poradi <= lesson.PocetMist)
-                {
-                    remainingReservation.NahradnikJa = false;
-                }
             }
 
             reservationService.Update(reservations);
@@ -204,6 +201,10 @@ public sealed class ReservationsController : ControllerBase
         reservationService.ClearObjednaneLekceUzivatele(userId);
         lesson.PocetZakazniku = reservations.Count(item => item.Aktivni);
         lessonService.Update(lesson);
+        if (removedWasValid)
+        {
+            reservationService.PromoteFirstWaitingListCustomer(lesson.Id);
+        }
         reservationService.AddUserChange(new UserLekceChange
         {
             LekceId = lesson.Id,

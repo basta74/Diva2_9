@@ -252,6 +252,7 @@ namespace Diva2Web.Models.Admin
             mnSms.Items.Add(new MenuItem() { Text = "Přihlášení", Url = "Login", Pravo = IniItemsSetting.sms_view.ToString() });
             mnSms.Items.Add(new MenuItem() { Text = "SMS", Url = "Index", Pravo = IniItemsSetting.sms_view.ToString() });
             mnSms.Items.Add(new MenuItem() { Text = "SMS - Chybové", Url = "Errors", Pravo = IniItemsSetting.sms_view.ToString() });
+            mnSms.Items.Add(new MenuItem() { Text = "Notifikace", Url = "Notifications", Pravo = IniItemsSetting.sms_view.ToString() });
 
             MenuItem mnContent = new MenuItem() { Area = "Content", Text = "Obsah", Url = "Content", Pravo = "content_manage" };
             AdminMenuItems.Add(mnContent);

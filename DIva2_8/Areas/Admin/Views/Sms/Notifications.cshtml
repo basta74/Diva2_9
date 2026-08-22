@@ -1,0 +1,51 @@
+@using Diva2.Core.Main.Notifications
+@using Diva2Web.Models.Admin
+@model AdminPageModel
+@{
+    var items = (IReadOnlyList<UserNotification>)ViewBag.Notifications;
+}
+
+<form method="get" class="form-inline mb-3">
+    <select name="status" class="form-control mr-2">
+        <option value="">Všechny stavy</option>
+        @foreach (var option in new[] { "created", "sent", "delivered", "read", "reacted", "error" })
+        {
+            <option value="@option" selected="@(ViewBag.Status == option)">@option</option>
+        }
+    </select>
+    <input name="user" value="@ViewBag.UserFilter" class="form-control mr-2" placeholder="Uživatel, e-mail nebo ID" />
+    <input name="lessonId" value="@ViewBag.LessonId" type="number" class="form-control mr-2" placeholder="ID lekce" />
+    <button class="btn btn-primary">Filtrovat</button>
+</form>
+
+<table class="table table-sm table-hover">
+    <thead><tr><th>Komu</th><th>Lekce</th><th>Typ / text</th><th>Vytvořeno</th><th>Odesláno</th><th>Doručeno</th><th>Přečteno</th><th>Reakce</th><th>Chyba</th></tr></thead>
+    <tbody>
+    @foreach (var item in items)
+    {
+        <tr>
+            <td>@item.UserId — @item.User?.Jmeno @item.User?.Prijmeni<br /><small>@item.User?.Email</small></td>
+            <td>@item.LessonId @item.Lesson?.Nazev<br /><small>@item.Lesson?.DatumHodina.ToString("dd.MM.yyyy HH:mm")</small></td>
+            <td><strong>@item.Title</strong><br /><small>@item.Type: @item.Text</small></td>
+            <td>@item.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss")</td>
+            <td>@item.SentAt?.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss")</td>
+            <td>@item.DeliveredAt?.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss")</td>
+            <td>@item.ReadAt?.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss")</td>
+            <td>@item.Reaction @item.ReactedAt?.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss")</td>
+            <td>@item.Error</td>
+        </tr>
+        <tr class="table-light">
+            <td colspan="9">
+                <small>
+                @if (item.Deliveries.Count == 0) { <span>Žádné doručení na zařízení.</span> }
+                @foreach (var delivery in item.Deliveries)
+                {
+                    <span class="mr-3">Zařízení #@delivery.UserDeviceId (@delivery.UserDevice?.Platform), aktivní: @delivery.UserDevice?.Active,
+                        pokusy: @delivery.Attempts, odesláno: @delivery.SentAt?.ToLocalTime(), doručeno: @delivery.DeliveredAt?.ToLocalTime(), chyba: @delivery.Error</span>
+                }
+                </small>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

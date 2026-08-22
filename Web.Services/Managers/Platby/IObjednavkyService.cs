@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Diva2.Core.Main.Notifications;
 
 namespace Diva2.Services.Managers.Platby
 {
@@ -51,6 +52,8 @@ namespace Diva2.Services.Managers.Platby
         public IList<int> GetHistorieRoky(int id);
 
         void ClearHistoriTransakci(int id);
+
+        WaitingListPromotionResult? PromoteFirstWaitingListCustomer(int lessonId);
 
         #region UserTransakce
         public IList<UserTransakce> GetHistoriTransakci(int id, bool readCache = true);
@@ -132,4 +135,6 @@ namespace Diva2.Services.Managers.Platby
         #endregion
 
     }
+
+    public sealed record WaitingListPromotionResult(int UserId, int NotificationId);
 }

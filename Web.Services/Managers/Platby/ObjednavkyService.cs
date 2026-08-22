@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using static Diva2.Core.Main.Trans.UserTransakce;
+using Diva2.Core.Main.Notifications;
 
 namespace Diva2.Services.Managers.Platby
 {
@@ -41,6 +42,7 @@ namespace Diva2.Services.Managers.Platby
             IRepository<UserLekceChange> repUserChange, IRepository<UserText> repUserText, IRepository<PrijmoveDoklady> repPrijmoveDoklady,
             IRepository<UserZbytekKreditCasLog> repUserCreditsTimeLog, IRepository<UserLekceLogOut> repUserChangeL, IRepository<UserLekceLogIn> repUserChangeLI)
         {
+            this.dbContext = dbContext;
             cache = new CacheHelper(memoryCache, dbContext.SubDomain);
             this.repLekceUser = reposLekceUser;
             this.repTransUser = reposTransUser;
@@ -764,6 +766,44 @@ namespace Diva2.Services.Managers.Platby
 
             repUserCreditsTime.Insert(zbkc);
             ClearZbytekUzivatele(tran.UserId);
+        }
+
+        public WaitingListPromotionResult? PromoteFirstWaitingListCustomer(int lessonId)
+        {
+            using var transaction = dbContext.Database.BeginTransaction(System.Data.IsolationLevel.Serializable);
+            var next = dbContext.Set<LekceUser>()
+                .Where(x => x.LekceId == lessonId && x.Aktivni && x.NahradnikJa)
+                .OrderBy(x => x.Poradi)
+                .FirstOrDefault();
+            if (next is null)
+            {
+                transaction.Commit();
+                return null;
+            }
+
+            next.NahradnikJa = false;
+            var lesson = dbContext.Set<Lekce>().AsNoTracking().First(x => x.Id == lessonId);
+            var notification = dbContext.UserNotifications.FirstOrDefault(x =>
+                x.LessonId == lessonId && x.UserId == next.UserId && x.Type == NotificationType.WaitingListPromoted);
+            if (notification is null)
+            {
+                notification = new UserNotification
+                {
+                    UserId = next.UserId,
+                    LessonId = lessonId,
+                    Type = NotificationType.WaitingListPromoted,
+                    Title = "Uvolnilo se místo",
+                    Text = $"Na lekci {lesson.Nazev} {lesson.DatumHodina:dd.MM. yyyy HH:mm} jste se posunuli z náhradníků mezi zákazníky.",
+                    CreatedAt = DateTime.UtcNow,
+                    Reaction = NotificationReaction.None
+                };
+                dbContext.UserNotifications.Add(notification);
+            }
+
+            dbContext.SaveChanges();
+            transaction.Commit();
+            ClearObjednaneLekceUzivatele(next.UserId);
+            return new WaitingListPromotionResult(next.UserId, notification.Id);
         }
 
         public UserZbytekKreditCas GetUserCreditsTimeById(int id)

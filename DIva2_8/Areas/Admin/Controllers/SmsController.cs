@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Diva2.Controllers;
 using Diva2.Core;
 using Diva2.Core.Main.Comunications;
+using Diva2.Core.Main.Notifications;
 using Diva2.Core.Main.Trans;
 using Diva2.Core.Main.Users;
 using Diva2.Core.Main.Videa;
@@ -26,6 +27,7 @@ using Diva2Web.Models.Users;
 using Diva2Web.Models.Videos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
@@ -47,6 +49,60 @@ namespace Diva2Web.Areas.Admin.Controllers
         {
             this.commServ = commSe;
             this.objServ = objSe;
+        }
+
+        [HttpGet("/Admin/Notifications")]
+        [HttpGet("/Admin/Sms/Notifications")]
+        public async Task<IActionResult> Notifications(string? status, string? user, int? lessonId, CancellationToken cancellationToken)
+        {
+            SetMainPageValues();
+            if (!aa.User.Id.HasValue)
+            {
+                return Redirect("/Account/Login");
+            }
+
+            var query = dbContext.UserNotifications.AsNoTracking()
+                .Include(x => x.User)
+                .Include(x => x.Lesson)
+                .Include(x => x.Deliveries).ThenInclude(x => x.UserDevice)
+                .AsQueryable();
+
+            if (lessonId.HasValue)
+            {
+                query = query.Where(x => x.LessonId == lessonId);
+            }
+
+            if (!string.IsNullOrWhiteSpace(user))
+            {
+                var value = user.Trim();
+                if (int.TryParse(value, out var userId))
+                {
+                    query = query.Where(x => x.UserId == userId);
+                }
+                else
+                {
+                    query = query.Where(x => (x.User!.Email ?? "").Contains(value)
+                        || (x.User.Jmeno + " " + x.User.Prijmeni).Contains(value));
+                }
+            }
+
+            query = status?.ToLowerInvariant() switch
+            {
+                "created" => query.Where(x => x.SentAt == null && x.Error == null),
+                "sent" => query.Where(x => x.SentAt != null),
+                "delivered" => query.Where(x => x.DeliveredAt != null),
+                "read" => query.Where(x => x.ReadAt != null),
+                "reacted" => query.Where(x => x.Reaction != NotificationReaction.None),
+                "error" => query.Where(x => x.Error != null),
+                _ => query
+            };
+
+            aa.Title = "Notifikace";
+            ViewBag.Notifications = await query.OrderByDescending(x => x.CreatedAt).Take(500).ToListAsync(cancellationToken);
+            ViewBag.Status = status;
+            ViewBag.UserFilter = user;
+            ViewBag.LessonId = lessonId;
+            return View(aa);
         }
 
         public ActionResult Index(int page = 1)
