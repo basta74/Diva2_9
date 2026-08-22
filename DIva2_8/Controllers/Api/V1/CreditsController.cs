@@ -40,7 +40,6 @@ public sealed class CreditsController : ControllerBase
                 var branch = group.First();
                 balance.Kredity.TryGetValue(group.Key, out var unlimitedCredits);
                 var showUnlimited = group.Any(item => IsEnabled(branchService.GetPobockaInis(item.Id), "kreditNeomezeny"));
-                var showTime = group.Any(item => IsEnabled(branchService.GetPobockaInis(item.Id), "kreditCasovy"));
                 var timeCredits = balance.KredityCas
                     .Where(credit => credit.PokladnaId == group.Key && credit.PlatnostDoUnix > nowUnix)
                     .Select(credit => new ApiTimeCredit
@@ -51,6 +50,8 @@ public sealed class CreditsController : ControllerBase
                         ValidTo = credit.Aktivni ? new DateTimeOffset(credit.PlatnostDo) : null
                     })
                     .ToList();
+                var showTime = timeCredits.Count > 0 ||
+                    group.Any(item => IsEnabled(branchService.GetPobockaInis(item.Id), "kreditCasovy"));
                 return new
                 {
                     Branch = branch,

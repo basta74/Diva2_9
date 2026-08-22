@@ -51,6 +51,8 @@ public sealed class ApiMyReservation
     public string LessonName { get; set; } = string.Empty;
     public DateTimeOffset StartsAt { get; set; }
     public string ReservationStatus { get; set; } = string.Empty;
+    public bool CanCancel { get; set; }
+    public bool CanOffer { get; set; }
 }
 
 public sealed class ApiCreateReservationResponse

@@ -129,12 +129,129 @@ public sealed class ReservationsController : ControllerBase
 
     private static ApiCreateReservationResponse Failure(string message) => new() { Success = false, Message = message };
 
+    [HttpDelete("lessons/{lessonId:int}")]
+    public ActionResult<ApiCreateReservationResponse> Cancel(int lessonId)
+    {
+        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var lesson = lessonService.GetById(lessonId);
+        if (lesson is null)
+        {
+            return NotFound(Failure("Hodina nebyla nalezena."));
+        }
+
+        var branch = branchService.GetPobocky().FirstOrDefault(item => item.Id == lesson.PobockaId && item.Visible);
+        if (branch is null)
+        {
+            return NotFound(Failure("Pobočka nebyla nalezena."));
+        }
+
+        if (lesson.Zauctovano)
+        {
+            return BadRequest(Failure("Z této hodiny se již nelze odhlásit."));
+        }
+
+        var canCancel = DateTime.Now <= GetCancellationDeadline(branch.Id, lesson.DatumHodina);
+        var canOffer = !canCancel && GetSettingBool(branch.Id, "lekceOdhlasNabidniVolne");
+        if (!canCancel && !canOffer)
+        {
+            return BadRequest(Failure("Z této hodiny se již nelze odhlásit ani nabídnout místo."));
+        }
+
+        var reservations = reservationService.GetByLekce(lessonId, false)
+            .Where(item => item.Aktivni)
+            .ToList();
+        var reservation = reservations.FirstOrDefault(item => item.UserId == userId);
+        if (reservation is null)
+        {
+            return NotFound(Failure("Na tuto hodinu nejste přihlášeni."));
+        }
+
+        var logoutTime = DateTime.Now;
+        var logoutLog = new UserLekceLogOut
+        {
+            ProvedlId = userId,
+            LekceId = lesson.Id,
+            UserId = userId,
+            Poradi = reservation.Poradi,
+            PocetZakazniku = reservations.Count,
+            PocetMist = lesson.PocetMist,
+            ExistujeNahradnik = reservations.Count > lesson.PocetMist,
+            JePlatny = reservation.Poradi <= lesson.PocetMist,
+            Ts = logoutTime
+        };
+
+        if (canOffer)
+        {
+            reservation.Aktivni = false;
+            reservationService.Update(reservation);
+        }
+        else
+        {
+            reservations.Remove(reservation);
+            reservationService.Delete(reservation);
+            foreach (var remainingReservation in reservations.Where(item => item.Poradi > reservation.Poradi))
+            {
+                remainingReservation.Poradi--;
+                if (remainingReservation.Poradi <= lesson.PocetMist)
+                {
+                    remainingReservation.NahradnikJa = false;
+                }
+            }
+
+            reservationService.Update(reservations);
+        }
+
+        reservationService.ClearObjednaneLekceUzivatele(userId);
+        lesson.PocetZakazniku = reservations.Count(item => item.Aktivni);
+        lessonService.Update(lesson);
+        reservationService.AddUserChange(new UserLekceChange
+        {
+            LekceId = lesson.Id,
+            UserId = userId,
+            ProvedlId = userId,
+            Status = "-",
+            Ts = logoutTime
+        });
+        reservationService.AddUserChangeLog(logoutLog);
+
+        return Ok(new ApiCreateReservationResponse
+        {
+            Success = true,
+            Message = canOffer
+                ? "Vaše místo bylo nabídnuto dalším zájemcům."
+                : "Z hodiny jste byli odhlášeni."
+        });
+    }
+
+    private DateTime GetCancellationDeadline(int branchId, DateTime lessonStartsAt)
+    {
+        if (GetSettingBool(branchId, "lekceOdhlasPevne"))
+        {
+            var daysBefore = GetSettingInt(branchId, "lekceOdhlasPevneDenPred", 1);
+            var timeText = branchService.GetPobockaInis(branchId)
+                .FirstOrDefault(item => item.Name == "lekceOdhlasPevneHodDne")?.Value;
+            var time = TimeSpan.TryParse(timeText, out var parsedTime)
+                ? parsedTime
+                : new TimeSpan(23, 59, 0);
+            var deadline = lessonStartsAt.Date.AddDays(-daysBefore).Add(time);
+            return deadline > lessonStartsAt ? lessonStartsAt.AddHours(-1) : deadline;
+        }
+
+        if (GetSettingBool(branchId, "lekceOdhlasPlov"))
+        {
+            return lessonStartsAt.AddHours(-GetSettingInt(branchId, "lekceOdhlasPlovHod", 1));
+        }
+
+        return lessonStartsAt.AddHours(-1);
+    }
+
     [HttpGet("me")]
     public ActionResult<IReadOnlyList<ApiMyReservation>> GetMine()
     {
         var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var now = DateTime.Now;
         var result = reservationService.GetObjednaneLekceUzivatele(userId)
-            .Where(item => item.Lekce is not null && item.Lekce.DatumHodina >= DateTime.Now)
+            .Where(item => item.Aktivni && item.Lekce is not null && item.Lekce.DatumHodina >= DateTime.Now)
             .OrderBy(item => item.Lekce.DatumHodina)
             .Select(item => new ApiMyReservation
             {
@@ -142,7 +259,11 @@ public sealed class ReservationsController : ControllerBase
                 BranchId = item.PobockaId,
                 LessonName = item.Lekce.Nazev ?? string.Empty,
                 StartsAt = new DateTimeOffset(item.Lekce.DatumHodina),
-                ReservationStatus = item.Poradi > item.Lekce.PocetMist ? "waitingList" : "customer"
+                ReservationStatus = item.Poradi > item.Lekce.PocetMist ? "waitingList" : "customer",
+                CanCancel = !item.Lekce.Zauctovano && now <= GetCancellationDeadline(item.PobockaId, item.Lekce.DatumHodina),
+                CanOffer = !item.Lekce.Zauctovano
+                    && now > GetCancellationDeadline(item.PobockaId, item.Lekce.DatumHodina)
+                    && GetSettingBool(item.PobockaId, "lekceOdhlasNabidniVolne")
             })
             .ToList();
         return Ok(result);

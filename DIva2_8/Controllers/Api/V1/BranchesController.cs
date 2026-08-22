@@ -87,6 +87,7 @@ public sealed class BranchesController : ControllerBase
 
         var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
         var reservations = reservationService.GetObjednaneLekceUzivatele(userId)
+            .Where(item => item.Aktivni)
             .GroupBy(item => item.LekceId)
             .ToDictionary(group => group.Key, group => group.ToList());
         var lectors = lectorService.GetAll().ToDictionary(lector => lector.Id);
@@ -97,7 +98,7 @@ public sealed class BranchesController : ControllerBase
             reservations.TryGetValue(lesson.Id, out var userReservations);
             var reservationStatus = userReservations is null
                 ? null
-                : userReservations.Any(item => item.Aktivni && item.Poradi <= lesson.PocetMist) ? "customer" : "waitingList";
+                : userReservations.Any(item => item.Poradi <= lesson.PocetMist) ? "customer" : "waitingList";
             return new ApiLessonInfo
             {
                 Id = lesson.Id,
