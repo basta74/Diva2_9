@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Diva2Maui.Controls"
+             x:Class="Diva2Maui.Views.MyPage"
+             Title="Moje"
+             Shell.NavBarIsVisible="False">
+    <Grid Padding="5" RowDefinitions="Auto,*" RowSpacing="8">
+        <controls:IdentityHeader x:Name="IdentityHeader" />
+      <Grid Grid.Row="1" RowDefinitions="*,Auto">
+        <ScrollView>
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Moje kredity" FontSize="20" FontAttributes="Bold"   Margin="0,12,0,8" />
+                <VerticalStackLayout x:Name="CreditsContainer" Spacing="8" />
+            </VerticalStackLayout>
+        </ScrollView>
+        <Grid Grid.Row="1" ColumnSpacing="8" ColumnDefinitions="*,*">
+            <Button Text="Odhlásit se"
+                    Clicked="OnLogoutClicked" />
+            <Button Grid.Column="1" Text="Změnit provozovatele" FontSize="12"
+                    Clicked="OnChangeTenantClicked" />
+        </Grid>
+      </Grid>
+    </Grid>
+</ContentPage>

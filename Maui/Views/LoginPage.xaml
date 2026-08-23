@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Diva2Maui.Views.LoginPage" Title="Přihlášení">
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="18" MaximumWidthRequest="520">
+            <Label x:Name="TenantNameLabel" FontSize="14" TextColor="Gray" />
+            <Label Text="Přihlášení" FontSize="30" FontAttributes="Bold" />
+            <Label Text="Přihlaste se stejnými údaji jako na webu." TextColor="Gray" />
+            <Border Padding="14" StrokeShape="RoundRectangle 12">
+                <Entry x:Name="EmailEntry" Placeholder="E-mail" Keyboard="Email" ReturnType="Next" />
+            </Border>
+            <Border Padding="14" StrokeShape="RoundRectangle 12">
+                <Entry x:Name="PasswordEntry" Placeholder="Heslo" IsPassword="True" ReturnType="Go" Completed="OnPasswordCompleted" />
+            </Border>
+            <Label x:Name="ErrorLabel" TextColor="#B42318" IsVisible="False" />
+            <Button x:Name="LoginButton" Text="Přihlásit se" Clicked="OnLoginClicked" />
+            <ActivityIndicator x:Name="LoadingIndicator" IsVisible="False" />
+            <Button Text="Vybrat jiného provozovatele" BackgroundColor="Transparent" TextColor="{StaticResource Primary}" Clicked="OnBackClicked" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

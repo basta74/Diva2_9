@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Diva2Maui.Models" x:Class="Diva2Maui.MainPage" Title="Diva2">
+    <Grid RowDefinitions="Auto,Auto,*" Padding="20" RowSpacing="16">
+        <VerticalStackLayout Spacing="4">
+            <Label Text="Diva2" FontSize="34" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+            <Label Text="Vyberte svého provozovatele" FontSize="20" />
+        </VerticalStackLayout>
+        <Grid Grid.Row="1" ColumnDefinitions="*,Auto" ColumnSpacing="10">
+            <SearchBar x:Name="TenantSearch" Placeholder="Hledat provozovatele" TextChanged="OnSearchChanged" />
+            <Button Grid.Column="1" Text="Obnovit" Clicked="OnRefreshClicked" />
+        </Grid>
+        <CollectionView Grid.Row="2" x:Name="TenantsView" SelectionMode="Single" SelectionChanged="OnTenantSelected">
+            <CollectionView.EmptyView>
+                <VerticalStackLayout Padding="20" Spacing="12" HorizontalOptions="Center">
+                    <Label x:Name="EmptyText" Text="Načítám provozovatele…" HorizontalTextAlignment="Center" />
+                    <ActivityIndicator x:Name="LoadingIndicator" IsRunning="True" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:TenantInfo">
+                    <Border Margin="0,0,0,10" Padding="16" StrokeShape="RoundRectangle 14">
+                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+                            <Label Text="{Binding Name}" FontSize="18" FontAttributes="Bold" />
+                            <Label Grid.Row="1" Text="{Binding BaseUrl}" TextColor="Gray" FontSize="12" />
+                            <Label Grid.Column="1" Grid.RowSpan="2" Text="›" FontSize="30" VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

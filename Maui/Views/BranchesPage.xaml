@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Diva2Maui.Models"
+             xmlns:controls="clr-namespace:Diva2Maui.Controls" x:Class="Diva2Maui.Views.BranchesPage" Title="Pobočky">
+    <Grid Padding="5" RowDefinitions="Auto,*" RowSpacing="8">
+      <controls:IdentityHeader x:Name="IdentityHeader" />
+      <Grid Grid.Row="1" RowDefinitions="Auto,*" RowSpacing="4">
+        <Grid x:Name="BranchTabs" Padding="4" ColumnSpacing="4" />
+        <CollectionView Grid.Row="1" x:Name="LessonsView" IsGrouped="True" SelectionMode="Single" SelectionChanged="OnLessonSelected">
+            <CollectionView.EmptyView>
+                <VerticalStackLayout Padding="20" Spacing="10" HorizontalOptions="Center">
+                    <ActivityIndicator x:Name="LoadingIndicator" />
+                    <Label x:Name="EmptyText" Text="Načítám…" HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+            <CollectionView.GroupHeaderTemplate>
+                <DataTemplate x:DataType="models:LessonDayGroup">
+                    <Label Text="{Binding DateText}" Padding="4,16,4,8" FontSize="20" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+                </DataTemplate>
+            </CollectionView.GroupHeaderTemplate>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:LessonInfo">
+                    <Border Margin="0,0,0,10" Padding="14" StrokeShape="RoundRectangle 14" BackgroundColor="{Binding CardColor}">
+                        <Grid ColumnDefinitions="80,*" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="5">
+                            <Label Text="{Binding TimeText}" FontSize="19" FontAttributes="Bold" />
+                            <Label Grid.Column="1" Text="{Binding Lector}" FontSize="16" VerticalTextAlignment="Center" />
+                            <Label Grid.Column="1" Text="{Binding ReservationStatusText}" IsVisible="{Binding ShowReservationStatus}" HorizontalTextAlignment="End" FontAttributes="Bold" TextColor="{StaticResource Primary}" />
+                            <Label Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding Name}" IsVisible="{Binding ShowName}" FontSize="18" FontAttributes="Bold" />
+                            <Label Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding LessonTypeName}" IsVisible="{Binding ShowLessonType}" FontSize="13" TextColor="{StaticResource Primary}" />
+                            <Label Grid.Row="3" Grid.ColumnSpan="2" Text="{Binding AvailabilityText}" IsVisible="{Binding ShowCapacity}" FontSize="13" TextColor="Gray" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+      </Grid>
+    </Grid>
+</ContentPage>

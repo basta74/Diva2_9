@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Diva2Maui.Models"
+             xmlns:controls="clr-namespace:Diva2Maui.Controls" x:Class="Diva2Maui.Views.LessonsPage" Title="Lekce">
+    <Grid Padding="5" RowDefinitions="Auto,*" RowSpacing="8">
+        <controls:IdentityHeader x:Name="IdentityHeader" />
+      <Grid Grid.Row="1" RowDefinitions="Auto,*" RowSpacing="16">
+        <Label x:Name="BranchNameLabel" FontSize="28" FontAttributes="Bold" />
+        <CollectionView Grid.Row="1" x:Name="LessonsView">
+            <CollectionView.EmptyView><Label x:Name="EmptyText" Text="Načítám lekce…" HorizontalTextAlignment="Center" Margin="20" /></CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:LessonInfo">
+                    <Border Margin="0,0,0,10" Padding="16" StrokeShape="RoundRectangle 14">
+                        <Grid ColumnDefinitions="70,*" RowDefinitions="Auto,Auto,Auto">
+                            <VerticalStackLayout Grid.RowSpan="3" Spacing="2">
+                                <Label Text="{Binding DateText}" FontSize="12" TextColor="Gray" HorizontalTextAlignment="Center" />
+                                <Label Text="{Binding TimeText}" FontSize="20" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                            </VerticalStackLayout>
+                            <Label Grid.Column="1" Text="{Binding Name}" FontSize="18" FontAttributes="Bold" />
+                            <Label Grid.Column="1" Grid.Row="1" Text="{Binding Lector}" TextColor="Gray" />
+                            <Label Grid.Column="1" Grid.Row="2" Text="{Binding CapacityText}" FontSize="12" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+      </Grid>
+    </Grid>
+</ContentPage>

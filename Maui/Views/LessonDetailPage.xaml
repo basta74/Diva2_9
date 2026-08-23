@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:Diva2Maui.Controls"
+             x:Class="Diva2Maui.Views.LessonDetailPage"
+             Title="Detail hodiny" >
+    <Grid Padding="20" RowDefinitions="Auto,*" RowSpacing="8">
+      <controls:IdentityHeader x:Name="IdentityHeader" />
+      <ScrollView Grid.Row="1">
+        <VerticalStackLayout Spacing="10">
+            <Label x:Name="DateLabel" FontSize="22" FontAttributes="Bold" />
+            <Label x:Name="TimeLabel" FontSize="30" FontAttributes="Bold" TextColor="#512BD4" />
+
+            <VerticalStackLayout x:Name="LectorContainer" Spacing="1">
+                <Label Text="Lektor" FontSize="12" TextColor="Gray" />
+                <Label x:Name="LectorLabel" FontSize="18" />
+            </VerticalStackLayout>
+            <VerticalStackLayout x:Name="NameContainer" Spacing="1">
+                <Label Text="Název" FontSize="12" TextColor="Gray" />
+                <Label x:Name="NameLabel" FontSize="18" />
+            </VerticalStackLayout>
+            <VerticalStackLayout x:Name="TypeContainer" Spacing="1">
+                <Label Text="Typ" FontSize="12" TextColor="Gray" />
+                <Label x:Name="TypeLabel" FontSize="18" />
+            </VerticalStackLayout>
+            <VerticalStackLayout x:Name="CapacityContainer" Spacing="1">
+                <Label Text="Obsazenost" FontSize="12" TextColor="Gray" />
+                <Label x:Name="CapacityLabel" FontSize="18" />
+            </VerticalStackLayout>
+
+            <Border Margin="0,12,0,4" Padding="14">
+                <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                <Label x:Name="ReservationLabel" FontSize="17" FontAttributes="Bold" />
+            </Border>
+            <Button x:Name="ReserveButton" Text="Přihlásit se" Clicked="OnReserveClicked" />
+            <Button x:Name="CancelReservationButton" Clicked="OnCancelReservationClicked"
+                    BackgroundColor="Transparent" BorderColor="DarkRed" BorderWidth="1"
+                    TextColor="DarkRed" />
+            <Button x:Name="ParticipantsButton" Text="Zobrazit účastníky"
+                    Clicked="OnParticipantsClicked" />
+        </VerticalStackLayout>
+      </ScrollView>
+    </Grid>
+</ContentPage>

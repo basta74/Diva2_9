@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Diva2Maui.Models"
+             xmlns:controls="clr-namespace:Diva2Maui.Controls"
+             x:Class="Diva2Maui.Views.ParticipantsPage"
+             x:DataType="models:LessonParticipantInfo"
+             Title="Účastníci">
+    <Grid Padding="20" RowDefinitions="Auto,*" RowSpacing="8">
+      <controls:IdentityHeader x:Name="IdentityHeader" />
+      <CollectionView Grid.Row="1" x:Name="ParticipantsView">
+        <CollectionView.EmptyView>
+            <Label Text="Nikdo není přihlášen." HorizontalTextAlignment="Center" />
+        </CollectionView.EmptyView>
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="models:LessonParticipantInfo">
+                <Border Padding="12" Margin="0,0,0,8">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10" />
+                    </Border.StrokeShape>
+                    <VerticalStackLayout>
+                        <Label Text="{Binding DisplayName}" FontSize="17" />
+                        <Label Text="{Binding StatusText}" FontSize="13" TextColor="Gray" />
+                    </VerticalStackLayout>
+                </Border>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+      </CollectionView>
+    </Grid>
+</ContentPage>

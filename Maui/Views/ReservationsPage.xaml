@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Diva2Maui.Models"
+             xmlns:controls="clr-namespace:Diva2Maui.Controls"
+             x:Class="Diva2Maui.Views.ReservationsPage"
+             Title="Objednávky"
+             Shell.NavBarIsVisible="False">
+    <Grid Padding="5" RowDefinitions="Auto,*" RowSpacing="8">
+        <controls:IdentityHeader x:Name="IdentityHeader" />
+      <Grid Grid.Row="1" RowDefinitions="Auto,*">
+        <Label Text="Moje objednávky" FontSize="24" FontAttributes="Bold"
+               Margin="0,0,0,12" />
+        <CollectionView x:Name="ReservationsView" Grid.Row="1"
+                        SelectionMode="Single" SelectionChanged="OnReservationSelected">
+            <CollectionView.EmptyView>
+                <Label Text="Nemáte žádné budoucí objednávky."
+                       HorizontalTextAlignment="Center" Margin="20" />
+            </CollectionView.EmptyView>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:MyReservationInfo">
+                    <Border Padding="14" Margin="0,0,0,10"
+                            BackgroundColor="{Binding CardColor}">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="14" />
+                        </Border.StrokeShape>
+                        <Grid ColumnDefinitions="80,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="5">
+                            <Label Grid.ColumnSpan="2" Text="{Binding DateText}"
+                                   FontAttributes="Bold" FontSize="15" TextColor="#512BD4" />
+                            <Label Grid.Row="1" Text="{Binding TimeText}"
+                                   FontAttributes="Bold" FontSize="19" />
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding StatusText}"
+                                   TextColor="#512BD4" FontAttributes="Bold"
+                                   HorizontalTextAlignment="End" />
+                            <Label Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding LessonName}"
+                                   FontSize="18" FontAttributes="Bold" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+      </Grid>
+    </Grid>
+</ContentPage>
