@@ -32,6 +32,11 @@ namespace Diva2.Data.Mapping.Main.Trans
             builder.Property(d => d.DoMzdy).HasColumnName("doMzdy");
             builder.Property(d => d.Unix).HasColumnName("unix");
             builder.Property(d => d.Datum).HasColumnName("datum");
+            builder.Property(d => d.Device)
+                .HasColumnName("device")
+                .HasConversion<byte>()
+                .HasColumnType("tinyint unsigned")
+                .HasDefaultValue(ReservationDevice.Web);
 
         }
     }

@@ -34,11 +34,14 @@ namespace Diva2Web.Models.Lekces
         public int ZbyvaDni { get; set; }
         public bool DoMzdy { get; set; }
         public int Unix { get; set; }
+        public ReservationDevice Device { get; set; }
         public string Message { get; set; } = "";
 
         public UserModel User { get; set; }
 
         public string UserName { get { return User != null ? User.CeleJmeno : ""; } }
+
+
 
         public void CopyFromDb(LekceUser o)
         {
@@ -60,6 +63,7 @@ namespace Diva2Web.Models.Lekces
             ZbyvaDni = o.ZbyvaDni;
             DoMzdy = o.DoMzdy;
             Unix = o.Unix;
+            Device = o.Device;
             if (o.User != null)
             {
                 User = new UserModel(o.User);

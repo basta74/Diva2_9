@@ -53,7 +53,7 @@ namespace Diva2.Services.Managers.Platby
 
         void ClearHistoriTransakci(int id);
 
-        WaitingListPromotionResult? PromoteFirstWaitingListCustomer(int lessonId);
+        WaitingListPromotionResult? PromoteFirstWaitingListCustomer(int lessonId, int? freedPosition = null);
 
         #region UserTransakce
         public IList<UserTransakce> GetHistoriTransakci(int id, bool readCache = true);

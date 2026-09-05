@@ -802,7 +802,8 @@ namespace Diva2_8.Data.Migrations
                     b.HasIndex("SentAt", "Attempts");
 
                     b.HasIndex("UserNotificationId", "UserDeviceId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("UX_notification_delivery_notification_device");
 
                     b.ToTable("spin_user_notification_delivery", (string)null);
                 });
@@ -1343,6 +1344,12 @@ namespace Diva2_8.Data.Migrations
                     b.Property<DateTime>("Datum")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("datum");
+
+                    b.Property<byte>("Device")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint unsigned")
+                        .HasDefaultValue((byte)0)
+                        .HasColumnName("device");
 
                     b.Property<bool>("DoMzdy")
                         .HasColumnType("tinyint(1)")

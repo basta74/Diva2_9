@@ -30,6 +30,7 @@ namespace Diva2.Core.Main.Trans
         public bool DoMzdy { get; set; }
         public int Unix { get; set; }
         public DateTime Datum { get; set; }
+        public ReservationDevice Device { get; set; } = ReservationDevice.Web;
         
         public Lekce Lekce { get; set; }
         public User8 User { get; set; }

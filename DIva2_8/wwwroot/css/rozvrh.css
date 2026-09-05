@@ -40,6 +40,22 @@ table.sprava {
     text-align: center;
 }
 
+#tableBoardAdmin tr.current-week-row td:first-child {
+    border-left: 3px solid #28a745 !important;
+}
+
+#tableBoardAdmin tr.current-week-row td:last-child {
+    border-right: 3px solid #28a745 !important;
+}
+
+#tableBoardAdmin tr.current-week-first td {
+    border-top: 3px solid #28a745 !important;
+}
+
+#tableBoardAdmin tr.current-week-last td {
+    border-bottom: 3px solid #28a745 !important;
+}
+
     #tableBoardAdmin td.datumDnes {
         background-color: #88c149 !important;
     }
@@ -165,8 +181,93 @@ table.sprava {
 
 #tableObjednani td.tdAction {
     width: 25px;
-    padding: 0;
+    padding: 0 0 0 1px;
 }
+
+.lesson-users-table-block {
+    position: relative;
+    width: 480px;
+    max-width: 100%;
+}
+
+.lesson-users-help {
+    position: absolute;
+    left: -9px;
+    bottom: -10px;
+    z-index: 20;
+}
+
+.lesson-users-help summary {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    list-style: none;
+}
+
+.lesson-users-help summary::-webkit-details-marker {
+    display: none;
+}
+
+.lesson-users-help-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #0088d5;
+    color: white;
+    font-weight: bold;
+    font-family: serif;
+    box-shadow: 0 0 0 3px white;
+}
+
+.lesson-users-help-content {
+    position: absolute;
+    top: 24px;
+    left: 0;
+    width: 390px;
+    max-width: calc(100vw - 30px);
+    margin: 0;
+    padding: 8px 10px;
+    border: 1px solid #b7d7ea;
+    background: #f5fbff;
+    font-size: 12px;
+    line-height: 1.8;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .18);
+}
+
+.lesson-users-help-sample {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 20px;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+.lesson-users-help-first {
+    background: forestgreen;
+    color: white;
+}
+
+.lesson-users-help-message {
+    border-radius: 10px;
+    background: #17a2b8;
+    color: white;
+    font-size: 10px;
+}
+
+.lesson-users-help-substitute {
+    background: #ff8e00;
+}
+
+.lesson-users-help-app {
+    border-right: 3px solid #00a8ff;
+    background: #ecf5fd;
+}
+
 
 #AdminBoardSetPob a.page-link {
     padding: 10px 20px;

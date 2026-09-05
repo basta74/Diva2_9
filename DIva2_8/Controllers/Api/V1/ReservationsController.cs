@@ -72,7 +72,8 @@ public sealed class ReservationsController : ControllerBase
             Aktivni = true,
             DoMzdy = true,
             Unix = lessonUnix,
-            Datum = lesson.Datum
+            Datum = lesson.Datum,
+            Device = ReservationDevice.App
         };
         balance.SetZbytekToActualLekceUser(reservation, lesson);
         var loginLog = new UserLekceLogIn(reservation)
@@ -203,7 +204,9 @@ public sealed class ReservationsController : ControllerBase
         lessonService.Update(lesson);
         if (removedWasValid)
         {
-            reservationService.PromoteFirstWaitingListCustomer(lesson.Id);
+            reservationService.PromoteFirstWaitingListCustomer(
+                lesson.Id,
+                canOffer ? reservation.Poradi : null);
         }
         reservationService.AddUserChange(new UserLekceChange
         {

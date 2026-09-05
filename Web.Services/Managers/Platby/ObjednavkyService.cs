@@ -768,7 +768,7 @@ namespace Diva2.Services.Managers.Platby
             ClearZbytekUzivatele(tran.UserId);
         }
 
-        public WaitingListPromotionResult? PromoteFirstWaitingListCustomer(int lessonId)
+        public WaitingListPromotionResult? PromoteFirstWaitingListCustomer(int lessonId, int? freedPosition = null)
         {
             using var transaction = dbContext.Database.BeginTransaction(System.Data.IsolationLevel.Serializable);
             var next = dbContext.Set<LekceUser>()
@@ -782,6 +782,11 @@ namespace Diva2.Services.Managers.Platby
             }
 
             next.NahradnikJa = false;
+            next.Nahradnik = false;
+            if (freedPosition.HasValue)
+            {
+                next.Poradi = freedPosition.Value;
+            }
             var lesson = dbContext.Set<Lekce>().AsNoTracking().First(x => x.Id == lessonId);
             var notification = dbContext.UserNotifications.FirstOrDefault(x =>
                 x.LessonId == lessonId && x.UserId == next.UserId && x.Type == NotificationType.WaitingListPromoted);

@@ -66,7 +66,7 @@ public partial class AddNotifications : Migration
         migrationBuilder.CreateIndex("IX_spin_user_notification_LessonId_UserId_Type", "spin_user_notification", new[] { "LessonId", "UserId", "Type" }, unique: true);
         migrationBuilder.CreateIndex("IX_spin_user_notification_UserId_CreatedAt", "spin_user_notification", new[] { "UserId", "CreatedAt" });
         migrationBuilder.CreateIndex("IX_spin_user_notification_SentAt_Attempts", "spin_user_notification", new[] { "SentAt", "Attempts" });
-        migrationBuilder.CreateIndex("IX_spin_user_notification_delivery_UserNotificationId_UserDeviceId", "spin_user_notification_delivery", new[] { "UserNotificationId", "UserDeviceId" }, unique: true);
+        migrationBuilder.CreateIndex("UX_notification_delivery_notification_device", "spin_user_notification_delivery", new[] { "UserNotificationId", "UserDeviceId" }, unique: true);
         migrationBuilder.CreateIndex("IX_spin_user_notification_delivery_UserDeviceId", "spin_user_notification_delivery", "UserDeviceId");
         migrationBuilder.CreateIndex("IX_spin_user_notification_delivery_SentAt_Attempts", "spin_user_notification_delivery", new[] { "SentAt", "Attempts" });
     }

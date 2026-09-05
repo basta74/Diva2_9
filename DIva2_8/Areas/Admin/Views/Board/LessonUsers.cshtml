@@ -11,6 +11,7 @@
     LekceBoardModel lekce = Model.LekceOneBoard;
 }
 
+<div class="lesson-users-table-block">
 <table class="table-hover" id="tableObjednani" data-id="@Model.Id" style="width: 480px; border: silver solid 1px;" border="1">
     <tbody>
 
@@ -26,7 +27,7 @@
 
             if (obj.ZbytekTyp == "kb")
             {
-                zbClass = "zbB";    
+                zbClass = "zbB";
 
             }
             else
@@ -68,25 +69,20 @@
             string bylTam = obj.BylTam ? "Byl" : "";
             string btnAkt = obj.Aktivni ? "btn-outline-secondary" : "btn-secondary";
             var msg = Model.Messages.Where(d => d.KontrolniCislo == obj.KontCislo).FirstOrDefault();
+            string claa = obj.Device == Diva2.Core.Main.Trans.ReservationDevice.App ? "border-right: solid 3px #00a8ff" : "";
 
+           
 
 
             <tr style="height: 26px; cursor: pointer;" data-user-id="@obj.User.Id" data-id="@obj.Id">
+                <td class="text-center @porClass " style="width: 30px; @claa">
+                    @obj.Poradi
+                    @if (msg != null)
+                    {
+                        <span class="badge badge-pill badge-info jsObjMsg" data-text="@msg.Text">msg</span>
+                    }
 
-
-
-                @if (msg != null)
-                {
-                    <td class="text-center @porClass " style="width: 30px">
-                        @obj.Poradi <span class="badge badge-pill badge-info jsObjMsg" data-text="@msg.Text">msg</span>
-                    </td>
-                }
-                else
-                {
-                    <td class="text-center @porClass " style="width: 30px">
-                        @obj.Poradi
-                    </td>
-                }
+                </td>
 
                 @if (!lekce.Zauctovano)
                 {
@@ -120,6 +116,19 @@
         }
     </tbody>
 </table>
+
+<details class="lesson-users-help">
+    <summary title="Informace k tabulce" aria-label="Zobrazit nebo skrýt informace k tabulce">
+        <span class="lesson-users-help-icon" aria-hidden="true">i</span>
+    </summary>
+    <div class="lesson-users-help-content">
+        <div><span class="lesson-users-help-sample lesson-users-help-first">1</span> Zelené číslo znamená první objednávku uživatele.</div>
+        <div><span class="lesson-users-help-sample lesson-users-help-message">msg</span> Označení „msg“ znamená zprávu k objednávce.</div>
+        <div><span class="lesson-users-help-sample lesson-users-help-substitute"></span> Oranžový řádek znamená objednání jako náhradník.</div>
+        <div><span class="lesson-users-help-sample lesson-users-help-app">1</span> Modrý pravý okraj čísla znamená objednání přes aplikaci.</div>
+    </div>
+</details>
+</div>
 
 <table class="table" style="margin-bottom: -8px;">
     <tbody>

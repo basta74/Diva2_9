@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Diva2_8.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260822162949_AddNotifications")]
-    partial class AddNotifications
+    [Migration("20260823122203_AddReservationDevice")]
+    partial class AddReservationDevice
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -805,8 +805,8 @@ namespace Diva2_8.Data.Migrations
                     b.HasIndex("SentAt", "Attempts");
 
                     b.HasIndex("UserNotificationId", "UserDeviceId")
-                        .HasDatabaseName("UX_notification_delivery_notification_device")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("UX_notification_delivery_notification_device");
 
                     b.ToTable("spin_user_notification_delivery", (string)null);
                 });
@@ -1347,6 +1347,12 @@ namespace Diva2_8.Data.Migrations
                     b.Property<DateTime>("Datum")
                         .HasColumnType("datetime(6)")
                         .HasColumnName("datum");
+
+                    b.Property<byte>("Device")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("tinyint unsigned")
+                        .HasDefaultValue((byte)0)
+                        .HasColumnName("device");
 
                     b.Property<bool>("DoMzdy")
                         .HasColumnType("tinyint(1)")

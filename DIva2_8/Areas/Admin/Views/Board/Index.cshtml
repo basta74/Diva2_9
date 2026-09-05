@@ -106,11 +106,18 @@
                 @foreach (var tyd in Model.RozvrhyObj.Tydny)
                 {
                     weak++;
+                    int weekDayIndex = 0;
+                    int weekDayCount = tyd.Value.Dny.Count;
 
                     @foreach (var den in tyd.Value.Dny)
                     {
                         DateTime denDt = den.Value.Lekces.First().Value.Datum;
                         int day = ((int)denDt.DayOfWeek == 0) ? 7 : (int)denDt.DayOfWeek;
+                        DateTime currentWeekStart = DateTime.Today.AddDays(-(((int)DateTime.Today.DayOfWeek + 6) % 7));
+                        bool isCurrentWeek = denDt.Date >= currentWeekStart && denDt.Date < currentWeekStart.AddDays(7);
+                        string currentWeekClass = isCurrentWeek
+                            ? $"current-week-row{(weekDayIndex == 0 ? " current-week-first" : "")}{(weekDayIndex == weekDayCount - 1 ? " current-week-last" : "")}"
+                            : "";
 
                         string bgClass = (denDt.Date == DateTime.Now.Date) ? "Dnes" : "";
 
@@ -119,7 +126,7 @@
                             bgClass = "Active";
                         }
                         bgClass = "datum" + bgClass;
-                        <tr class="@(weak > 1 ? "d-none d-lg-table-row" : "")">
+                        <tr class="@(weak > 1 ? "d-none d-lg-table-row" : "") @currentWeekClass">
                             <td class="align-middle @bgClass" style="width: 58px">
                                 <a href="/Admin/Home/SetDateBoard/@denDt.ToString("yyyy-MM-dd")" style="color: white;">
                                     <b>@DateTimeExtensions.GetDayShrot(day) @denDt.ToString("dd.M")</b>
@@ -150,6 +157,8 @@
                                 }
                             }
                         </tr>
+
+                        weekDayIndex++;
 
                     }
 

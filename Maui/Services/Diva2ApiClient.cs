@@ -80,6 +80,9 @@ public sealed class Diva2ApiClient
     public async Task<IReadOnlyList<BranchCreditsInfo>> GetMyCreditsAsync(CancellationToken cancellationToken = default)
         => await RequireTenantClient().GetFromJsonAsync<List<BranchCreditsInfo>>("api/v1/credits/me", cancellationToken) ?? [];
 
+    public async Task<IReadOnlyList<NotificationInfo>> GetNotificationsAsync(CancellationToken cancellationToken = default)
+        => await RequireTenantClient().GetFromJsonAsync<List<NotificationInfo>>("api/v1/notifications", cancellationToken) ?? [];
+
     public async Task<IReadOnlyList<LessonParticipantInfo>> GetLessonParticipantsAsync(int branchId, int lessonId, CancellationToken cancellationToken = default)
         => await RequireTenantClient().GetFromJsonAsync<List<LessonParticipantInfo>>($"api/v1/branches/{branchId}/lessons/{lessonId}/participants", cancellationToken) ?? [];
 

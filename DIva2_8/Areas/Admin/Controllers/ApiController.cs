@@ -532,7 +532,16 @@ namespace Diva2Web.Areas.Admin.Controllers
 
                         try
                         {
-                            respId = SendSms(sms);
+                            if (aa.UserId == m.UserId && aa.UserId == 1)
+                            {
+                                sms.Text = "TEST NO SEND-" + sms.Text;
+                                respId = 0;
+                                sms.Credit = 0;
+                            }
+                            else {
+                                respId = SendSms(sms);
+                            }
+                            
                             smsL.Credit = sms.Credit;
                             smsL.Stav = respId;
                             if (respId == 0)
@@ -589,7 +598,9 @@ namespace Diva2Web.Areas.Admin.Controllers
 
                 if (chl.JePlatny)
                 {
-                    objServ.PromoteFirstWaitingListCustomer(lek.Id);
+                    objServ.PromoteFirstWaitingListCustomer(
+                        lek.Id,
+                        m.Akce == "nab" ? obj1.Poradi : null);
                 }
 
 
