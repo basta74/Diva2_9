@@ -1,0 +1,74 @@
+@using Diva2Web.Models.Admin
+@model AdminPageModel
+
+@{
+    var logs = ViewBag.Logs as IReadOnlyList<MobileAppErrorLogModel> ?? Array.Empty<MobileAppErrorLogModel>();
+}
+
+<form method="get" action="/Admin/Rules/Logs" class="form-inline mb-3">
+    <input class="form-control mr-2" type="number" name="userId" value="@ViewBag.UserId" placeholder="ID uživatele" />
+    <input class="form-control mr-2" type="number" name="lessonId" value="@ViewBag.LessonId" placeholder="ID lekce" />
+    <input class="form-control mr-2" type="text" name="text" value="@ViewBag.Text" placeholder="Chyba, stránka nebo akce" />
+    <button class="btn btn-primary" type="submit">Filtrovat</button>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-hover table-sm">
+        <thead>
+            <tr>
+                <th>Čas</th>
+                <th>Uživatel</th>
+                <th>Lekce</th>
+                <th>Zařízení</th>
+                <th>Aplikace</th>
+                <th>Stránka / akce</th>
+                <th>Chyba</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var log in logs)
+            {
+                <tr>
+                    <td>
+                        @log.OccurredAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm:ss")
+                        <br /><small>přijato @log.ReceivedAt.ToLocalTime().ToString("HH:mm:ss")</small>
+                    </td>
+                    <td>
+                        <a href="/Admin/Customer/Detail/@log.UserId">@log.UserId – @log.UserName</a>
+                        <br /><small>@log.UserEmail</small>
+                    </td>
+                    <td>
+                        @if (log.LessonId.HasValue)
+                        {
+                            <span>@log.LessonId – @log.LessonName</span>
+                            @if (log.LessonStartsAt.HasValue)
+                            {
+                                <br /><small>@log.LessonStartsAt.Value.ToString("dd.MM.yyyy HH:mm")</small>
+                            }
+                        }
+                    </td>
+                    <td>@log.DeviceManufacturer @log.DeviceModel<br /><small>@log.Platform @log.OsVersion</small></td>
+                    <td>@log.AppVersion<br /><small>build @log.AppBuild</small></td>
+                    <td>@log.Page<br /><small>@log.Action</small></td>
+                    <td style="min-width: 320px">
+                        <b>@log.ExceptionType</b><br />
+                        @log.Message
+                        @if (!string.IsNullOrWhiteSpace(log.StackTrace) || !string.IsNullOrWhiteSpace(log.InnerException))
+                        {
+                            <details class="mt-1">
+                                <summary>Technický detail</summary>
+                                <pre style="white-space: pre-wrap">@log.StackTrace
+@log.InnerException</pre>
+                            </details>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (logs.Count == 0)
+{
+    <p>Žádné chyby nebyly nalezeny.</p>
+}

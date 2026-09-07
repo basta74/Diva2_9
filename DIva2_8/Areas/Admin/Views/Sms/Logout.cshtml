@@ -25,6 +25,7 @@
 
         <th>Existuje náhr.</th>
         <th>Je zák. v lekci</th>
+        <th>Přihlášen</th>
         <th>Brána akt?</th>
         <th>Komu posláno</th>
         <th>Odesláno</th>
@@ -46,25 +47,34 @@
                 <td>@Html.Raw(l.JePlatny ? "<span style='color: green'><b>ano</b></span>" : "<span style='color: red'>ne</span>")</td>
                 @if (l.JePlatny)
                 {
-                    <td>@Html.Raw(l.SmsActive ? "<span style='color: green'><b>ano</b></span>" : "<span style='color: red'>ne</span>")</td>
-                    if (l.SmsActive)
+                    if (l.SmsStatus == -2)
                     {
-                        <td class="jmeno" style="cursor: pointer" data-id="@l.SmsUserId"> id: @l.SmsUserId</td>
-                        <td>@Html.Raw(l.SmsStatus == 0 ? "<span style='color: green'><b>ano</b></span>" : $"<span style='color: red'>chyba {l.SmsStatus}</span>")</td>
+                        <td><span style='color: green'><b>app</b></span></td>
+                        <td colspan="3"></td>
                     }
                     else
                     {
-                        <td colspan="2"></td>
+                        <td>web</td>
+                        <td>@Html.Raw(l.SmsActive ? "<span style='color: green'><b>ano</b></span>" : "<span style='color: red'>ne</span>")</td>
+                        if (l.SmsActive)
+                        {
+                            <td class="jmeno" style="cursor: pointer" data-id="@l.SmsUserId"> id: @l.SmsUserId</td>
+                            <td>@Html.Raw(l.SmsStatus == 0 ? "<span style='color: green'><b>ano</b></span>" : $"<span style='color: red'>chyba {l.SmsStatus}</span>")</td>
+                        }
+                        else
+                        {
+                            <td colspan="2"></td>
+                        }
                     }
                 }
                 else
                 {
-                    <td colspan="3"></td>
+                    <td colspan="4"></td>
                 }
             }
             else
             {
-                <td colspan="4"></td>
+                <td colspan="5"></td>
             }
             <td>@l.TsCz</td>
 

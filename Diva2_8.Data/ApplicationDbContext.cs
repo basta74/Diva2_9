@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using Diva2.Core.Main.Notifications;
+using Diva2.Core.Main.Diagnostics;
 
 public class ApplicationDbContext : IdentityDbContext<User8, Role8, int, IdentityUserClaim<int>, UserRoles8, IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>
 {
@@ -78,6 +79,7 @@ public class ApplicationDbContext : IdentityDbContext<User8, Role8, int, Identit
     public DbSet<UserNotification> UserNotifications => Set<UserNotification>();
     public DbSet<NotificationDelivery> NotificationDeliveries => Set<NotificationDelivery>();
     public DbSet<UserDevice> UserDevices => Set<UserDevice>();
+    public DbSet<MobileAppError> MobileAppErrors => Set<MobileAppError>();
 
 }
 

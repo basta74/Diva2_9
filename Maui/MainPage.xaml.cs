@@ -7,6 +7,11 @@ namespace Diva2Maui;
 
 public partial class MainPage : ContentPage
 {
+    private static readonly HashSet<string> HiddenTenantIds = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "la"
+    };
+
     private readonly Diva2ApiClient apiClient = new();
     private readonly List<TenantInfo> allTenants = [];
     private readonly ObservableCollection<TenantInfo> visibleTenants = [];
@@ -48,7 +53,7 @@ public partial class MainPage : ContentPage
             }
 
             ApplyFilter(TenantSearch.Text);
-            EmptyText.Text = allTenants.Count == 0 ? "Nebyli nalezeni žádní provozovatelé." : "";
+            EmptyText.Text = visibleTenants.Count == 0 ? "Nebyli nalezeni žádní provozovatelé." : "";
         }
         catch (Exception ex)
         {
@@ -66,7 +71,17 @@ public partial class MainPage : ContentPage
     private void ApplyFilter(string? query)
     {
         var text = query?.Trim() ?? "";
-        var items = allTenants.Where(x => text.Length == 0 || x.Name.Contains(text, StringComparison.CurrentCultureIgnoreCase) || x.Id.Contains(text, StringComparison.OrdinalIgnoreCase));
+        var showHiddenTenant = text.Equals("la", StringComparison.OrdinalIgnoreCase)
+            || text.Equals("la.diva2.cz", StringComparison.OrdinalIgnoreCase)
+            || text.Equals("https://la.diva2.cz", StringComparison.OrdinalIgnoreCase)
+            || text.Equals("https://la.diva2.cz/", StringComparison.OrdinalIgnoreCase);
+        var items = allTenants.Where(x =>
+            (!HiddenTenantIds.Contains(x.Id) || showHiddenTenant)
+            && (text.Length == 0
+                || x.Name.Contains(text, StringComparison.CurrentCultureIgnoreCase)
+                || x.Id.Contains(text, StringComparison.OrdinalIgnoreCase)
+                || x.BaseUrl.Contains(text, StringComparison.OrdinalIgnoreCase)
+                || (showHiddenTenant && HiddenTenantIds.Contains(x.Id))));
         visibleTenants.Clear();
         foreach (var item in items) visibleTenants.Add(item);
     }

@@ -94,3 +94,21 @@ public sealed class ApiLessonTypeInfo
     public string Abbreviation { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
 }
+
+public sealed class ApiMobileAppErrorRequest
+{
+    public int? LessonId { get; set; }
+    public DateTimeOffset? OccurredAt { get; set; }
+    public string Platform { get; set; } = string.Empty;
+    public string OsVersion { get; set; } = string.Empty;
+    public string DeviceManufacturer { get; set; } = string.Empty;
+    public string DeviceModel { get; set; } = string.Empty;
+    public string AppVersion { get; set; } = string.Empty;
+    public string AppBuild { get; set; } = string.Empty;
+    public string Page { get; set; } = string.Empty;
+    public string Action { get; set; } = string.Empty;
+    public string ExceptionType { get; set; } = string.Empty;
+    public string Message { get; set; } = string.Empty;
+    public string StackTrace { get; set; } = string.Empty;
+    public string InnerException { get; set; } = string.Empty;
+}

@@ -92,7 +92,7 @@ namespace Diva2Web.Models.Lekces
 
         public DateTime? ZauctovanoDate { get; set; }
 
-        public IList<LekceUserModel> Zakaznici { get; set; }
+        public IList<LekceUserModel> Zakaznici { get; set; } = new List<LekceUserModel>();
 
         public LekceVideo Video { get; set; }
 

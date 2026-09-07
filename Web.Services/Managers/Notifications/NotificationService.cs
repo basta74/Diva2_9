@@ -16,7 +16,7 @@ public sealed class NotificationService : INotificationService
 
     public async Task<IReadOnlyList<UserNotification>> GetForUserAsync(int userId, CancellationToken cancellationToken) =>
         await db.UserNotifications.AsNoTracking()
-            .Where(x => x.UserId == userId)
+            .Where(x => x.UserId == userId && x.DismissedAt == null)
             .Include(x => x.Lesson)
             .OrderByDescending(x => x.CreatedAt)
             .Take(200)
@@ -46,6 +46,14 @@ public sealed class NotificationService : INotificationService
             x.ReadAt ??= DateTime.UtcNow;
         }, cancellationToken);
 
+    public Task<bool> DismissAsync(int notificationId, int userId, CancellationToken cancellationToken) =>
+        UpdateAsync(notificationId, userId, x => x.Reaction != NotificationReaction.None, x =>
+        {
+            x.DeliveredAt ??= DateTime.UtcNow;
+            x.ReadAt ??= DateTime.UtcNow;
+            x.DismissedAt = DateTime.UtcNow;
+        }, cancellationToken);
+
     public Task<bool> ReactAsync(int notificationId, int userId, NotificationReaction reaction, CancellationToken cancellationToken) =>
         UpdateAsync(notificationId, userId, x =>
         {
@@ -53,12 +61,27 @@ public sealed class NotificationService : INotificationService
             x.ReadAt ??= DateTime.UtcNow;
             x.Reaction = reaction;
             x.ReactedAt = DateTime.UtcNow;
+            x.DismissedAt = DateTime.UtcNow;
         }, cancellationToken);
 
     private async Task<bool> UpdateAsync(int notificationId, int userId, Action<UserNotification> update, CancellationToken cancellationToken)
     {
+        return await UpdateAsync(notificationId, userId, _ => true, update, cancellationToken);
+    }
+
+    private async Task<bool> UpdateAsync(
+        int notificationId,
+        int userId,
+        Func<UserNotification, bool> canUpdate,
+        Action<UserNotification> update,
+        CancellationToken cancellationToken)
+    {
         var notification = await db.UserNotifications.FirstOrDefaultAsync(x => x.Id == notificationId && x.UserId == userId, cancellationToken);
-        if (notification is null) return false;
+        if (notification is null || !canUpdate(notification))
+        {
+            return false;
+        }
+
         update(notification);
         await db.SaveChangesAsync(cancellationToken);
         return true;

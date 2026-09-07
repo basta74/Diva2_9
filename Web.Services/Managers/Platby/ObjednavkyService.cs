@@ -782,7 +782,6 @@ namespace Diva2.Services.Managers.Platby
             }
 
             next.NahradnikJa = false;
-            next.Nahradnik = false;
             if (freedPosition.HasValue)
             {
                 next.Poradi = freedPosition.Value;
@@ -803,6 +802,23 @@ namespace Diva2.Services.Managers.Platby
                     Reaction = NotificationReaction.None
                 };
                 dbContext.UserNotifications.Add(notification);
+            }
+            else
+            {
+                dbContext.NotificationDeliveries
+                    .Where(x => x.UserNotificationId == notification.Id)
+                    .ExecuteDelete();
+                notification.Title = "Uvolnilo se místo";
+                notification.Text = $"Na lekci {lesson.Nazev} {lesson.DatumHodina:dd.MM. yyyy HH:mm} jste se posunuli z náhradníků mezi zákazníky.";
+                notification.CreatedAt = DateTime.UtcNow;
+                notification.SentAt = null;
+                notification.DeliveredAt = null;
+                notification.ReadAt = null;
+                notification.ReactedAt = null;
+                notification.DismissedAt = null;
+                notification.Reaction = NotificationReaction.None;
+                notification.Error = null;
+                notification.Attempts = 0;
             }
 
             dbContext.SaveChanges();

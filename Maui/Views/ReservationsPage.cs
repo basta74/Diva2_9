@@ -8,8 +8,7 @@ public partial class ReservationsPage : ContentPage
 {
     private readonly Diva2ApiClient apiClient;
     private readonly ObservableCollection<MyReservationInfo> reservations = [];
-    private bool loaded;
-    private int loadedReservationVersion = -1;
+    private bool isLoading;
 
     public ReservationsPage(Diva2ApiClient apiClient)
     {
@@ -23,25 +22,33 @@ public partial class ReservationsPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        if (loaded && loadedReservationVersion == apiClient.ReservationVersion)
+        await LoadReservationsAsync();
+    }
+
+    private async Task LoadReservationsAsync()
+    {
+        if (isLoading)
         {
             return;
         }
 
-        reservations.Clear();
+        isLoading = true;
         try
         {
-            foreach (var reservation in await apiClient.GetMyReservationsAsync())
+            var currentReservations = await apiClient.GetMyReservationsAsync();
+            reservations.Clear();
+            foreach (var reservation in currentReservations)
             {
                 reservations.Add(reservation);
             }
-
-            loaded = true;
-            loadedReservationVersion = apiClient.ReservationVersion;
         }
         catch (Exception ex)
         {
             await DisplayAlertAsync("Moje objednávky", ex.Message, "OK");
+        }
+        finally
+        {
+            isLoading = false;
         }
     }
 
@@ -55,6 +62,16 @@ public partial class ReservationsPage : ContentPage
         ReservationsView.SelectedItem = null;
         try
         {
+            var currentReservation = (await apiClient.GetMyReservationsAsync())
+                .FirstOrDefault(item => item.LessonId == reservation.LessonId);
+            if (currentReservation is null)
+            {
+                reservations.Remove(reservation);
+                await DisplayAlertAsync("Objednávka zrušena", "Na této hodině už nejste přihlášeni. Seznam byl aktualizován.", "OK");
+                return;
+            }
+
+            reservation = currentReservation;
             var lesson = (await apiClient.GetLessonsAsync(reservation.BranchId))
                 .FirstOrDefault(item => item.Id == reservation.LessonId);
             if (lesson is null)

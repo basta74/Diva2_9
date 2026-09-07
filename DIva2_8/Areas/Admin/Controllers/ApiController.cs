@@ -486,7 +486,12 @@ namespace Diva2Web.Areas.Admin.Controllers
 
                         var nextZak = objs.Where(d => d.Poradi > lek.PocetMist).OrderBy(d => d.Poradi).FirstOrDefault();
                         chl.SmsUserId = nextZak.UserId;
-                        if (nextZak.UserId != obj1.UserId)
+                        if (nextZak.Device == ReservationDevice.App)
+                        {
+                            chl.SmsStatus = -2;
+                        }
+
+                        if (nextZak.UserId != obj1.UserId && nextZak.Device != ReservationDevice.App)
                         {
                             if (aa.MainIniCover.MainIniObj.SmsActive)
                             {
@@ -593,7 +598,6 @@ namespace Diva2Web.Areas.Admin.Controllers
                 {
                     obj1.Aktivni = false;
                     objServ.Update(obj1);
-                    objServ.Delete(msg);
                 }
 
                 if (chl.JePlatny)

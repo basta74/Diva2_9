@@ -45,6 +45,10 @@ public sealed class NotificationsController : ControllerBase
     public async Task<IActionResult> Read(int id, CancellationToken cancellationToken) =>
         await notifications.MarkReadAsync(id, UserId, cancellationToken) ? NoContent() : NotFound();
 
+    [HttpPost("{id:int}/dismiss")]
+    public async Task<IActionResult> Dismiss(int id, CancellationToken cancellationToken) =>
+        await notifications.DismissAsync(id, UserId, cancellationToken) ? NoContent() : NotFound();
+
     [HttpPost("{id:int}/react")]
     public async Task<IActionResult> React(int id, [FromBody] ReactRequest request, CancellationToken cancellationToken)
     {

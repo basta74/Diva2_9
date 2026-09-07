@@ -16,6 +16,7 @@ public sealed class UserNotification : BaseEntity
     public DateTime? SentAt { get; set; }
     public DateTime? DeliveredAt { get; set; }
     public DateTime? ReadAt { get; set; }
+    public DateTime? DismissedAt { get; set; }
     public DateTime? ReactedAt { get; set; }
     public NotificationReaction Reaction { get; set; }
     public string? Error { get; set; }

@@ -7,7 +7,10 @@ namespace Diva2Maui.Views;
 
 public partial class HomePage : ContentPage
 {
+    private static readonly TimeSpan ReminderDelay = TimeSpan.FromMinutes(5);
     private readonly Diva2ApiClient apiClient;
+    private readonly Action<int> updateBadge;
+    private readonly Dictionary<int, CancellationTokenSource> reminderTimers = [];
     private bool isLoading;
     private string statusText = "";
 
@@ -24,10 +27,11 @@ public partial class HomePage : ContentPage
         private set { if (statusText != value) { statusText = value; OnPropertyChanged(); } }
     }
 
-    public HomePage(Diva2ApiClient apiClient, string displayName)
+    public HomePage(Diva2ApiClient apiClient, string displayName, Action<int> updateBadge)
     {
         InitializeComponent();
         this.apiClient = apiClient;
+        this.updateBadge = updateBadge;
         RefreshCommand = new Command(async () => await LoadNotificationsAsync());
         BindingContext = this;
         IdentityHeader.DisplayName = displayName;
@@ -52,6 +56,9 @@ public partial class HomePage : ContentPage
             var items = await apiClient.GetNotificationsAsync();
             Notifications.Clear();
             foreach (var item in items.OrderByDescending(x => x.CreatedAt)) Notifications.Add(item);
+            UpdateBadge();
+            await MarkVisibleNotificationsReadAsync();
+            ScheduleReminders();
             StatusText = Notifications.Count == 0 ? "" : $"Celkem {Notifications.Count}";
         }
         catch (Exception ex)
@@ -63,6 +70,134 @@ public partial class HomePage : ContentPage
             IsLoading = false;
         }
     }
+
+    private async Task MarkVisibleNotificationsReadAsync()
+    {
+        foreach (var item in Notifications.Where(x => x.ReadAt is null).ToList())
+        {
+            try
+            {
+                await apiClient.MarkNotificationReadAsync(item.Id);
+                item.ReadAt = DateTimeOffset.Now;
+            }
+            catch
+            {
+                // Oznámení zůstane označené jako nepřečtené a další obnovení stav odešle znovu.
+            }
+        }
+    }
+
+    private void ScheduleReminders()
+    {
+        foreach (var item in Notifications.Where(x => x.IsAwaitingReaction))
+        {
+            if (reminderTimers.ContainsKey(item.Id)) continue;
+            var cancellation = new CancellationTokenSource();
+            reminderTimers[item.Id] = cancellation;
+            _ = RemindAfterDelayAsync(item, cancellation.Token);
+        }
+    }
+
+    private async Task RemindAfterDelayAsync(NotificationInfo item, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var elapsed = item.ReadAt is null ? TimeSpan.Zero : DateTimeOffset.Now - item.ReadAt.Value;
+            var remaining = ReminderDelay - elapsed;
+            if (remaining > TimeSpan.Zero) await Task.Delay(remaining, cancellationToken);
+            if (cancellationToken.IsCancellationRequested || !item.IsAwaitingReaction) return;
+
+            item.ReminderActive = true;
+            UpdateBadge();
+            await DisplayAlertAsync("Čeká na odpověď", $"{item.Title}\n\nZvolte prosím Mám zájem nebo Nemám zájem.", "Rozumím");
+        }
+        catch (OperationCanceledException)
+        {
+        }
+    }
+
+    private async void OnAcceptClicked(object? sender, EventArgs e) => await ReactAsync(sender, "Confirmed");
+    private async void OnDeclineClicked(object? sender, EventArgs e) => await ReactAsync(sender, "Declined");
+
+    private async void OnDismissClicked(object? sender, EventArgs e)
+    {
+        if (sender is not Button { CommandParameter: NotificationInfo item })
+        {
+            return;
+        }
+
+        await DismissAsync(item);
+    }
+
+    private async void OnDismissSwipeInvoked(object? sender, EventArgs e)
+    {
+        if (sender is not SwipeItem { CommandParameter: NotificationInfo item })
+        {
+            return;
+        }
+
+        if (item.IsAwaitingReaction)
+        {
+            await DisplayAlertAsync("Nejdříve odpovězte", "Oznámení lze smazat až po odpovědi Mám zájem nebo Nemám zájem.", "OK");
+            return;
+        }
+
+        await DismissAsync(item);
+    }
+
+    private async Task DismissAsync(NotificationInfo item)
+    {
+        try
+        {
+            await apiClient.DismissNotificationAsync(item.Id);
+            if (reminderTimers.Remove(item.Id, out var timer))
+            {
+                timer.Cancel();
+                timer.Dispose();
+            }
+
+            Notifications.Remove(item);
+            UpdateBadge();
+            StatusText = Notifications.Count == 0 ? "" : $"Celkem {Notifications.Count}";
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlertAsync("Oznámení se nepodařilo skrýt", ex.Message, "OK");
+        }
+    }
+
+    private async Task ReactAsync(object? sender, string reaction)
+    {
+        if (sender is not Button { CommandParameter: NotificationInfo item } || item.IsResponding)
+        {
+            return;
+        }
+
+        item.IsResponding = true;
+        try
+        {
+            await apiClient.ReactToNotificationAsync(item.Id, reaction);
+            if (reminderTimers.Remove(item.Id, out var timer))
+            {
+                timer.Cancel();
+                timer.Dispose();
+            }
+
+            Notifications.Remove(item);
+            UpdateBadge();
+            StatusText = Notifications.Count == 0 ? "" : $"Celkem {Notifications.Count}";
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlertAsync("Odpověď se neodeslala", ex.Message, "OK");
+        }
+        finally
+        {
+            item.IsResponding = false;
+        }
+    }
+
+    private void UpdateBadge() => updateBadge(Notifications.Count(x => x.IsAwaitingReaction));
 
     private static string GetTenantDomain(Diva2ApiClient apiClient)
     {

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Diva2Web.Infrastructure;
+using Diva2.Services.Managers.Notifications;
 using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -61,6 +62,7 @@ builder.Services.AddScoped<IPasswordHasher<User8>, SHA1PasswordHasher>();
 // společný základ a rezervační doména
 builder.Services.AddDiva2PlatformServices();
 builder.Services.AddDiva2ReservationServices();
+builder.Services.AddSingleton<IPushNotificationProvider, FirebasePushNotificationProvider>();
 builder.Services.AddHostedService<NotificationDispatchWorker>();
 
 // webová implementace kontextu zůstává ve webové aplikaci

@@ -273,6 +273,7 @@ namespace Diva2Web.Models.Admin
             mnPrava.Items.Add(new MenuItem() { Text = "Role", Url = "Roles", Pravo = "role_view" });
             mnPrava.Items.Add(new MenuItem() { Text = "Účty", Url = "Accounts", Pravo = "role_view" });
             mnPrava.Items.Add(new MenuItem() { Text = "Admin", Url = "AdminThings", Pravo = "all_able" });
+            mnPrava.Items.Add(new MenuItem() { Text = "Logy aplikace", Url = "Logs", Pravo = "all_able" });
 
             MenuItem mnHelp = new MenuItem() { Area = "Help", Text = "Help", Url = "Help" };
             mnHelp.Items = new List<MenuItem>

@@ -17,6 +17,7 @@ internal sealed class UserNotificationMap : IEntityTypeConfiguration<UserNotific
         builder.Property(x => x.Error).HasMaxLength(2000);
         builder.HasIndex(x => new { x.LessonId, x.UserId, x.Type }).IsUnique();
         builder.HasIndex(x => new { x.UserId, x.CreatedAt });
+        builder.HasIndex(x => new { x.UserId, x.DismissedAt });
         builder.HasIndex(x => new { x.SentAt, x.Attempts });
         builder.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
         builder.HasOne(x => x.Lesson).WithMany().HasForeignKey(x => x.LessonId).OnDelete(DeleteBehavior.SetNull);

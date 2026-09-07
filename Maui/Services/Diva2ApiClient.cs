@@ -48,6 +48,7 @@ public sealed class Diva2ApiClient
         await SecureStorage.Default.SetAsync(TokenExpiryKey(selectedTenant.Id), login.ExpiresAt.ToString("O"));
         Preferences.Default.Set(DisplayNameKey(selectedTenant.Id), login.DisplayName);
         DisplayName = login.DisplayName;
+        await PushNotificationRegistration.RegisterAsync(this, cancellationToken);
         return login;
     }
 
@@ -64,6 +65,7 @@ public sealed class Diva2ApiClient
 
         tenantClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         DisplayName = Preferences.Default.Get(DisplayNameKey(selectedTenant.Id), selectedTenant.Name);
+        await PushNotificationRegistration.RegisterAsync(this);
         return DisplayName;
     }
 
@@ -82,6 +84,36 @@ public sealed class Diva2ApiClient
 
     public async Task<IReadOnlyList<NotificationInfo>> GetNotificationsAsync(CancellationToken cancellationToken = default)
         => await RequireTenantClient().GetFromJsonAsync<List<NotificationInfo>>("api/v1/notifications", cancellationToken) ?? [];
+
+    public async Task MarkNotificationReadAsync(int notificationId, CancellationToken cancellationToken = default)
+    {
+        using var response = await RequireTenantClient().PostAsync($"api/v1/notifications/{notificationId}/read", null, cancellationToken);
+        await EnsureSuccessAsync(response, cancellationToken);
+    }
+
+    public async Task DismissNotificationAsync(int notificationId, CancellationToken cancellationToken = default)
+    {
+        using var response = await RequireTenantClient().PostAsync($"api/v1/notifications/{notificationId}/dismiss", null, cancellationToken);
+        await EnsureSuccessAsync(response, cancellationToken);
+    }
+
+    public async Task ReactToNotificationAsync(int notificationId, string reaction, CancellationToken cancellationToken = default)
+    {
+        using var response = await RequireTenantClient().PostAsJsonAsync(
+            $"api/v1/notifications/{notificationId}/react",
+            new { reaction },
+            cancellationToken);
+        await EnsureSuccessAsync(response, cancellationToken);
+    }
+
+    public async Task RegisterDeviceAsync(string pushToken, CancellationToken cancellationToken = default)
+    {
+        using var response = await RequireTenantClient().PostAsJsonAsync(
+            "api/v1/notifications/devices",
+            new { pushToken, platform = "Android" },
+            cancellationToken);
+        await EnsureSuccessAsync(response, cancellationToken);
+    }
 
     public async Task<IReadOnlyList<LessonParticipantInfo>> GetLessonParticipantsAsync(int branchId, int lessonId, CancellationToken cancellationToken = default)
         => await RequireTenantClient().GetFromJsonAsync<List<LessonParticipantInfo>>($"api/v1/branches/{branchId}/lessons/{lessonId}/participants", cancellationToken) ?? [];
@@ -103,11 +135,27 @@ public sealed class Diva2ApiClient
         using var response = await RequireTenantClient().DeleteAsync($"api/v1/reservations/lessons/{lessonId}", cancellationToken);
         var result = await response.Content.ReadFromJsonAsync<CreateReservationResponse>(cancellationToken)
             ?? new CreateReservationResponse { Message = $"Server vrátil chybu {(int)response.StatusCode}." };
+        if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+        {
+            InvalidateReservations(branchId);
+            return new CreateReservationResponse
+            {
+                Success = true,
+                Message = "Na této hodině už nejste přihlášeni. Seznam byl aktualizován."
+            };
+        }
+
         if (!response.IsSuccessStatusCode || !result.Success)
         {
             throw new InvalidOperationException(string.IsNullOrWhiteSpace(result.Message) ? "Odhlášení se nepodařilo." : result.Message);
         }
 
+        InvalidateReservations(branchId);
+        return result;
+    }
+
+    private void InvalidateReservations(int branchId)
+    {
         try
         {
             File.Delete(LessonCacheFile(branchId));
@@ -117,7 +165,6 @@ public sealed class Diva2ApiClient
         }
 
         ReservationVersion++;
-        return result;
     }
 
     public async Task<IReadOnlyList<LessonInfo>> GetLessonsAsync(int branchId, CancellationToken cancellationToken = default)

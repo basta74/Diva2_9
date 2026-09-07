@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using Diva2.Core.Main.Lessons;
 
 namespace Diva2Web.Areas.Admin.Controllers
 {
@@ -235,6 +237,94 @@ namespace Diva2Web.Areas.Admin.Controllers
 
             ViewBag.CaheItems = caches;
 
+            return View(aa);
+        }
+
+        [HttpGet("/Admin/Rules/Logs")]
+        public async Task<IActionResult> Logs(int? userId, int? lessonId, string text, CancellationToken cancellationToken)
+        {
+            SetMainPageValues();
+
+            if (!aa.User.Id.HasValue)
+            {
+                return Redirect("/Account/Login");
+            }
+
+            if (!aa.User.HasRule("all_able"))
+            {
+                return Redirect("/Admin/Home/NoRule");
+            }
+
+            var query = dbContext.MobileAppErrors.AsNoTracking().AsQueryable();
+            if (userId.HasValue)
+            {
+                query = query.Where(x => x.UserId == userId.Value);
+            }
+
+            if (lessonId.HasValue)
+            {
+                query = query.Where(x => x.LessonId == lessonId.Value);
+            }
+
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                var search = text.Trim();
+                query = query.Where(x => x.Message.Contains(search)
+                    || x.ExceptionType.Contains(search)
+                    || x.Page.Contains(search)
+                    || x.Action.Contains(search));
+            }
+
+            var errors = await query
+                .OrderByDescending(x => x.ReceivedAt)
+                .Take(500)
+                .ToListAsync(cancellationToken);
+            var userIds = errors.Select(x => x.UserId).Distinct().ToList();
+            var lessonIds = errors.Where(x => x.LessonId.HasValue).Select(x => x.LessonId!.Value).Distinct().ToList();
+            var users = await dbContext.Users.AsNoTracking()
+                .Where(x => userIds.Contains(x.Id))
+                .ToDictionaryAsync(x => x.Id, cancellationToken);
+            var lessons = await dbContext.Set<Lekce>().AsNoTracking()
+                .Where(x => lessonIds.Contains(x.Id))
+                .ToDictionaryAsync(x => x.Id, cancellationToken);
+
+            var logs = errors.Select(error =>
+            {
+                users.TryGetValue(error.UserId, out var user);
+                var lesson = error.LessonId.HasValue && lessons.TryGetValue(error.LessonId.Value, out var foundLesson)
+                    ? foundLesson
+                    : null;
+                return new MobileAppErrorLogModel
+                {
+                    Id = error.Id,
+                    UserId = error.UserId,
+                    UserName = user == null ? string.Empty : $"{user.Prijmeni} {user.Jmeno}".Trim(),
+                    UserEmail = user?.Email ?? string.Empty,
+                    LessonId = error.LessonId,
+                    LessonName = lesson?.Nazev ?? string.Empty,
+                    LessonStartsAt = lesson?.DatumHodina,
+                    OccurredAt = error.OccurredAt,
+                    ReceivedAt = error.ReceivedAt,
+                    Platform = error.Platform,
+                    OsVersion = error.OsVersion,
+                    DeviceManufacturer = error.DeviceManufacturer,
+                    DeviceModel = error.DeviceModel,
+                    AppVersion = error.AppVersion,
+                    AppBuild = error.AppBuild,
+                    Page = error.Page,
+                    Action = error.Action,
+                    ExceptionType = error.ExceptionType,
+                    Message = error.Message,
+                    StackTrace = error.StackTrace,
+                    InnerException = error.InnerException
+                };
+            }).ToList();
+
+            aa.Title = "Chyby mobilní aplikace";
+            ViewBag.Logs = logs;
+            ViewBag.UserId = userId;
+            ViewBag.LessonId = lessonId;
+            ViewBag.Text = text;
             return View(aa);
         }
 
