@@ -24,7 +24,10 @@ public partial class LessonsPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        if (lessons.Count > 0) return;
+        if (lessons.Count > 0)
+        {
+            return;
+        }
         try
         {
             foreach (var lesson in await apiClient.GetLessonsAsync(branch.Id))

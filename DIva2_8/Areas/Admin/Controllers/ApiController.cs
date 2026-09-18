@@ -1105,7 +1105,6 @@ namespace Diva2Web.Areas.Admin.Controllers
                     break;
                 }
 
-                bool isOk = false;
 
                 HashSet<int> pokladny = new HashSet<int>();
 

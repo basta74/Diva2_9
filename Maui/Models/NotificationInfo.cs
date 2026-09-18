@@ -22,7 +22,10 @@ public sealed class NotificationInfo : BindableObject
         get => readAt;
         set
         {
-            if (readAt == value) return;
+            if (readAt == value)
+            {
+                return;
+            }
             readAt = value;
             OnPropertyChanged();
             OnPropertyChanged(nameof(IsUnread));
@@ -41,7 +44,10 @@ public sealed class NotificationInfo : BindableObject
         set
         {
             var normalized = string.IsNullOrWhiteSpace(value) ? "None" : value;
-            if (reaction == normalized) return;
+            if (reaction == normalized)
+            {
+                return;
+            }
             reaction = normalized;
             OnPropertyChanged();
             OnPropertyChanged(nameof(IsAwaitingReaction));

@@ -80,7 +80,7 @@
                                        TextColor="Gray" />
                                 <HorizontalStackLayout Spacing="10"
                                                        IsVisible="{Binding IsAwaitingReaction}">
-                                    <Button Text="Mám zájem"
+                                    <Button Text="Potvrzuji"
                                             BackgroundColor="#1FA64A"
                                             TextColor="White"
                                             IsEnabled="{Binding CanRespond}"

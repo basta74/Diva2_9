@@ -27,6 +27,83 @@ public sealed class ReservationsController : ControllerBase
         this.branchService = branchService;
     }
 
+    [HttpGet("lessons/{lessonId:int}/payment-preview")]
+    public ActionResult<ApiLessonPaymentPreview> GetPaymentPreview(int lessonId)
+    {
+        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var lesson = lessonService.GetById(lessonId);
+        if (lesson is null)
+        {
+            return NotFound();
+        }
+        var branch = branchService.GetPobocky().FirstOrDefault(item => item.Id == lesson.PobockaId && item.Visible);
+        if (branch is null)
+        {
+            return NotFound();
+        }
+        return Ok(BuildPaymentPreview(userId, lessonId, branch.Id, branch.PokladnaId));
+    }
+
+    private ApiLessonPaymentPreview BuildPaymentPreview(int userId, int lessonId, int branchId, int cashDeskId)
+    {
+        var lesson = lessonService.GetById(lessonId);
+        reservationService.ClearObjednaneLekceUzivatele(userId);
+        var reservations = reservationService.GetObjednaneLekceUzivatele(userId)
+            .Where(item => item.Aktivni && item.Lekce is not null && !item.Lekce.Zauctovano
+                && item.PokladnaId == cashDeskId).ToList();
+        var balance = reservationService.GetZbytekUzivatele(userId, false);
+        var orderCount = reservationService.GetPocetObjednavekUzivatele(userId);
+        var sources = balance.KredityCas.Where(item => item.PokladnaId == cashDeskId && item.Platny && item.Kredit > 0)
+            .Select(item => new LessonCreditSource
+            {
+                Id = item.Id,
+                Credits = item.Kredit,
+                PeopleLimit = item.PocetLidi,
+                PurchasedAt = DateTimeExtensions.FromUnix(item.KreditUnixTime),
+                ValidFrom = item.PlatnostOd,
+                ValidTo = item.PlatnostDo,
+                IsActive = item.Aktivni,
+                Months = item.PocetMesicu,
+                PausedAt = item.PlatnostUnixBreak > 0 ? DateTimeExtensions.FromUnix(item.PlatnostUnixBreak.Value) : null
+            });
+        var demands = reservations.Select(item => new LessonCreditDemand
+        {
+            LessonId = item.LekceId,
+            StartsAt = item.Lekce.DatumHodina,
+            Credits = item.Lekce.Kredit,
+            AllowTime = GetSettingBool(item.PobockaId, "kreditCasovy"),
+            AllowUnlimited = GetSettingBool(item.PobockaId, "kreditNeomezeny")
+        });
+        var requested = new LessonCreditDemand
+        {
+            LessonId = lessonId,
+            StartsAt = lesson.DatumHodina,
+            Credits = lesson.Kredit,
+            AllowTime = GetSettingBool(branchId, "kreditCasovy"),
+            AllowUnlimited = GetSettingBool(branchId, "kreditNeomezeny")
+        };
+        var preview = LessonPaymentCalculator.Calculate(requested, sources, balance.KredityItem(cashDeskId),
+            GetSettingInt(branchId, orderCount > 0 ? "maxKreditDoMinusu" : "maxKreditDoMinusu1", 0), demands);
+        preview.ReservationCount = reservations.Count(item => item.LekceId == lessonId);
+        preview.MaxReservations = GetSettingInt(branchId, "lekce_max_count_per_user", 0);
+        if (lesson.Zauctovano || lesson.DatumHodina <= DateTime.Now)
+        {
+            preview.CanReserve = false;
+            preview.Message = "Na tuto hodinu se již nelze přihlásit.";
+        }
+        else if (preview.MaxReservations > 0 && preview.ReservationCount >= preview.MaxReservations)
+        {
+            preview.CanReserve = false;
+            preview.Message = $"Na jednu hodinu lze vytvořit nejvýše {preview.MaxReservations} objednávek.";
+        }
+        else if (!requested.AllowTime && !requested.AllowUnlimited)
+        {
+            preview.CanReserve = false;
+            preview.Message = "Pobočka nemá povolenou úhradu kredity.";
+        }
+        return preview;
+    }
+
     [HttpPost("lessons/{lessonId:int}")]
     public ActionResult<ApiCreateReservationResponse> Create(int lessonId)
     {
@@ -50,13 +127,15 @@ public sealed class ReservationsController : ControllerBase
         var balance = reservationService.GetZbytekUzivatele(userId, false);
         var normalCredits = balance.Kredity.FirstOrDefault(item => item.Key == branch.PokladnaId).Value;
         var lessonUnix = DateTimeExtensions.ToUnix(lesson.Datum);
-        var timeCredits = balance.KredityCas.Where(item => item.PlatnostDoUnix > lessonUnix).Sum(item => item.Kredit);
+        var startsAtUnix = DateTimeExtensions.ToUnix(lesson.DatumHodina);
+        var timeCredits = balance.KredityCas.Where(item => item.PokladnaId == branch.PokladnaId
+            && item.PlatnostOdUnix <= startsAtUnix && item.PlatnostDoUnix > startsAtUnix).Sum(item => item.Kredit);
         var allowedMinus = GetSettingInt(branch.Id, orderCount > 0 ? "maxKreditDoMinusu" : "maxKreditDoMinusu1", 0);
-        var normalEnabled = GetSettingBool(branch.Id, "kreditNeomezeny");
-        var timeEnabled = GetSettingBool(branch.Id, "kreditCasovy");
-        var availableCredits = (normalEnabled ? normalCredits : 0) + (timeEnabled ? timeCredits : 0);
-        if ((!normalEnabled && !timeEnabled) || availableCredits + allowedMinus < orderedCredits + lesson.Kredit)
-            return BadRequest(Failure("Pro tuto objednávku nemáte dostatek kreditu."));
+        var payment = BuildPaymentPreview(userId, lessonId, branch.Id, branch.PokladnaId);
+        if (!payment.CanReserve)
+        {
+            return BadRequest(Failure(payment.Message));
+        }
 
         var reservation = new LekceUser
         {

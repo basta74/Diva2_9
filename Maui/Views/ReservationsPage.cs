@@ -8,14 +8,16 @@ public partial class ReservationsPage : ContentPage
 {
     private readonly Diva2ApiClient apiClient;
     private readonly ObservableCollection<MyReservationInfo> reservations = [];
+    private readonly Action<int> updateBadge;
     private bool isLoading;
 
-    public ReservationsPage(Diva2ApiClient apiClient)
+    public ReservationsPage(Diva2ApiClient apiClient, Action<int> updateBadge)
     {
         InitializeComponent();
         IdentityHeader.DisplayName = apiClient.DisplayName;
         IdentityHeader.TenantName = apiClient.SelectedTenant?.Name ?? string.Empty;
         this.apiClient = apiClient;
+        this.updateBadge = updateBadge;
         ReservationsView.ItemsSource = reservations;
     }
 
@@ -41,6 +43,8 @@ public partial class ReservationsPage : ContentPage
             {
                 reservations.Add(reservation);
             }
+
+            updateBadge(reservations.Count);
         }
         catch (Exception ex)
         {
@@ -50,6 +54,12 @@ public partial class ReservationsPage : ContentPage
         {
             isLoading = false;
         }
+    }
+
+    public async Task<int> GetReservationCountAsync()
+    {
+        var currentReservations = await apiClient.GetMyReservationsAsync();
+        return currentReservations.Count;
     }
 
     private async void OnReservationSelected(object? sender, SelectionChangedEventArgs e)
@@ -67,6 +77,7 @@ public partial class ReservationsPage : ContentPage
             if (currentReservation is null)
             {
                 reservations.Remove(reservation);
+                updateBadge(reservations.Count);
                 await DisplayAlertAsync("Objednávka zrušena", "Na této hodině už nejste přihlášeni. Seznam byl aktualizován.", "OK");
                 return;
             }

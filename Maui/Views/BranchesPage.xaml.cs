@@ -45,8 +45,14 @@ public partial class BranchesPage : ContentPage
                 .Where(branch => !branch.Name.Contains("video", StringComparison.OrdinalIgnoreCase))
                 .Take(3).ToList();
             CreateTabs(branches);
-            if (branches.Count > 0) await SelectBranchAsync(branches[0], tabButtons[0]);
-            else EmptyText.Text = "Nejsou dostupné žádné pobočky.";
+            if (branches.Count > 0)
+            {
+                await SelectBranchAsync(branches[0], tabButtons[0]);
+            }
+            else
+            {
+                EmptyText.Text = "Nejsou dostupné žádné pobočky.";
+            }
         }
         catch (Exception ex)
         {
@@ -146,7 +152,10 @@ public partial class BranchesPage : ContentPage
     private static string CreateAvailabilityText(LessonInfo lesson, int limit, bool showTotalCapacity)
     {
         var free = lesson.Capacity - lesson.Occupied;
-        if (free <= 0) return "Obsazeno";
+        if (free <= 0)
+        {
+            return "Obsazeno";
+        }
 
         var freeText = limit > 0 && free > limit ? $"{limit} a více" : free.ToString();
         return showTotalCapacity ? $"Volné: {freeText} z {lesson.Capacity}" : $"Volné: {freeText}";
@@ -154,7 +163,10 @@ public partial class BranchesPage : ContentPage
 
     private async void OnLessonSelected(object? sender, SelectionChangedEventArgs e)
     {
-        if (e.CurrentSelection.FirstOrDefault() is not LessonInfo lesson) return;
+        if (e.CurrentSelection.FirstOrDefault() is not LessonInfo lesson)
+        {
+            return;
+        }
         LessonsView.SelectedItem = null;
         await Navigation.PushAsync(new LessonDetailPage(apiClient, lesson));
     }

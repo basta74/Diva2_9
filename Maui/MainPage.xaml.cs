@@ -26,7 +26,11 @@ public partial class MainPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        if (!loaded) { loaded = true; await LoadTenantsAsync(); }
+        if (!loaded)
+        {
+            loaded = true;
+            await LoadTenantsAsync();
+        }
     }
 
     private async Task LoadTenantsAsync()
@@ -46,9 +50,13 @@ public partial class MainPage : ContentPage
                 apiClient.SelectTenant(savedTenant);
                 var displayName = await apiClient.TryRestoreSessionAsync();
                 if (displayName is not null && Window is not null)
+                {
                     Window.Page = new AuthenticatedShell(apiClient, displayName);
+                }
                 else
+                {
                     await Navigation.PushAsync(new LoginPage(apiClient, savedTenant));
+                }
                 return;
             }
 
@@ -90,7 +98,10 @@ public partial class MainPage : ContentPage
     private async void OnRefreshClicked(object? sender, EventArgs e) => await LoadTenantsAsync();
     private async void OnTenantSelected(object? sender, SelectionChangedEventArgs e)
     {
-        if (e.CurrentSelection.FirstOrDefault() is not TenantInfo tenant) return;
+        if (e.CurrentSelection.FirstOrDefault() is not TenantInfo tenant)
+        {
+            return;
+        }
         TenantsView.SelectedItem = null;
         apiClient.SelectTenant(tenant);
         Preferences.Default.Set("selected_tenant", tenant.Id);

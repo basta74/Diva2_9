@@ -3,42 +3,78 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:Diva2Maui.Controls"
              x:Class="Diva2Maui.Views.LessonDetailPage"
-             Title="Detail hodiny" >
-    <Grid Padding="20" RowDefinitions="Auto,*" RowSpacing="8">
-      <controls:IdentityHeader x:Name="IdentityHeader" />
-      <ScrollView Grid.Row="1">
-        <VerticalStackLayout Spacing="10">
-            <Label x:Name="DateLabel" FontSize="22" FontAttributes="Bold" />
-            <Label x:Name="TimeLabel" FontSize="30" FontAttributes="Bold" TextColor="#512BD4" />
+             Title="Detail hodiny"
+            >
+    <Grid Padding="5" RowDefinitions="Auto,*,Auto" RowSpacing="8">
+        <controls:IdentityHeader x:Name="IdentityHeader" />
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Spacing="10">
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12" RowSpacing="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-            <VerticalStackLayout x:Name="LectorContainer" Spacing="1">
-                <Label Text="Lektor" FontSize="12" TextColor="Gray" />
-                <Label x:Name="LectorLabel" FontSize="18" />
-            </VerticalStackLayout>
-            <VerticalStackLayout x:Name="NameContainer" Spacing="1">
-                <Label Text="Název" FontSize="12" TextColor="Gray" />
-                <Label x:Name="NameLabel" FontSize="18" />
-            </VerticalStackLayout>
-            <VerticalStackLayout x:Name="TypeContainer" Spacing="1">
-                <Label Text="Typ" FontSize="12" TextColor="Gray" />
-                <Label x:Name="TypeLabel" FontSize="18" />
-            </VerticalStackLayout>
-            <VerticalStackLayout x:Name="CapacityContainer" Spacing="1">
-                <Label Text="Obsazenost" FontSize="12" TextColor="Gray" />
-                <Label x:Name="CapacityLabel" FontSize="18" />
-            </VerticalStackLayout>
+                    <Label x:Name="DateLabel" FontSize="22" FontAttributes="Bold" Grid.Column="0" Grid.Row="0"
+                           LineBreakMode="WordWrap" VerticalTextAlignment="Center" />
+                    <Label x:Name="TimeLabel" Grid.Column="1" Grid.Row="0" FontSize="30" FontAttributes="Bold"
+                           TextColor="#512BD4" HorizontalTextAlignment="End" VerticalTextAlignment="Center" />
 
-            <Border Margin="0,12,0,4" Padding="14">
-                <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
-                <Label x:Name="ReservationLabel" FontSize="17" FontAttributes="Bold" />
-            </Border>
-            <Button x:Name="ReserveButton" Text="Přihlásit se" Clicked="OnReserveClicked" />
-            <Button x:Name="CancelReservationButton" Clicked="OnCancelReservationClicked"
-                    BackgroundColor="Transparent" BorderColor="DarkRed" BorderWidth="1"
-                    TextColor="DarkRed" />
-            <Button x:Name="ParticipantsButton" Text="Zobrazit účastníky"
-                    Clicked="OnParticipantsClicked" />
-        </VerticalStackLayout>
-      </ScrollView>
+                    <VerticalStackLayout x:Name="LectorContainer" Spacing="1" Grid.Column="0" Grid.Row="1">
+                        <Label Text="Lektor" FontSize="12" TextColor="Gray" />
+                        <Label x:Name="LectorLabel" FontSize="18" LineBreakMode="WordWrap" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout x:Name="TypeContainer" Spacing="1" Grid.Column="1" Grid.Row="1">
+                        <Label Text="Typ" FontSize="12" TextColor="Gray" />
+                        <Label x:Name="TypeLabel" FontSize="18" LineBreakMode="WordWrap" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout x:Name="CapacityContainer" Spacing="1" Grid.Column="0" Grid.Row="2">
+                        <Label Text="Obsazenost" FontSize="12" TextColor="Gray" />
+                        <Label x:Name="CapacityLabel" FontSize="18" />
+                    </VerticalStackLayout>
+                    <Button x:Name="ParticipantsButton" Grid.Column="1" Grid.Row="2"
+                            Text="Zobrazit účastníky" Clicked="OnParticipantsClicked"
+                            HorizontalOptions="Fill" VerticalOptions="Center" />
+                    <VerticalStackLayout x:Name="NameContainer" Spacing="1" Grid.ColumnSpan="2" Grid.Row="3">
+                        <Label Text="Název" FontSize="12" TextColor="Gray" />
+                        <Label x:Name="NameLabel" FontSize="18" LineBreakMode="WordWrap" />
+                    </VerticalStackLayout>
+                </Grid>
+
+                <Border Padding="12" Stroke="#D8DCE5">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="Kredity a úhrada" FontSize="18" FontAttributes="Bold" />
+                        <Label x:Name="CreditBalanceLabel" Text="Načítám kredity…" LineBreakMode="WordWrap" />
+                        <Label x:Name="CreditAvailableLabel" LineBreakMode="WordWrap" />
+                        <Label x:Name="LessonPriceLabel" FontAttributes="Bold" />
+                        <Label x:Name="PaymentTitleLabel" Text="Předpokládaná úhrada další rezervace" FontAttributes="Bold" />
+                        <Label x:Name="PaymentBreakdownLabel" LineBreakMode="WordWrap" />
+                        <Label x:Name="PaymentMessageLabel" LineBreakMode="WordWrap" />
+                        <Label Text="Rozpis zohledňuje platnost v čase hodiny a stávající rezervace. Do konání hodiny se může změnit."
+                               FontSize="12" TextColor="Gray" LineBreakMode="WordWrap" />
+                        <Button x:Name="RefreshPaymentButton" Text="Aktualizovat kredity" Clicked="OnRefreshPaymentClicked" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Label x:Name="ReservationLabel" Margin="4,12,4,4"
+                       FontSize="17" FontAttributes="Bold" LineBreakMode="WordWrap" />
+                <VerticalStackLayout x:Name="NotificationResponseContainer" IsVisible="False" Spacing="8">
+                    <Label Text="Uvolnilo se místo – potvrďte prosím svou účast."
+                           FontAttributes="Bold" LineBreakMode="WordWrap" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button Grid.Column="0" Text="Potvrzuji" BackgroundColor="#1FA64A" TextColor="White"
+                                Clicked="OnNotificationAcceptClicked" />
+                        <Button Grid.Column="1" Text="Nemám zájem" BackgroundColor="#D9534F" TextColor="White"
+                                Clicked="OnNotificationDeclineClicked" />
+                    </Grid>
+                </VerticalStackLayout>
+                <Button x:Name="btnReservation" Text="Objednat" Clicked="OnReserveClicked" />
+            </VerticalStackLayout>
+        </ScrollView>
+        <Button x:Name="btnCancelReserv" Grid.Row="2" Clicked="OnCancelReservationClicked"
+                Margin="0,8,0,4" BackgroundColor="Transparent"
+                BorderColor="DarkRed" BorderWidth="1" TextColor="DarkRed" />
     </Grid>
 </ContentPage>

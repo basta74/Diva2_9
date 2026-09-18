@@ -34,8 +34,12 @@ builder.Services.AddDbContext<ApplicationDbContext>((sp, options) =>
 });
 
 // Identity
-builder.Services.AddIdentity<User8, Role8>()
+builder.Services.AddIdentity<User8, Role8>(options =>
+{
+    options.Password.RequireNonAlphanumeric = false;
+})
     .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddErrorDescriber<CustomIdentityErrorDescriber>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication()

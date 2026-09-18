@@ -11,11 +11,15 @@ public sealed class Diva2ApiClient
     private static readonly TimeSpan LessonCacheLifetime = TimeSpan.FromMinutes(10);
     public const string DefaultCatalogUrl = "https://api.diva2.cz/";
     private readonly HttpClient catalogClient;
+    private readonly HashSet<int> hiddenNotificationIds = [];
+    private readonly object notificationStateLock = new();
     private HttpClient? tenantClient;
     private TenantInfo? selectedTenant;
     public TenantInfo? SelectedTenant => selectedTenant;
     public string DisplayName { get; private set; } = string.Empty;
     public int ReservationVersion { get; private set; }
+    public MauiSessionData Data { get; private set; } = new();
+    public event Action<int>? NotificationResolved;
 
     public Diva2ApiClient()
     {
@@ -27,6 +31,7 @@ public sealed class Diva2ApiClient
 
     public void SelectTenant(TenantInfo tenant)
     {
+        Data = new MauiSessionData();
         selectedTenant = tenant;
         tenantClient?.Dispose();
         var baseAddress = catalogClient.BaseAddress?.IsLoopback == true
@@ -42,7 +47,10 @@ public sealed class Diva2ApiClient
         await EnsureSuccessAsync(response, cancellationToken);
         var login = await response.Content.ReadFromJsonAsync<LoginResponse>(cancellationToken)
             ?? throw new InvalidOperationException("Server nevrátil přihlašovací údaje.");
-        if (string.IsNullOrWhiteSpace(login.AccessToken)) throw new InvalidOperationException("Server nevrátil přístupový token.");
+        if (string.IsNullOrWhiteSpace(login.AccessToken))
+        {
+            throw new InvalidOperationException("Server nevrátil přístupový token.");
+        }
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", login.AccessToken);
         await SecureStorage.Default.SetAsync(TokenKey(selectedTenant!.Id), login.AccessToken);
         await SecureStorage.Default.SetAsync(TokenExpiryKey(selectedTenant.Id), login.ExpiresAt.ToString("O"));
@@ -54,7 +62,10 @@ public sealed class Diva2ApiClient
 
     public async Task<string?> TryRestoreSessionAsync()
     {
-        if (selectedTenant is null || tenantClient is null) return null;
+        if (selectedTenant is null || tenantClient is null)
+        {
+            return null;
+        }
         var token = await SecureStorage.Default.GetAsync(TokenKey(selectedTenant.Id));
         var expiryText = await SecureStorage.Default.GetAsync(TokenExpiryKey(selectedTenant.Id));
         if (string.IsNullOrWhiteSpace(token) || !DateTimeOffset.TryParse(expiryText, out var expiry) || expiry <= DateTimeOffset.UtcNow)
@@ -73,17 +84,66 @@ public sealed class Diva2ApiClient
         => await RequireTenantClient().GetFromJsonAsync<List<BranchInfo>>("api/v1/branches", cancellationToken) ?? [];
 
     public async Task<BranchConfiguration> GetBranchConfigurationAsync(int branchId, CancellationToken cancellationToken = default)
-        => await RequireTenantClient().GetFromJsonAsync<BranchConfiguration>($"api/v1/branches/{branchId}/configuration", cancellationToken)
-           ?? new BranchConfiguration { BranchId = branchId };
+    {
+        var data = Data;
+        var configuration = await RequireTenantClient().GetFromJsonAsync<BranchConfiguration>($"api/v1/branches/{branchId}/configuration", cancellationToken)
+            ?? throw new InvalidOperationException("Server nevrátil nastavení pobočky.");
+        var configurations = data.BranchConfigurations.ToDictionary(item => item.Key, item => item.Value);
+        configurations[branchId] = configuration;
+        data.BranchConfigurations = configurations;
+        return configuration;
+    }
 
     public async Task<IReadOnlyList<MyReservationInfo>> GetMyReservationsAsync(CancellationToken cancellationToken = default)
         => await RequireTenantClient().GetFromJsonAsync<List<MyReservationInfo>>("api/v1/reservations/me", cancellationToken) ?? [];
 
     public async Task<IReadOnlyList<BranchCreditsInfo>> GetMyCreditsAsync(CancellationToken cancellationToken = default)
-        => await RequireTenantClient().GetFromJsonAsync<List<BranchCreditsInfo>>("api/v1/credits/me", cancellationToken) ?? [];
+    {
+        var data = Data;
+        var credits = await RequireTenantClient().GetFromJsonAsync<List<BranchCreditsInfo>>("api/v1/credits/me", cancellationToken)
+            ?? throw new InvalidOperationException("Server nevrátil kredity zákazníka.");
+        data.Credits = credits;
+        return credits;
+    }
+
+    /// <summary>Downloads all visible branch settings and the current customer's credits.</summary>
+    public async Task RefreshDataAsync(CancellationToken cancellationToken = default)
+    {
+        var data = Data;
+        var client = RequireTenantClient();
+        var branches = await client.GetFromJsonAsync<List<BranchInfo>>("api/v1/branches", cancellationToken)
+            ?? throw new InvalidOperationException("Server nevrátil seznam poboček.");
+        var configurations = new Dictionary<int, BranchConfiguration>();
+        foreach (var branch in branches)
+        {
+            var configuration = await client.GetFromJsonAsync<BranchConfiguration>($"api/v1/branches/{branch.Id}/configuration", cancellationToken)
+                ?? throw new InvalidOperationException("Server nevrátil nastavení pobočky.");
+            configurations.Add(branch.Id, configuration);
+        }
+
+        var credits = await client.GetFromJsonAsync<List<BranchCreditsInfo>>("api/v1/credits/me", cancellationToken)
+            ?? throw new InvalidOperationException("Server nevrátil kredity zákazníka.");
+        data.BranchConfigurations = configurations;
+        data.Credits = credits;
+        data.IsLoaded = true;
+    }
 
     public async Task<IReadOnlyList<NotificationInfo>> GetNotificationsAsync(CancellationToken cancellationToken = default)
-        => await RequireTenantClient().GetFromJsonAsync<List<NotificationInfo>>("api/v1/notifications", cancellationToken) ?? [];
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Get, $"api/v1/notifications?t={DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}");
+        request.Headers.CacheControl = new System.Net.Http.Headers.CacheControlHeaderValue
+        {
+            NoCache = true,
+            NoStore = true
+        };
+        using var response = await RequireTenantClient().SendAsync(request, cancellationToken);
+        await EnsureSuccessAsync(response, cancellationToken);
+        var notifications = await response.Content.ReadFromJsonAsync<List<NotificationInfo>>(cancellationToken) ?? [];
+        lock (notificationStateLock)
+        {
+            return notifications.Where(item => !hiddenNotificationIds.Contains(item.Id)).ToList();
+        }
+    }
 
     public async Task MarkNotificationReadAsync(int notificationId, CancellationToken cancellationToken = default)
     {
@@ -95,6 +155,12 @@ public sealed class Diva2ApiClient
     {
         using var response = await RequireTenantClient().PostAsync($"api/v1/notifications/{notificationId}/dismiss", null, cancellationToken);
         await EnsureSuccessAsync(response, cancellationToken);
+        lock (notificationStateLock)
+        {
+            hiddenNotificationIds.Add(notificationId);
+        }
+
+        NotificationResolved?.Invoke(notificationId);
     }
 
     public async Task ReactToNotificationAsync(int notificationId, string reaction, CancellationToken cancellationToken = default)
@@ -104,6 +170,12 @@ public sealed class Diva2ApiClient
             new { reaction },
             cancellationToken);
         await EnsureSuccessAsync(response, cancellationToken);
+        lock (notificationStateLock)
+        {
+            hiddenNotificationIds.Add(notificationId);
+        }
+
+        NotificationResolved?.Invoke(notificationId);
     }
 
     public async Task RegisterDeviceAsync(string pushToken, CancellationToken cancellationToken = default)
@@ -124,10 +196,19 @@ public sealed class Diva2ApiClient
         var result = await response.Content.ReadFromJsonAsync<CreateReservationResponse>(cancellationToken)
             ?? new CreateReservationResponse { Message = $"Server vrátil chybu {(int)response.StatusCode}." };
         if (!response.IsSuccessStatusCode || !result.Success)
+        {
             throw new InvalidOperationException(string.IsNullOrWhiteSpace(result.Message) ? "Objednávku se nepodařilo vytvořit." : result.Message);
+        }
         try { File.Delete(LessonCacheFile(branchId)); } catch (IOException) { }
         ReservationVersion++;
         return result;
+    }
+
+    public async Task<LessonPaymentPreview> GetLessonPaymentPreviewAsync(int lessonId, CancellationToken cancellationToken = default)
+    {
+        return await RequireTenantClient().GetFromJsonAsync<LessonPaymentPreview>(
+            $"api/v1/reservations/lessons/{lessonId}/payment-preview", cancellationToken)
+            ?? throw new InvalidOperationException("Server nevrátil rozpis kreditů pro hodinu.");
     }
 
     public async Task<CreateReservationResponse> CancelReservationAsync(int branchId, int lessonId, CancellationToken cancellationToken = default)
@@ -175,7 +256,10 @@ public sealed class Diva2ApiClient
             try
             {
                 var cached = JsonSerializer.Deserialize<List<LessonInfo>>(await File.ReadAllTextAsync(cacheFile, cancellationToken));
-                if (cached is not null) return ClearReservationStatuses(cached);
+                if (cached is not null)
+                {
+                    return ClearReservationStatuses(cached);
+                }
             }
             catch (JsonException) { }
             catch (IOException) { }
@@ -199,19 +283,26 @@ public sealed class Diva2ApiClient
 
     public void Logout()
     {
+        Data = new MauiSessionData();
         if (selectedTenant != null)
         {
             RemoveStoredSession(selectedTenant.Id);
             ClearLessonCache(selectedTenant.Id);
         }
-        if (tenantClient != null) tenantClient.DefaultRequestHeaders.Authorization = null;
+        if (tenantClient != null)
+        {
+            tenantClient.DefaultRequestHeaders.Authorization = null;
+        }
         DisplayName = string.Empty;
     }
 
     private HttpClient RequireTenantClient() => tenantClient ?? throw new InvalidOperationException("Nejprve vyberte provozovatele.");
     private static async Task EnsureSuccessAsync(HttpResponseMessage response, CancellationToken cancellationToken)
     {
-        if (response.IsSuccessStatusCode) return;
+        if (response.IsSuccessStatusCode)
+        {
+            return;
+        }
         var message = await response.Content.ReadAsStringAsync(cancellationToken);
         throw new HttpRequestException(string.IsNullOrWhiteSpace(message) ? $"Server vrátil chybu {(int)response.StatusCode}." : message);
     }

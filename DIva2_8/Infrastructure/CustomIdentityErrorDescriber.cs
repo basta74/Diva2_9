@@ -23,7 +23,8 @@ namespace Diva2Web.Infrastructure
         public override IdentityError UserAlreadyInRole(string role) { return new IdentityError { Code = nameof(UserAlreadyInRole), Description = $"Uživatel je již ve skupině '{role}'." }; }
         public override IdentityError UserNotInRole(string role) { return new IdentityError { Code = nameof(UserNotInRole), Description = $"Uživatel není ve skupině '{role}'." }; }
         public override IdentityError PasswordTooShort(int length) { return new IdentityError { Code = nameof(PasswordTooShort), Description = $"Heslo musí mít nejméně {length} znaků." }; }
-        public override IdentityError PasswordRequiresNonAlphanumeric() { return new IdentityError { Code = nameof(PasswordRequiresNonAlphanumeric), Description = "Heslo musí mít nejméně jeden nealfanumerický znak." }; }
+        
+        //public override IdentityError PasswordRequiresNonAlphanumeric() { return new IdentityError { Code = nameof(PasswordRequiresNonAlphanumeric), Description = "Heslo musí mít nejméně jeden nealfanumerický znak (*)." }; }
         public override IdentityError PasswordRequiresDigit() { return new IdentityError { Code = nameof(PasswordRequiresDigit), Description = "Heslo musí mít nejméně jednu číslici ('0'-'9')." }; }
         public override IdentityError PasswordRequiresLower() { return new IdentityError { Code = nameof(PasswordRequiresLower), Description = "Heslo musí mít nejméne jedno malé písmeno ('a'-'z')." }; }
         public override IdentityError PasswordRequiresUpper() { return new IdentityError { Code = nameof(PasswordRequiresUpper), Description = "Heslo musí mít nejméně jedno velé písmeno ('A'-'Z')." }; }

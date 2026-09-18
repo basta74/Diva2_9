@@ -6,7 +6,9 @@ namespace Diva2Maui;
 public sealed class AuthenticatedShell : Shell
 {
     private readonly ShellContent homeTab;
+    private readonly ShellContent reservationsTab;
     private int pendingNotificationCount;
+    private int reservationCount;
 
     public AuthenticatedShell(Diva2ApiClient apiClient, string displayName)
     {
@@ -17,52 +19,118 @@ public sealed class AuthenticatedShell : Shell
         homeTab = CreateTab("Hlavní", "home", "nav_home.svg", new HomePage(apiClient, displayName, SetNotificationBadge));
         tabs.Items.Add(homeTab);
         tabs.Items.Add(CreateTab("Lekce", "branches", "nav_list.svg", new BranchesPage(apiClient, displayName)));
-        tabs.Items.Add(CreateTab("Objednávky", "reservations", "nav_orders.svg", new ReservationsPage(apiClient)));
+        reservationsTab = CreateTab("Objednávky", "reservations", "nav_orders.svg", new ReservationsPage(apiClient, SetReservationBadge));
+        tabs.Items.Add(reservationsTab);
         tabs.Items.Add(CreateTab("Moje", "my", "nav_my.svg", new MyPage(apiClient, displayName)));
         Items.Add(tabs);
-        Loaded += (_, _) => ApplyNotificationBadge();
+        Loaded += async (_, _) =>
+        {
+            ApplyBadges();
+#if ANDROID
+            if (Platforms.Android.AndroidPushNotificationService.ConsumeNotificationsToOpen())
+            {
+                await OpenNotificationsAsync();
+                return;
+            }
+#endif
+            await RefreshBadgesAsync();
+        };
     }
 
     private void SetNotificationBadge(int count)
     {
         pendingNotificationCount = Math.Max(0, count);
-        Dispatcher.Dispatch(ApplyNotificationBadge);
+        Dispatcher.Dispatch(ApplyBadges);
     }
 
-    private void ApplyNotificationBadge()
+    private void SetReservationBadge(int count)
+    {
+        reservationCount = Math.Max(0, count);
+        Dispatcher.Dispatch(ApplyBadges);
+    }
+
+    public async Task RefreshBadgesAsync()
+    {
+        try
+        {
+            var notifications = await ((HomePage)homeTab.Content).GetPendingNotificationCountAsync();
+            var reservations = await ((ReservationsPage)reservationsTab.Content).GetReservationCountAsync();
+            SetNotificationBadge(notifications);
+            SetReservationBadge(reservations);
+        }
+        catch
+        {
+            ApplyBadges();
+        }
+    }
+
+    public async Task OpenNotificationsAsync()
+    {
+#if ANDROID
+        Platforms.Android.AndroidPushNotificationService.ConsumeNotificationsToOpen();
+#endif
+        await GoToAsync("//home");
+        await ((HomePage)homeTab.Content).RefreshNotificationsAsync();
+    }
+
+    private void ApplyBadges()
     {
 #if ANDROID
         var root = Handler?.PlatformView as Android.Views.View;
         var navigation = FindBottomNavigation(root);
-        var item = navigation?.Menu?.GetItem(0);
-        if (navigation is not null && item is not null)
+        if (navigation is not null)
         {
-            if (pendingNotificationCount > 0)
-            {
-                var badge = navigation.GetOrCreateBadge(item.ItemId);
-                badge.Number = pendingNotificationCount;
-                badge.SetVisible(true);
-            }
-            else
-            {
-                navigation.RemoveBadge(item.ItemId);
-            }
+            ApplyAndroidBadge(navigation, 0, pendingNotificationCount);
+            ApplyAndroidBadge(navigation, 2, reservationCount);
             homeTab.Title = "Hlavní";
+            reservationsTab.Title = "Objednávky";
             return;
         }
 #endif
         homeTab.Title = pendingNotificationCount > 0 ? $"Hlavní ({pendingNotificationCount})" : "Hlavní";
+        reservationsTab.Title = reservationCount > 0 ? $"Objednávky ({reservationCount})" : "Objednávky";
     }
 
 #if ANDROID
+    private static void ApplyAndroidBadge(Google.Android.Material.BottomNavigation.BottomNavigationView navigation, int itemIndex, int count)
+    {
+        var item = navigation.Menu?.GetItem(itemIndex);
+        if (item is null)
+        {
+            return;
+        }
+
+        if (count > 0)
+        {
+            var badge = navigation.GetOrCreateBadge(item.ItemId);
+            badge.Number = count;
+            badge.SetVisible(true);
+        }
+        else
+        {
+            navigation.RemoveBadge(item.ItemId);
+        }
+    }
+
     private static Google.Android.Material.BottomNavigation.BottomNavigationView? FindBottomNavigation(Android.Views.View? view)
     {
-        if (view is Google.Android.Material.BottomNavigation.BottomNavigationView navigation) return navigation;
-        if (view is not Android.Views.ViewGroup group) return null;
+        if (view is Google.Android.Material.BottomNavigation.BottomNavigationView navigation)
+        {
+            return navigation;
+        }
+
+        if (view is not Android.Views.ViewGroup group)
+        {
+            return null;
+        }
+
         for (var index = 0; index < group.ChildCount; index++)
         {
             var found = FindBottomNavigation(group.GetChildAt(index));
-            if (found is not null) return found;
+            if (found is not null)
+            {
+                return found;
+            }
         }
         return null;
     }

@@ -48,7 +48,10 @@ public partial class HomePage : ContentPage
 
     private async Task LoadNotificationsAsync()
     {
-        if (IsLoading) return;
+        if (IsLoading)
+        {
+            return;
+        }
         IsLoading = true;
         StatusText = Notifications.Count == 0 ? "Načítám…" : "Aktualizuji…";
         try
@@ -71,6 +74,11 @@ public partial class HomePage : ContentPage
         }
     }
 
+    public async Task RefreshNotificationsAsync()
+    {
+        await LoadNotificationsAsync();
+    }
+
     private async Task MarkVisibleNotificationsReadAsync()
     {
         foreach (var item in Notifications.Where(x => x.ReadAt is null).ToList())
@@ -91,7 +99,10 @@ public partial class HomePage : ContentPage
     {
         foreach (var item in Notifications.Where(x => x.IsAwaitingReaction))
         {
-            if (reminderTimers.ContainsKey(item.Id)) continue;
+            if (reminderTimers.ContainsKey(item.Id))
+            {
+                continue;
+            }
             var cancellation = new CancellationTokenSource();
             reminderTimers[item.Id] = cancellation;
             _ = RemindAfterDelayAsync(item, cancellation.Token);
@@ -104,8 +115,14 @@ public partial class HomePage : ContentPage
         {
             var elapsed = item.ReadAt is null ? TimeSpan.Zero : DateTimeOffset.Now - item.ReadAt.Value;
             var remaining = ReminderDelay - elapsed;
-            if (remaining > TimeSpan.Zero) await Task.Delay(remaining, cancellationToken);
-            if (cancellationToken.IsCancellationRequested || !item.IsAwaitingReaction) return;
+            if (remaining > TimeSpan.Zero)
+            {
+                await Task.Delay(remaining, cancellationToken);
+            }
+            if (cancellationToken.IsCancellationRequested || !item.IsAwaitingReaction)
+            {
+                return;
+            }
 
             item.ReminderActive = true;
             UpdateBadge();
@@ -198,6 +215,12 @@ public partial class HomePage : ContentPage
     }
 
     private void UpdateBadge() => updateBadge(Notifications.Count(x => x.IsAwaitingReaction));
+
+    public async Task<int> GetPendingNotificationCountAsync()
+    {
+        var notifications = await apiClient.GetNotificationsAsync();
+        return notifications.Count(x => x.IsAwaitingReaction);
+    }
 
     private static string GetTenantDomain(Diva2ApiClient apiClient)
     {

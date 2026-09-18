@@ -10,6 +10,7 @@ namespace Diva2Maui.Platforms.Android;
 public static class AndroidPushNotificationService
 {
     private const string TokenPreferenceKey = "firebase_push_token";
+    private const string OpenNotificationsPreferenceKey = "open_notifications_after_push";
     private static Diva2ApiClient? apiClient;
 
     public static async Task RegisterAsync(Diva2ApiClient client, CancellationToken cancellationToken = default)
@@ -71,6 +72,7 @@ public static class AndroidPushNotificationService
         if (intent is not null)
         {
             intent.AddFlags(ActivityFlags.ClearTop | ActivityFlags.SingleTop);
+            intent.PutExtra("notificationId", GetData(message, "notificationId") ?? string.Empty);
             pendingIntent = PendingIntent.GetActivity(
                 context,
                 0,
@@ -90,6 +92,22 @@ public static class AndroidPushNotificationService
             .Build();
 
         manager.Notify(message.MessageId?.GetHashCode() ?? System.Environment.TickCount, notification);
+    }
+
+    public static void MarkNotificationsToOpen()
+    {
+        Preferences.Default.Set(OpenNotificationsPreferenceKey, true);
+    }
+
+    public static bool ConsumeNotificationsToOpen()
+    {
+        var openNotifications = Preferences.Default.Get(OpenNotificationsPreferenceKey, false);
+        if (openNotifications)
+        {
+            Preferences.Default.Remove(OpenNotificationsPreferenceKey);
+        }
+
+        return openNotifications;
     }
 
     private static async Task<string> GetFirebaseTokenAsync(CancellationToken cancellationToken)

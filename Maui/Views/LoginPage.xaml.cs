@@ -30,7 +30,9 @@ public partial class LoginPage : ContentPage
         {
             var login = await apiClient.LoginAsync(EmailEntry.Text.Trim(), PasswordEntry.Text);
             if (Window is not null)
+            {
                 Window.Page = new AuthenticatedShell(apiClient, login.DisplayName);
+            }
         }
         catch (Exception ex)
         {

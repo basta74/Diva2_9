@@ -1,4 +1,5 @@
 ﻿using Android.App;
+using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 
@@ -18,5 +19,31 @@ public class MainActivity : MauiAppCompatActivity
         {
             RequestPermissions([Android.Manifest.Permission.PostNotifications], NotificationPermissionRequestCode);
         }
+
+        HandleNotificationIntent(Intent);
+    }
+
+    protected override void OnNewIntent(Intent? intent)
+    {
+        base.OnNewIntent(intent);
+        Intent = intent;
+        HandleNotificationIntent(intent);
+    }
+
+    private static void HandleNotificationIntent(Intent? intent)
+    {
+        if (intent?.HasExtra("notificationId") != true)
+        {
+            return;
+        }
+
+        Platforms.Android.AndroidPushNotificationService.MarkNotificationsToOpen();
+        MainThread.BeginInvokeOnMainThread(async () =>
+        {
+            if (Shell.Current is AuthenticatedShell shell)
+            {
+                await shell.OpenNotificationsAsync();
+            }
+        });
     }
 }

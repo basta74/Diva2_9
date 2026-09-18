@@ -258,6 +258,7 @@ namespace Diva2Web.Models.Users
 
     public class ChangePasswordModel 
     {
+        [ValidateNever]
         public JsonStatus JsonStatus { get; set; }
 
         public int UserId { get; set; }
@@ -275,6 +276,7 @@ namespace Diva2Web.Models.Users
 
         public string Email { get; set; }
 
+        [ValidateNever]
         public JsonStatus JsonStatus { get; set; }
 
 
@@ -285,7 +287,8 @@ namespace Diva2Web.Models.Users
 
         [Required]
         [StringLength(100, ErrorMessage = "Heslo {0} musí být  min {2} a max {1} znaky.", MinimumLength = 6)]
-        [Display(Name = "Potvzení hesla")]
+        [Compare(nameof(NewPass), ErrorMessage = "Zadaná hesla se neshodují.")]
+        [Display(Name = "Potvrzení hesla")]
         public string NewPass2 { get; set; }
     }
 
@@ -295,6 +298,7 @@ namespace Diva2Web.Models.Users
 
         public string Code { get; set; }
 
+        [ValidateNever]
         public JsonStatus JsonStatus { get; set; }
 
 

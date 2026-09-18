@@ -17,7 +17,7 @@ using Diva2.Core.Main.Notifications;
 
 namespace Diva2.Services.Managers.Platby
 {
-    public class ObjednavkyService : IObjednavkyService
+    public partial class ObjednavkyService : IObjednavkyService
     {
 
         private readonly IRepository<LekceUser> repLekceUser;
@@ -565,6 +565,10 @@ namespace Diva2.Services.Managers.Platby
 
         public bool RemoveKredit(UserTransakce tran, int inc, bool jitDoMinusu)
         {
+            if (tran.LekceId > 0)
+            {
+                return RemoveLessonCredit(tran, inc, jitDoMinusu);
+            }
             bool zaucovano = true;
 
             int zbyvaZauctovat = tran.Kredit;
@@ -770,7 +774,7 @@ namespace Diva2.Services.Managers.Platby
 
         public WaitingListPromotionResult? PromoteFirstWaitingListCustomer(int lessonId, int? freedPosition = null)
         {
-            using var transaction = dbContext.Database.BeginTransaction(System.Data.IsolationLevel.Serializable);
+            using var transaction = dbContext.Database.BeginTransaction(System.Data.IsolationLevel.ReadCommitted);
             var next = dbContext.Set<LekceUser>()
                 .Where(x => x.LekceId == lessonId && x.Aktivni && x.NahradnikJa)
                 .OrderBy(x => x.Poradi)
