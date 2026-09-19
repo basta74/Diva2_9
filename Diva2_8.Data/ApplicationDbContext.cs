@@ -32,6 +32,32 @@ public class ApplicationDbContext : IdentityDbContext<User8, Role8, int, Identit
     }
 
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+        optionsBuilder.AddInterceptors(new DomainChangeTransactionInterceptor(), new DomainChangeCommandInterceptor());
+    }
+
+    public override int SaveChanges(bool acceptAllChangesOnSuccess)
+    {
+        var changes = base.SaveChanges(acceptAllChangesOnSuccess);
+        if (changes > 0 && Database.CurrentTransaction is null)
+        {
+            DomainChangeStamp.Touch(SubDomain);
+        }
+        return changes;
+    }
+
+    public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+    {
+        var changes = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        if (changes > 0 && Database.CurrentTransaction is null)
+        {
+            DomainChangeStamp.Touch(SubDomain);
+        }
+        return changes;
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

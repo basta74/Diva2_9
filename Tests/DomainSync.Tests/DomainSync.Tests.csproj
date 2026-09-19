@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../Diva2_8.Data/Diva2_8.Data.csproj" />
+    <Compile Include="../../Maui/Services/Diva2ApiClient.cs" Link="Diva2ApiClient.cs" />
+    <Compile Include="../../Maui/Models/*.cs" Link="Models/%(Filename)%(Extension)" />
+  </ItemGroup>
+</Project>

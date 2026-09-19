@@ -29,6 +29,11 @@ public partial class BranchesPage : ContentPage
         base.OnAppearing();
         if (loaded)
         {
+            if (loadedReservationVersion != apiClient.ReservationVersion && apiClient.Data.Timestamp is not null)
+            {
+                await RefreshSynchronizedDataAsync();
+                return;
+            }
             if (loadedReservationVersion != apiClient.ReservationVersion
                 && selectedBranch is not null
                 && selectedButton is not null)
@@ -61,9 +66,32 @@ public partial class BranchesPage : ContentPage
         }
     }
 
+    public async Task RefreshSynchronizedDataAsync()
+    {
+        var branches = apiClient.Data.Branches
+            .Where(branch => !branch.Name.Contains("video", StringComparison.OrdinalIgnoreCase)).Take(3).ToList();
+        var selectedId = selectedBranch?.Id;
+        CreateTabs(branches);
+        loaded = true;
+        var index = branches.FindIndex(branch => branch.Id == selectedId);
+        if (branches.Count > 0)
+        {
+            index = Math.Max(0, index);
+            await SelectBranchAsync(branches[index], tabButtons[index], useSnapshot: true);
+        }
+        else
+        {
+            days.Clear();
+            selectedBranch = null;
+            selectedButton = null;
+            EmptyText.Text = "Nejsou dostupné žádné pobočky.";
+        }
+    }
+
     private void CreateTabs(IReadOnlyList<BranchInfo> branches)
     {
         BranchTabs.Clear();
+        BranchTabs.ColumnDefinitions.Clear();
         tabButtons.Clear();
         for (var index = 0; index < branches.Count; index++)
         {
@@ -86,7 +114,7 @@ public partial class BranchesPage : ContentPage
         }
     }
 
-    private async Task SelectBranchAsync(BranchInfo branch, Button selectedButton)
+    private async Task SelectBranchAsync(BranchInfo branch, Button selectedButton, bool useSnapshot = false)
     {
         selectedBranch = branch;
         this.selectedButton = selectedButton;
@@ -96,7 +124,8 @@ public partial class BranchesPage : ContentPage
         LoadingIndicator.IsVisible = LoadingIndicator.IsRunning = true;
         try
         {
-            var configuration = await apiClient.GetBranchConfigurationAsync(branch.Id);
+            var configuration = useSnapshot ? apiClient.Data.BranchConfigurations[branch.Id]
+                : await apiClient.GetBranchConfigurationAsync(branch.Id);
             var lessonTypes = configuration.LessonTypes.ToDictionary(type => type.Id);
             var showCapacity = configuration.IsEnabled("rozvrhUkazPocet");
             var showLessonType = configuration.IsEnabled("rozvrhUkazTyp");
@@ -104,7 +133,7 @@ public partial class BranchesPage : ContentPage
             var availabilityLimit = configuration.GetInt("lekceUkazLimitOd", 1);
             var showTotalCapacity = configuration.IsEnabled("public_rozvrh_ukaz_kapacitu");
             var lessons = await apiClient.GetLessonsAsync(branch.Id);
-            var reservationStatuses = (await apiClient.GetMyReservationsAsync())
+            var reservationStatuses = (useSnapshot ? apiClient.Data.Reservations : await apiClient.GetMyReservationsAsync())
                 .Where(item => item.BranchId == branch.Id)
                 .GroupBy(item => item.LessonId)
                 .ToDictionary(group => group.Key, group => group.First());
@@ -149,7 +178,7 @@ public partial class BranchesPage : ContentPage
         finally { LoadingIndicator.IsRunning = LoadingIndicator.IsVisible = false; }
     }
 
-    private static string CreateAvailabilityText(LessonInfo lesson, int limit, bool showTotalCapacity)
+    internal static string CreateAvailabilityText(LessonInfo lesson, int limit, bool showTotalCapacity)
     {
         var free = lesson.Capacity - lesson.Occupied;
         if (free <= 0)

@@ -11,6 +11,12 @@ public partial class App : Application
 
 	protected override Window CreateWindow(IActivationState? activationState)
 	{
-		return new Window(new AppShell());
+		var window = new Window(new AppShell());
+        window.Activated += (_, _) => (window.Page as AuthenticatedShell)?.StartSynchronization();
+        window.Resumed += (_, _) => (window.Page as AuthenticatedShell)?.StartSynchronization();
+        window.Deactivated += (_, _) => (window.Page as AuthenticatedShell)?.StopSynchronization();
+        window.Stopped += (_, _) => (window.Page as AuthenticatedShell)?.StopSynchronization();
+        window.Destroying += (_, _) => (window.Page as AuthenticatedShell)?.StopSynchronization();
+        return window;
 	}
 }

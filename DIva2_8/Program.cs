@@ -38,14 +38,11 @@ builder.Services.AddIdentity<User8, Role8>(options =>
 {
     options.Password.RequireNonAlphanumeric = false;
 })
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddErrorDescriber<CustomIdentityErrorDescriber>()
-    .AddDefaultTokenProviders();
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddErrorDescriber<CustomIdentityErrorDescriber>()
+.AddDefaultTokenProviders();
 
-builder.Services.AddAuthentication()
-    .AddScheme<AuthenticationSchemeOptions, ApiTokenAuthenticationHandler>(
-        ApiTokenAuthenticationHandler.AuthenticationScheme,
-        _ => { });
+builder.Services.AddAuthentication().AddScheme<AuthenticationSchemeOptions, ApiTokenAuthenticationHandler>(ApiTokenAuthenticationHandler.AuthenticationScheme, _ => { });
 
 // cookie config (DŮLEŽITÉ)
 builder.Services.ConfigureApplicationCookie(options =>

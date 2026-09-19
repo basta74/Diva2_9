@@ -54,6 +54,55 @@ public partial class LessonDetailPage : ContentPage
         base.OnAppearing();
         apiClient.NotificationResolved -= OnNotificationResolved;
         apiClient.NotificationResolved += OnNotificationResolved;
+        if (apiClient.Data.Timestamp is not null)
+        {
+            await RefreshSynchronizedDataAsync();
+            return;
+        }
+        await LoadPaymentAsync();
+        await LoadPendingNotificationAsync();
+    }
+
+    public async Task RefreshSynchronizedDataAsync()
+    {
+        if (reserving)
+        {
+            return;
+        }
+        var updated = apiClient.Data.Lessons.TryGetValue(lesson.BranchId, out var lessons)
+            ? lessons.FirstOrDefault(item => item.Id == lesson.Id) : null;
+        if (updated is null)
+        {
+            btnReservation.IsVisible = false;
+            btnCancelReserv.IsVisible = false;
+            ParticipantsButton.IsVisible = false;
+            ReservationLabel.Text = "Lekce již není v aktuálním rozvrhu.";
+            return;
+        }
+        lesson.Name = updated.Name;
+        lesson.Lector = updated.Lector;
+        lesson.StartsAt = updated.StartsAt;
+        lesson.Capacity = updated.Capacity;
+        lesson.Occupied = updated.Occupied;
+        var reservation = apiClient.Data.Reservations.FirstOrDefault(item => item.LessonId == lesson.Id);
+        lesson.ReservationStatus = reservation?.ReservationStatus;
+        lesson.CanCancelReservation = reservation?.CanCancel ?? false;
+        lesson.CanOfferReservation = reservation?.CanOffer ?? false;
+        var configuration = apiClient.Data.BranchConfigurations[lesson.BranchId];
+        lesson.CanShowParticipants = configuration.IsEnabled("lekceUkazZakazniky");
+        DateLabel.Text = lesson.StartsAt.DateTime.ToString("dddd d. M. yyyy", System.Globalization.CultureInfo.GetCultureInfo("cs-CZ"));
+        TimeLabel.Text = lesson.TimeText;
+        SetValue(LectorContainer, LectorLabel, lesson.Lector);
+        SetValue(NameContainer, NameLabel, lesson.Name, lesson.ShowName);
+        lesson.LessonTypeId = updated.LessonTypeId;
+        var lessonType = configuration.LessonTypes.FirstOrDefault(item => item.Id == lesson.LessonTypeId);
+        SetValue(TypeContainer, TypeLabel, lessonType?.Name ?? string.Empty, configuration.IsEnabled("rozvrhUkazTyp") && lessonType is not null);
+        SetValue(CapacityContainer, CapacityLabel,
+            BranchesPage.CreateAvailabilityText(lesson, configuration.GetInt("lekceUkazLimitOd", 1), configuration.IsEnabled("public_rozvrh_ukaz_kapacitu")),
+            configuration.IsEnabled("rozvrhUkazPocet"));
+        btnCancelReserv.Text = lesson.CanOfferReservation ? "Nabídnout místo" : "Odhlásit se";
+        btnCancelReserv.IsVisible = reservation is not null && (lesson.CanCancelReservation || lesson.CanOfferReservation);
+        ParticipantsButton.IsVisible = lesson.CanShowParticipants;
         await LoadPaymentAsync();
         await LoadPendingNotificationAsync();
     }
@@ -290,7 +339,7 @@ public partial class LessonDetailPage : ContentPage
         try
         {
             var participants = await apiClient.GetLessonParticipantsAsync(lesson.BranchId, lesson.Id);
-            await Navigation.PushAsync(new ParticipantsPage(apiClient, participants));
+            await Navigation.PushAsync(new ParticipantsPage(apiClient, participants, lesson.BranchId, lesson.Id));
         }
         catch (Exception ex) { await DisplayAlertAsync("Účastníci", ex.Message, "OK"); }
     }

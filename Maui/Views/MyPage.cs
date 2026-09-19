@@ -32,6 +32,15 @@ public partial class MyPage : ContentPage
         }
     }
 
+    public void RefreshSynchronizedData()
+    {
+        CreditsContainer.Clear();
+        foreach (var credits in apiClient.Data.Credits)
+        {
+            AddCredits(credits);
+        }
+    }
+
     private void AddCredits(BranchCreditsInfo credits)
     {
         var values = new Grid

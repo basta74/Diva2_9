@@ -20,6 +20,94 @@ public sealed class Diva2ApiClient
     public int ReservationVersion { get; private set; }
     public MauiSessionData Data { get; private set; } = new();
     public event Action<int>? NotificationResolved;
+    private readonly SemaphoreSlim syncGate = new(1, 1);
+
+    /// <summary>Publishes a complete snapshot only after every request succeeds.</summary>
+    public async Task<bool> SynchronizeDomainAsync(CancellationToken cancellationToken = default)
+    {
+        if (!await syncGate.WaitAsync(0, cancellationToken))
+        {
+            return false;
+        }
+        try
+        {
+            var client = RequireTenantClient();
+            if (client.DefaultRequestHeaders.Authorization is null)
+            {
+                return false;
+            }
+            var previousData = Data;
+            using var request = new HttpRequestMessage(HttpMethod.Get, "api/v1/changes");
+            request.Headers.CacheControl = new CacheControlHeaderValue { NoCache = true, NoStore = true };
+            using var response = await client.SendAsync(request, cancellationToken);
+            await EnsureSuccessAsync(response, cancellationToken);
+            var change = await response.Content.ReadFromJsonAsync<DomainChangeResponse>(cancellationToken);
+            if (string.IsNullOrWhiteSpace(change?.Timestamp))
+            {
+                throw new InvalidOperationException("Server nevrátil timestamp domény.");
+            }
+            if (previousData.Timestamp == change.Timestamp)
+            {
+                return false;
+            }
+
+            var branches = await client.GetFromJsonAsync<List<BranchInfo>>("api/v1/branches", cancellationToken)
+                ?? throw new InvalidOperationException("Server nevrátil pobočky.");
+            var lessons = new Dictionary<int, IReadOnlyList<LessonInfo>>();
+            var configurations = new Dictionary<int, BranchConfiguration>();
+            foreach (var branch in branches)
+            {
+                lessons[branch.Id] = await client.GetFromJsonAsync<List<LessonInfo>>($"api/v1/branches/{branch.Id}/lessons", cancellationToken)
+                    ?? throw new InvalidOperationException("Server nevrátil lekce.");
+                configurations[branch.Id] = await client.GetFromJsonAsync<BranchConfiguration>($"api/v1/branches/{branch.Id}/configuration", cancellationToken)
+                    ?? throw new InvalidOperationException("Server nevrátil nastavení pobočky.");
+            }
+            var reservations = await client.GetFromJsonAsync<List<MyReservationInfo>>("api/v1/reservations/me", cancellationToken)
+                ?? throw new InvalidOperationException("Server nevrátil objednávky.");
+            var participants = new Dictionary<(int, int), IReadOnlyList<LessonParticipantInfo>>();
+            foreach (var reservation in reservations.DistinctBy(item => (item.BranchId, item.LessonId)))
+            {
+                if (!configurations.TryGetValue(reservation.BranchId, out var configuration)
+                    || !configuration.IsEnabled("lekceUkazZakazniky"))
+                {
+                    continue;
+                }
+                participants[(reservation.BranchId, reservation.LessonId)] =
+                    await client.GetFromJsonAsync<List<LessonParticipantInfo>>($"api/v1/branches/{reservation.BranchId}/lessons/{reservation.LessonId}/participants", cancellationToken)
+                    ?? throw new InvalidOperationException("Server nevrátil účastníky lekce.");
+            }
+            var credits = await client.GetFromJsonAsync<List<BranchCreditsInfo>>("api/v1/credits/me", cancellationToken)
+                ?? throw new InvalidOperationException("Server nevrátil kredity.");
+            cancellationToken.ThrowIfCancellationRequested();
+            if (!ReferenceEquals(client, tenantClient) || !ReferenceEquals(previousData, Data)
+                || client.DefaultRequestHeaders.Authorization is null)
+            {
+                return false;
+            }
+            Data = new MauiSessionData
+            {
+                Timestamp = change.Timestamp,
+                Branches = branches,
+                Lessons = lessons,
+                Reservations = reservations,
+                Participants = participants,
+                BranchConfigurations = configurations,
+                Credits = credits,
+                IsLoaded = true
+            };
+            ReservationVersion++;
+            return true;
+        }
+        finally
+        {
+            syncGate.Release();
+        }
+    }
+
+    private sealed class DomainChangeResponse
+    {
+        public string Timestamp { get; set; } = string.Empty;
+    }
 
     public Diva2ApiClient()
     {
@@ -199,8 +287,7 @@ public sealed class Diva2ApiClient
         {
             throw new InvalidOperationException(string.IsNullOrWhiteSpace(result.Message) ? "Objednávku se nepodařilo vytvořit." : result.Message);
         }
-        try { File.Delete(LessonCacheFile(branchId)); } catch (IOException) { }
-        ReservationVersion++;
+        InvalidateReservations(branchId);
         return result;
     }
 
@@ -237,6 +324,8 @@ public sealed class Diva2ApiClient
 
     private void InvalidateReservations(int branchId)
     {
+        // Also prevents an in-flight snapshot from overwriting this local mutation.
+        Data = new MauiSessionData();
         try
         {
             File.Delete(LessonCacheFile(branchId));
@@ -250,6 +339,10 @@ public sealed class Diva2ApiClient
 
     public async Task<IReadOnlyList<LessonInfo>> GetLessonsAsync(int branchId, CancellationToken cancellationToken = default)
     {
+        if (Data.Timestamp is not null && Data.Lessons.TryGetValue(branchId, out var synchronizedLessons))
+        {
+            return synchronizedLessons;
+        }
         var cacheFile = LessonCacheFile(branchId);
         if (File.Exists(cacheFile) && DateTimeOffset.UtcNow - File.GetLastWriteTimeUtc(cacheFile) < LessonCacheLifetime)
         {

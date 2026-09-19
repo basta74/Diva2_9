@@ -50,6 +50,10 @@ namespace Diva2.Services
         public void ClearDataSub(string key)
         {
             _cache.Remove($"{subdomain}-{key}");
+            if (!string.IsNullOrWhiteSpace(subdomain))
+            {
+                DomainChangeStamp.Touch(subdomain);
+            }
         }
     }
 }

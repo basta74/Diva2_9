@@ -9,9 +9,12 @@ public sealed class AuthenticatedShell : Shell
     private readonly ShellContent reservationsTab;
     private int pendingNotificationCount;
     private int reservationCount;
+    private readonly Diva2ApiClient apiClient;
+    private CancellationTokenSource? synchronization;
 
     public AuthenticatedShell(Diva2ApiClient apiClient, string displayName)
     {
+        this.apiClient = apiClient;
         Title = apiClient.SelectedTenant?.Name ?? "Diva2";
         FlyoutBehavior = FlyoutBehavior.Disabled;
 
@@ -25,6 +28,7 @@ public sealed class AuthenticatedShell : Shell
         Items.Add(tabs);
         Loaded += async (_, _) =>
         {
+            StartSynchronization();
             ApplyBadges();
 #if ANDROID
             if (Platforms.Android.AndroidPushNotificationService.ConsumeNotificationsToOpen())
@@ -35,6 +39,73 @@ public sealed class AuthenticatedShell : Shell
 #endif
             await RefreshBadgesAsync();
         };
+        Unloaded += (_, _) => StopSynchronization();
+    }
+
+    public void StartSynchronization()
+    {
+        if (synchronization is not null)
+        {
+            return;
+        }
+        synchronization = new CancellationTokenSource();
+        _ = SynchronizeAsync(synchronization.Token);
+    }
+
+    public void StopSynchronization()
+    {
+        synchronization?.Cancel();
+        synchronization?.Dispose();
+        synchronization = null;
+    }
+
+    private async Task SynchronizeAsync(CancellationToken cancellationToken)
+    {
+        using var timer = new PeriodicTimer(TimeSpan.FromSeconds(10));
+        try
+        {
+            do
+            {
+                try
+                {
+                    if (await apiClient.SynchronizeDomainAsync(cancellationToken))
+                    {
+                        SetReservationBadge(apiClient.Data.Reservations.Count);
+                        switch (CurrentPage)
+                        {
+                            case BranchesPage branches:
+                                await branches.RefreshSynchronizedDataAsync();
+                                break;
+                            case ReservationsPage reservations:
+                                reservations.RefreshSynchronizedData();
+                                break;
+                            case MyPage my:
+                                my.RefreshSynchronizedData();
+                                break;
+                            case ParticipantsPage participants:
+                                await participants.RefreshSynchronizedDataAsync();
+                                break;
+                            case LessonDetailPage detail:
+                                await detail.RefreshSynchronizedDataAsync();
+                                break;
+                        }
+                        await ((HomePage)homeTab.Content).RefreshNotificationsAsync();
+                    }
+                }
+                catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+                {
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Domain synchronization failed: {ex.Message}");
+                }
+            }
+            while (await timer.WaitForNextTickAsync(cancellationToken));
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+        }
     }
 
     private void SetNotificationBadge(int count)

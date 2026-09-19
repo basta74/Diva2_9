@@ -27,6 +27,16 @@ public partial class ReservationsPage : ContentPage
         await LoadReservationsAsync();
     }
 
+    public void RefreshSynchronizedData()
+    {
+        reservations.Clear();
+        foreach (var reservation in apiClient.Data.Reservations)
+        {
+            reservations.Add(reservation);
+        }
+        updateBadge(reservations.Count);
+    }
+
     private async Task LoadReservationsAsync()
     {
         if (isLoading)
