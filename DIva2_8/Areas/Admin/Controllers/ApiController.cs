@@ -710,6 +710,8 @@ namespace Diva2Web.Areas.Admin.Controllers
                         var zbytek = objServ.GetZbytekUzivatele(ou.UserId);
                         zbytek.SetZbytekToActualLekceUser(ou, lek);
                         objServ.ClearZbytekVObjednavkachUzivatele(ou.UserId);
+                        ou.ZbytekTyp = "";
+                        objServ.Update(ou);
                     }
                     /**/
                 }

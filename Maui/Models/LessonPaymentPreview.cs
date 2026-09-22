@@ -2,6 +2,8 @@ namespace Diva2Maui.Models;
 
 public sealed class LessonPaymentPreview
 {
+    public int TimeCredits { get; set; }
+    public int UnlimitedCredits { get; set; }
     public int LessonCredits { get; set; }
     public int ValidCredits { get; set; }
     public int AvailableCredits { get; set; }

@@ -64,6 +64,8 @@ public sealed class ApiCreateReservationResponse
 
 public sealed class ApiLessonPaymentPreview
 {
+    public int TimeCredits { get; set; }
+    public int UnlimitedCredits { get; set; }
     public int LessonCredits { get; set; }
     public int ValidCredits { get; set; }
     public int AvailableCredits { get; set; }

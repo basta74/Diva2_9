@@ -107,11 +107,6 @@ public partial class LessonDetailPage : ContentPage
         await LoadPendingNotificationAsync();
     }
 
-    private async void OnRefreshPaymentClicked(object? sender, EventArgs e)
-    {
-        await LoadPaymentAsync();
-    }
-
     private async Task LoadPaymentAsync()
     {
         if (loadingPayment)
@@ -121,25 +116,16 @@ public partial class LessonDetailPage : ContentPage
         loadingPayment = true;
         paymentPreview = null;
         btnReservation.IsEnabled = false;
-        RefreshPaymentButton.IsEnabled = false;
         try
         {
             paymentPreview = await apiClient.GetLessonPaymentPreviewAsync(lesson.Id);
-            CreditBalanceLabel.Text = $"Kredity platné {lesson.StartsAt:dd. MM. yyyy HH:mm}: {paymentPreview.ValidCredits}";
-            CreditAvailableLabel.Text = $"Použitelné pro další rezervaci po zohlednění objednávek a limitů: {paymentPreview.AvailableCredits}";
-            LessonPriceLabel.Text = $"Cena hodiny: {paymentPreview.LessonCredits} kreditů";
-            PaymentTitleLabel.Text = paymentPreview.ReservationCount > 0
-                ? "Předpokládaná úhrada dalšího místa" : "Předpokládaná úhrada hodiny";
-            PaymentBreakdownLabel.Text = string.Join(Environment.NewLine, paymentPreview.Parts.Select(part =>
-                part.Type == "time"
-                    ? $"Časové: {part.Credits} kreditů, platnost do {part.ValidTo:dd. MM. yyyy HH:mm}"
-                        + (part.ActivatesOnUse ? " (aktivace při čerpání)" : "")
-                    : $"Neomezené: {part.Credits} kreditů"));
-            if (paymentPreview.LessonCredits == 0)
-            {
-                PaymentBreakdownLabel.Text = "Hodina je bez odečtu kreditů.";
-            }
+            TimeCreditsLabel.Text = $"Časové kredity: {paymentPreview.TimeCredits}";
+            UnlimitedCreditsLabel.Text = $"Neomezené kredity: {paymentPreview.UnlimitedCredits}";
+            LessonPriceLabel.Text = $"Jeden vstup: {paymentPreview.LessonCredits} kreditů";
+            var entryCount = Math.Max(1, paymentPreview.ReservationCount);
+            TotalPriceLabel.Text = $"Celkem za {entryCount} {(entryCount == 1 ? "vstup" : entryCount < 5 ? "vstupy" : "vstupů")}: {entryCount * paymentPreview.LessonCredits} kreditů";
             PaymentMessageLabel.Text = paymentPreview.Message;
+            PaymentMessageLabel.IsVisible = !paymentPreview.CanReserve && !string.IsNullOrWhiteSpace(paymentPreview.Message);
             ReservationLabel.Text = paymentPreview.ReservationCount > 0
                 ? $"Vaše rezervace na tuto hodinu: {paymentPreview.ReservationCount}"
                 : lesson.ReservationPossibilityText;
@@ -151,16 +137,16 @@ public partial class LessonDetailPage : ContentPage
         }
         catch (Exception ex)
         {
-            CreditBalanceLabel.Text = "Kredity se nepodařilo načíst.";
-            CreditAvailableLabel.Text = string.Empty;
+            TimeCreditsLabel.Text = "Kredity se nepodařilo načíst.";
+            UnlimitedCreditsLabel.Text = string.Empty;
             LessonPriceLabel.Text = string.Empty;
-            PaymentBreakdownLabel.Text = string.Empty;
+            TotalPriceLabel.Text = string.Empty;
             PaymentMessageLabel.Text = ex.Message;
+            PaymentMessageLabel.IsVisible = true;
         }
         finally
         {
             loadingPayment = false;
-            RefreshPaymentButton.IsEnabled = !reserving;
         }
     }
 
@@ -242,7 +228,6 @@ public partial class LessonDetailPage : ContentPage
             return;
         }
         reserving = true;
-        RefreshPaymentButton.IsEnabled = false;
         try
         {
             btnReservation.IsEnabled = false;
@@ -255,7 +240,7 @@ public partial class LessonDetailPage : ContentPage
             var question = paymentPreview.ReservationCount > 0
                 ? "Opravdu chcete objednat další místo na této hodině?"
                 : "Opravdu se chcete přihlásit?";
-            if (!await DisplayAlertAsync("Přihlášení na hodinu", question + Environment.NewLine + PaymentBreakdownLabel.Text, "Ano", "Ne"))
+            if (!await DisplayAlertAsync("Přihlášení na hodinu", question + Environment.NewLine + $"Jeden vstup: {paymentPreview.LessonCredits} kreditů. Celkem po objednání: {(paymentPreview.ReservationCount + 1) * paymentPreview.LessonCredits} kreditů.", "Ano", "Ne"))
             {
                 btnReservation.IsEnabled = true;
                 return;
@@ -282,7 +267,6 @@ public partial class LessonDetailPage : ContentPage
         finally
         {
             reserving = false;
-            RefreshPaymentButton.IsEnabled = true;
             btnReservation.IsEnabled = paymentPreview?.CanReserve == true;
         }
     }

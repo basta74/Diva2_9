@@ -30,11 +30,11 @@ public partial class ReservationsPage : ContentPage
     public void RefreshSynchronizedData()
     {
         reservations.Clear();
-        foreach (var reservation in apiClient.Data.Reservations)
+        foreach (var reservation in MyReservationInfo.GroupByLesson(apiClient.Data.Reservations))
         {
             reservations.Add(reservation);
         }
-        updateBadge(reservations.Count);
+        updateBadge(reservations.Sum(item => item.EntryCount));
     }
 
     private async Task LoadReservationsAsync()
@@ -49,12 +49,12 @@ public partial class ReservationsPage : ContentPage
         {
             var currentReservations = await apiClient.GetMyReservationsAsync();
             reservations.Clear();
-            foreach (var reservation in currentReservations)
+            foreach (var reservation in MyReservationInfo.GroupByLesson(currentReservations))
             {
                 reservations.Add(reservation);
             }
 
-            updateBadge(reservations.Count);
+            updateBadge(reservations.Sum(item => item.EntryCount));
         }
         catch (Exception ex)
         {
@@ -82,12 +82,12 @@ public partial class ReservationsPage : ContentPage
         ReservationsView.SelectedItem = null;
         try
         {
-            var currentReservation = (await apiClient.GetMyReservationsAsync())
-                .FirstOrDefault(item => item.LessonId == reservation.LessonId);
+            var currentReservation = MyReservationInfo.GroupByLesson(await apiClient.GetMyReservationsAsync())
+                .FirstOrDefault(item => item.LessonId == reservation.LessonId && item.BranchId == reservation.BranchId);
             if (currentReservation is null)
             {
                 reservations.Remove(reservation);
-                updateBadge(reservations.Count);
+                updateBadge(reservations.Sum(item => item.EntryCount));
                 await DisplayAlertAsync("Objednávka zrušena", "Na této hodině už nejste přihlášeni. Seznam byl aktualizován.", "OK");
                 return;
             }

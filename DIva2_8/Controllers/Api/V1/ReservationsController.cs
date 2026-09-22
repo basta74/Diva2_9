@@ -85,6 +85,10 @@ public sealed class ReservationsController : ControllerBase
         var preview = LessonPaymentCalculator.Calculate(requested, sources, balance.KredityItem(cashDeskId),
             GetSettingInt(branchId, orderCount > 0 ? "maxKreditDoMinusu" : "maxKreditDoMinusu1", 0), demands);
         preview.ReservationCount = reservations.Count(item => item.LekceId == lessonId);
+        preview.TimeCredits = balance.KredityCas
+            .Where(item => item.PokladnaId == cashDeskId && item.PlatnostDoUnix > DateTimeOffset.Now.ToUnixTimeSeconds())
+            .Sum(item => item.Kredit);
+        preview.UnlimitedCredits = balance.KredityItem(cashDeskId);
         preview.MaxReservations = GetSettingInt(branchId, "lekce_max_count_per_user", 0);
         if (lesson.Zauctovano || lesson.DatumHodina <= DateTime.Now)
         {
