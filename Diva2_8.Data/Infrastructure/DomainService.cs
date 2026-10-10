@@ -22,14 +22,11 @@ namespace Diva2.Data.Infrastructure
 
             var host = accessor.HttpContext?.Request?.Host.Host;
 
-            logger.Log(LogLevel.Information, "domain is:" + host);
-
             string? subdomain = null;
             string dom = ".diva2.cz";
             if (host != null && host.EndsWith(dom))
             {
                 subdomain = host.Replace(dom, "");
-                logger.Log(LogLevel.Information, "subdomain is:" + subdomain);
             }
 
             if (subdomain is null) {
@@ -37,6 +34,11 @@ namespace Diva2.Data.Infrastructure
             }
 
             Domain = FindDomain(subdomain);
+
+            if (Domain != null)
+            {
+                logger.Log(LogLevel.Information, "domain is:" + host + ", subdomain is:" + subdomain);
+            }
         }
 
         private void LoadDomains(IConfiguration configuration)

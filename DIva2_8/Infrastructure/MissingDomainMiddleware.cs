@@ -10,19 +10,18 @@ namespace Diva2Web.Infrastructure
     public class MissingDomainMiddleware
     {
         private readonly RequestDelegate next;
-        private readonly string  missingDomainUrl;
 
-        public MissingDomainMiddleware(RequestDelegate next, string missingDomainUrl)
+        public MissingDomainMiddleware(RequestDelegate next)
         {
             this.next = next;
-            this.missingDomainUrl = missingDomainUrl;
         }
 
         public async Task Invoke(HttpContext httpContext, IDomainService domainService)
         {
             if (domainService.Domain == null)
             {
-                httpContext.Response.Redirect(missingDomainUrl);
+                // neznámá subdoména: tichá 404, nic nelogovat a nesahat do DB
+                httpContext.Response.StatusCode = StatusCodes.Status404NotFound;
                 return;
             }
 

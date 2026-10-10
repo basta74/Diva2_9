@@ -82,6 +82,9 @@ if (args.Any(x => string.Equals(x, "migrate-tenants", StringComparison.OrdinalIg
     return;
 }
 
+// neznámá subdoména -> tichá 404 ještě před čímkoli dalším
+app.UseMiddleware<MissingDomainMiddleware>();
+
 // pipeline
 if (!app.Environment.IsDevelopment())
 {
