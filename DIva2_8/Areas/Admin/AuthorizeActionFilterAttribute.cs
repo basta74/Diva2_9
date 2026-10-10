@@ -30,7 +30,7 @@ namespace Diva2Web.Areas.Admin
             public void OnAuthorization(AuthorizationFilterContext context)
             {
                 var session = context.HttpContext.Session;
-                var domain = domainService.Domain.name;
+                var domain = domainService.Domain?.name;
                 string key = $"{domain}-userId";
                 bool nameOK = session.TryGetValue(key, out var sessionName);
 

@@ -21,14 +21,14 @@ public class ApplicationDbContext : IdentityDbContext<User8, Role8, int, Identit
             throw new ArgumentNullException(nameof(domainService));
         }
 
-        SubDomain domain = domainService.Domain;
+        var domain = domainService.Domain;
 
         if (domain == null)
         {
             // throw new NullReferenceException("Subdomain is null");
         }
 
-        SubDomain = domain.name;
+        SubDomain = domain?.name ?? "";
     }
 
 

@@ -32,7 +32,7 @@ public sealed class ApiTokenAuthenticationHandler : AuthenticationHandler<Authen
         }
 
         var payload = tokenService.Validate(authorization["Bearer ".Length..].Trim());
-        if (payload == null || !string.Equals(payload.TenantId, domainService.Domain.name, StringComparison.OrdinalIgnoreCase))
+        if (payload == null || !string.Equals(payload.TenantId, domainService.Domain?.name, StringComparison.OrdinalIgnoreCase))
         {
             return Task.FromResult(AuthenticateResult.Fail("Neplatný nebo expirovaný token."));
         }

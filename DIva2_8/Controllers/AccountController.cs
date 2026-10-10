@@ -204,6 +204,12 @@ namespace Web.Controllers
                         }
                         else
                         {
+                            // Po pěti špatných heslech je účet na pár minut zamčený: odmítne i správné heslo.
+                            if (result.IsLockedOut)
+                            {
+                                param.MsgAddDanger("Účet je po opakovaném zadání špatného hesla dočasně zablokován. Zkuste to znovu za pár minut.");
+                                return View(param);
+                            }
                             param.MsgAddDanger("Nejsou zadané platné údaje");
                             return View(param);
                         }

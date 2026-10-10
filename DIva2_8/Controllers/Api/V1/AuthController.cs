@@ -44,10 +44,16 @@ public sealed class AuthController : ControllerBase
             return Unauthorized(new { message = "Neplatné přihlašovací údaje." });
         }
 
+        var domain = domainService.Domain;
+        if (domain == null)
+        {
+            return NotFound(new { message = "Doména nebyla nalezena." });
+        }
+
         var expiresAt = DateTimeOffset.UtcNow.AddHours(12);
         return Ok(new ApiLoginResponse
         {
-            AccessToken = tokenService.Create(user.Id, domainService.Domain.name, expiresAt),
+            AccessToken = tokenService.Create(user.Id, domain.name, expiresAt),
             ExpiresAt = expiresAt,
             UserId = user.Id,
             DisplayName = string.Join(" ", new[] { user.Jmeno, user.Prijmeni }.Where(x => !string.IsNullOrWhiteSpace(x)))

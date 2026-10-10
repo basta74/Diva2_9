@@ -14,7 +14,8 @@ public sealed class DomainConnectionStringProvider : IConnectionStringProvider
 
     public string GetConnectionString()
     {
-        var domain = domainService.Domain;
+        var domain = domainService.Domain
+            ?? throw new InvalidOperationException("Pro aktuální host není nakonfigurovaná doména, nelze sestavit connection string.");
 
         return $"server=localhost;database={domain.db};user={domain.user};password={domain.pass};";
     }

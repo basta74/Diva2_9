@@ -11,7 +11,7 @@ namespace Diva2.Data.Infrastructure
     public class DomainService : IDomainService
     {
         public static IList<SubDomain> domains;
-        public SubDomain Domain { get; private set; }
+        public SubDomain? Domain { get; private set; }
 
         public DomainService(IHttpContextAccessor accessor, IConfiguration configuration, ILogger<ApplicationDbContext> logger)
         {
@@ -36,7 +36,7 @@ namespace Diva2.Data.Infrastructure
                 subdomain = "localhost";
             }
 
-            Domain = FindDomain(subdomain) ?? throw new Exception("Domain not found");
+            Domain = FindDomain(subdomain);
         }
 
         private void LoadDomains(IConfiguration configuration)
@@ -46,7 +46,7 @@ namespace Diva2.Data.Infrastructure
             configuration.GetSection("Domains").Bind(domains);
         }
 
-        private SubDomain FindDomain(string host)
+        private SubDomain? FindDomain(string host)
         {
             var domain = domains.FirstOrDefault(t => t.name == host.ToLower());
 

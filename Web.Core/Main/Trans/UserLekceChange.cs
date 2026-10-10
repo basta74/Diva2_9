@@ -72,6 +72,8 @@ namespace Diva2.Core.Main.Trans
         public int SmsUserId { get; set; }
         public bool SmsActive { get; set; }
         public int? SmsStatus { get; set; }
+        public string Message { get; set; }
+
         public DateTime Ts { get; set; }
 
         public string TsCz { get { return Ts.ToString("dd.MM.yyyy HH:mm"); } }

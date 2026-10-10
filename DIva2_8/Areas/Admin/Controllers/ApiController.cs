@@ -60,7 +60,7 @@ namespace Diva2Web.Areas.Admin.Controllers
            ISkupinaZakaznikaService skupZakServ, IPobockaService pobSer, IUser8Service userSer,
            ILekceTypService ltService, ILekceMustrService lmuService, ILekceService lekceService,
             ILektorService lkService, IPlatbaService plService, ILogs8Service logSer, ICalendarService calSe,
-            IObjednavkyService objSer, IComunicationService emailServ, IVideoService viSe) : base(dbContext,  httpContextAccessor, memoryCache, userSer, pobSer, logSer, objSer)
+            IObjednavkyService objSer, IComunicationService emailServ, IVideoService viSe) : base(dbContext, httpContextAccessor, memoryCache, userSer, pobSer, logSer, objSer)
         {
             //cache = new Diva2.Services.CacheHelper(memoryCache, dbContext.SubDomain);
 
@@ -352,7 +352,8 @@ namespace Diva2Web.Areas.Admin.Controllers
                     chl.Pridat = true;
                 }
 
-                if (!chl.Pridat){
+                if (!chl.Pridat)
+                {
                     break;
                 }
 
@@ -490,31 +491,37 @@ namespace Diva2Web.Areas.Admin.Controllers
                         {
                             chl.SmsStatus = -2;
                         }
-
-                        if (nextZak.UserId != obj1.UserId && nextZak.Device != ReservationDevice.App)
+                        else
                         {
-                            if (aa.MainIniCover.MainIniObj.SmsActive)
+                            if (nextZak.UserId != obj1.UserId)
                             {
-                                chl.SmsActive = aa.MainIniCover.MainIniObj.SmsActive;
-                                u = userServ.GetById(nextZak.UserId);
-                                if (u.PhoneNumber != null && u.PhoneNumber != "")
+                                if (aa.MainIniCover.MainIniObj.SmsActive)
                                 {
-
-                                    int.TryParse(u.PhoneNumber.Replace(" ", ""), out int ph);
-                                    if (ph > 100000000)
+                                    chl.SmsActive = aa.MainIniCover.MainIniObj.SmsActive;
+                                    u = userServ.GetById(nextZak.UserId);
+                                    if (u.PhoneNumber != null && u.PhoneNumber != "")
                                     {
 
-                                        DateTime dt = lek.Datum.Add(lek.Cas);
-
-                                        sms = new SmsContent()
+                                        int.TryParse(u.PhoneNumber.Replace(" ", ""), out int ph);
+                                        if (ph > 100000000)
                                         {
-                                            Name = aa.MainIniCover.MainIniObj.SmsName,
-                                            Pass = aa.MainIniCover.MainIniObj.SmsPass,
-                                            Number = ph,
-                                            Text = $"V terminu {dt.ToString("dd.MM. HH:mm")} se uvolnilo misto a Vy se posouvate mezi zakazniky. Na tuto zpravu prosím neodpovidejte {aa.SubDomain}.diva2.cz"
-                                        };
+
+                                            DateTime dt = lek.Datum.Add(lek.Cas);
+
+                                            sms = new SmsContent()
+                                            {
+                                                Name = aa.MainIniCover.MainIniObj.SmsName,
+                                                Pass = aa.MainIniCover.MainIniObj.SmsPass,
+                                                Number = ph,
+                                                Text = $"V terminu {dt.ToString("dd.MM. HH:mm")} se uvolnilo misto a Vy se posouvate mezi zakazniky. Na tuto zpravu prosím neodpovidejte {aa.SubDomain}.diva2.cz"
+                                            };
+                                        }
                                     }
                                 }
+                            }
+                            else
+                            {
+                                chl.Message = "Nahradnik je stejný jako odhlašující se zákazník";
                             }
                         }
                     }
@@ -543,10 +550,11 @@ namespace Diva2Web.Areas.Admin.Controllers
                                 respId = 0;
                                 sms.Credit = 0;
                             }
-                            else {
+                            else
+                            {
                                 respId = SendSms(sms);
                             }
-                            
+
                             smsL.Credit = sms.Credit;
                             smsL.Stav = respId;
                             if (respId == 0)
@@ -1377,7 +1385,8 @@ namespace Diva2Web.Areas.Admin.Controllers
                 }
 
                 /// neomezeno
-                if (m.Count == 999) {
+                if (m.Count == 999)
+                {
 
                     int zbytek = pla.Kredit;
                     pla.Kredit = 0;
@@ -1422,7 +1431,7 @@ namespace Diva2Web.Areas.Admin.Controllers
                 else if (m.Count == 7777)
                 {
                     pla.PlatnostUnixBreak = DateTimeExtensions.ToUnix(DateTime.Now);
-                    
+
                     objServ.Update(pla);
 
                     UserZbytekKreditCasLog log = new UserZbytekKreditCasLog();
@@ -1443,7 +1452,7 @@ namespace Diva2Web.Areas.Admin.Controllers
                 // pustit stop
                 else if (m.Count == 8888 && pla.PlatnostUnixBreak.HasValue)
                 {
-                    int prodlouzitO = DateTimeExtensions.ToUnix(DateTime.Now) -  pla.PlatnostUnixBreak.Value;
+                    int prodlouzitO = DateTimeExtensions.ToUnix(DateTime.Now) - pla.PlatnostUnixBreak.Value;
 
                     pla.PlatnostDoUnix = prodlouzitO + pla.PlatnostDoUnix;
 
@@ -1466,7 +1475,7 @@ namespace Diva2Web.Areas.Admin.Controllers
 
                     resp.Status = true;
                 }
-                else 
+                else
                 {
 
                     int from = pla.PlatnostDoUnix;
@@ -1630,12 +1639,14 @@ namespace Diva2Web.Areas.Admin.Controllers
             var xml = System.Xml.Linq.XElement.Parse(result);
             var res = xml.Element("err").Value;
             double crDouble = -1;
-            try{
+            try
+            {
 
                 var cr = xml.Element("credit").Value;
                 double.TryParse(cr.Replace(".", ","), out crDouble);
             }
-            catch{ 
+            catch
+            {
             }
 
             sms.Credit = crDouble;
