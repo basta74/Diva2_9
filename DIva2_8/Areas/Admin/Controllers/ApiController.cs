@@ -502,7 +502,7 @@ namespace Diva2Web.Areas.Admin.Controllers
                                     if (u.PhoneNumber != null && u.PhoneNumber != "")
                                     {
 
-                                        int.TryParse(u.PhoneNumber.Replace(" ", ""), out int ph);
+                                        int ph = StringHelper.GetPhoneNumber(u.PhoneNumber);
                                         if (ph > 100000000)
                                         {
 
@@ -1696,7 +1696,7 @@ namespace Diva2Web.Areas.Admin.Controllers
 
                     var user = objs.FirstOrDefault().User;
 
-                    int.TryParse(user.PhoneNumber.Replace(" ", ""), out int ph);
+                    int ph = StringHelper.GetPhoneNumber(user.PhoneNumber);
                     if (ph > 100000000)
                     {
                         sms.Number = ph;
@@ -1706,7 +1706,7 @@ namespace Diva2Web.Areas.Admin.Controllers
                     foreach (var obj in objs)
                     {
 
-                        int.TryParse(obj.User.PhoneNumber.Replace(" ", ""), out int ph1);
+                        int ph1 = StringHelper.GetPhoneNumber(obj.User.PhoneNumber);
                         if (ph1 > 100000000)
                         {
                             if (!sms.Numbers.ContainsKey(obj.User.Id))
