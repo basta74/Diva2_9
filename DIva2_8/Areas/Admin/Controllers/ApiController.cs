@@ -516,6 +516,13 @@ namespace Diva2Web.Areas.Admin.Controllers
                                                 Text = $"V terminu {dt.ToString("dd.MM. HH:mm")} se uvolnilo misto a Vy se posouvate mezi zakazniky. Na tuto zpravu prosím neodpovidejte {aa.SubDomain}.diva2.cz"
                                             };
                                         }
+                                        else {
+                                            chl.Message = $"Neplatne č: {u.PhoneNumber}";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        chl.Message = "Cislo je prazdne";
                                     }
                                 }
                             }
